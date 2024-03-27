@@ -1,6 +1,5 @@
 package com.example.projecta2.View
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -20,7 +19,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var login: Button
     private lateinit var btnTest: Button
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -38,7 +36,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun fetchTestMessage() {
         val retrofit = Retrofit.Builder()
+
             .baseUrl("http://10.0.2.2:8111/")
+
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

@@ -47,6 +47,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -185,6 +186,7 @@
             android:id="@+id/btnTest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="Button" />
 
     </RelativeLayout>

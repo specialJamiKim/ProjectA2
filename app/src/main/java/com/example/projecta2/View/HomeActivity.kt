@@ -1,11 +1,13 @@
 package com.example.projecta2.View
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -17,8 +19,11 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var personLinearLayout: LinearLayout
     private lateinit var favorite: FloatingActionButton
     private lateinit var cactusCardView: CardView
+
     private lateinit var wannaGymCardView: CardView
 
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -54,6 +59,8 @@ class HomeActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+
+
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
