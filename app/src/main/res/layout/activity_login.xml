@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context=".LoginActivity">
+    tools:context=".View.LoginActivity">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -47,6 +47,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -180,6 +181,18 @@
 
 
         </ScrollView>
+
+        <Button
+            android:id="@+id/btnTest"
+            android:layout_width="141dp"
+            android:layout_height="41dp"
+            android:layout_below="@+id/scrollView2"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="199dp"
+            android:layout_marginBottom="17dp"
+            android:text="Button" />
 
     </RelativeLayout>
 

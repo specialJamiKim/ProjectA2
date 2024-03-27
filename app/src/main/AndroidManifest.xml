@@ -5,9 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-
-    <!-- 위치 권한 추가 -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- 위치 권한 추가 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -18,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup">
+        tools:ignore="AllowBackup"
+        android:usesCleartextTraffic="true">
 
         <activity
             android:name=".View.MapActivity"
@@ -27,44 +26,40 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <activity
             android:name=".View.CenterDetailActivity"
             android:label="Center Detail Activity"
             android:screenOrientation="portrait"
             android:theme="@style/MyAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <activity
             android:name=".View.BookMarkActivity"
             android:label="Book Mark Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <activity
             android:name=".View.MyPageActivity"
             android:label="My Page Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <activity
             android:name=".View.HomeActivity"
             android:label="Home Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <activity
             android:name=".View.LoginActivity"
+            android:exported="true"
             android:label="Login Activity"
             android:screenOrientation="portrait"
             android:theme="@style/MyAppTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:exported="true"> <!-- 여기에 android:exported 속성 추가 -->
+            android:windowSoftInputMode="stateHidden|adjustPan"> <!-- 여기에 android:exported 속성 추가 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -74,7 +69,6 @@
             android:value="AIzaSyBqg6C89usTtrkQeJ6CgVAZvAc2x-F-y5s" />
 
         <uses-library android:name="com.google.android.maps" />
-
     </application>
 
 </manifest>
