@@ -34,5 +34,13 @@ class CenterDetailActivity : AppCompatActivity() {
             startActivity(intent)
             finish() // 현재 액티비티 종료
         }
+            // "예약하기" 버튼 찾기
+            val reserveButton = findViewById<Button>(R.id.buttonReserve)
+            // "예약하기" 버튼 클릭 이벤트 처리
+            reserveButton.setOnClickListener {
+                // ReservationActivity로 이동
+                val intent = Intent(this, ReservationActivity::class.java)
+                startActivity(intent)
+        }
     }
 }

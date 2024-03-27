@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.MyTicketActivity">
+
+    <!-- AppBarLayout -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="내 보유 일일권"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Daily Pass Count -->
+    <TextView
+        android:id="@+id/tvDailyPassCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="보유 일일권: 5회"
+        android:textSize="24sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Usage Date Title -->
+    <TextView
+        android:id="@+id/tvUsageDateTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="사용 예정 일자"
+        android:textSize="20sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/tvDailyPassCount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- CalendarView for selecting usage date -->
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsageDateTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Bottom Navigation Bar Placeholder -->
+    <!-- Add your bottom navigation here as previously described -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

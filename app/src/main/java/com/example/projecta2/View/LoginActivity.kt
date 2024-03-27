@@ -36,7 +36,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun fetchTestMessage() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.100.103.26:8111/")
+
+            .baseUrl("http://10.0.2.2:8111/")
+
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
