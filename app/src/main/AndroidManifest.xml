@@ -16,20 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup">
-        <activity
-            android:name=".View.MyTicketActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.ReservationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.UserEditActivity"
-            android:exported="false"
-            android:label="Map Activity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+        tools:ignore="AllowBackup"
+        android:usesCleartextTraffic="true">
+
         <activity
             android:name=".View.MapActivity"
             android:exported="false"
