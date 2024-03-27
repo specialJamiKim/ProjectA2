@@ -15,42 +15,48 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var personLinearLayout: LinearLayout
-    private lateinit var showMap: FloatingActionButton
+    private lateinit var favorite: FloatingActionButton
     private lateinit var cactusCardView: CardView
+    private lateinit var wannaGymCardView: CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        // 뷰 바인딩
         personLinearLayout = findViewById(R.id.person_linear_layout)
-        showMap = findViewById(R.id.showMap)
+        favorite = findViewById(R.id.favorite)
         cactusCardView = findViewById(R.id.cactus_card_view)
+        wannaGymCardView = findViewById(R.id.wannaGym_card_view)
 
-        // 각 뷰의 클릭 이벤트 설정
         personLinearLayout.setOnClickListener {
-            // MyPageActivity로 이동
-            val intent = Intent(applicationContext, MyPageActivity::class.java)
+            val intent = Intent(this, MyPageActivity::class.java)
             startActivity(intent)
         }
 
-        showMap.setOnClickListener {
-            // MapActivity로 이동
-            val intent = Intent(applicationContext, MapActivity::class.java)
+        favorite.setOnClickListener {
+            // 여기서 원하는 동작을 구현하세요, 예를 들면 지도 보여주기 등
+            val intent = Intent(this, MapActivity::class.java)
             startActivity(intent)
         }
 
         cactusCardView.setOnClickListener {
-            // CenterDetailActivity로 이름과 가격 정보 전달
-            val intent = Intent(applicationContext, CenterDetailActivity::class.java)
-            intent.putExtra("itemName1", "비나이더짐") // 이름 데이터 추가
-            intent.putExtra("itemPrice1", "15,000원") // 가격 데이터 추가
+            val intent = Intent(this, CenterDetailActivity::class.java).apply {
+                putExtra("itemName1", "비나이더짐")
+                putExtra("itemPrice1", "15,000원")
+            }
+            startActivity(intent)
+        }
+
+        wannaGymCardView.setOnClickListener {
+            val intent = Intent(this, CenterDetailActivity::class.java).apply {
+                putExtra("itemName2", "워너짐 수영구점")
+                putExtra("itemPrice2", "10,000원")
+            }
             startActivity(intent)
         }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        // 화면 터치 시 키보드 숨김 처리
         if (event.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus
             if (v is android.widget.EditText) {

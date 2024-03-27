@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CenterDetailActivity">
+    tools:context=".View.CenterDetailActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -146,6 +146,7 @@
                 android:textSize="16sp" />
 
             <Button
+                android:id="@+id/buttonReserve"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

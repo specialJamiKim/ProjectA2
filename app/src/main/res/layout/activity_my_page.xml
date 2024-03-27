@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyPageActivity">
+    tools:context=".View.MyPageActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                     android:fontFamily="@font/calibri"
                     android:text="박산해 회원님"
                     android:textColor="#000000"
-                    android:textSize="30sp" />
+                    android:textSize="35sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -144,7 +144,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="16dp"
                                 android:fontFamily="@font/calibri"
-                                android:text="총 방문횟수"
+                                android:text="총 이용횟수"
                                 android:textColor="#3C3C3C"
                                 android:textSize="16sp" />
 
@@ -153,6 +153,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/edit_info_card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -224,7 +225,7 @@
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/showMap"
+            android:id="@+id/favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
