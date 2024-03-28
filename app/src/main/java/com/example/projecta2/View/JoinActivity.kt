@@ -64,7 +64,7 @@ class JoinActivity : AppCompatActivity() {
 
         btnJoinPro.setOnClickListener {
             val user = createUserFromInput() // 사용자 입력에서 사용자 객체 생성
-            fetchTestMessage(user)
+            userJoin(user)
         }
     }
 
@@ -84,7 +84,7 @@ class JoinActivity : AppCompatActivity() {
         )
     }
 
-    private fun fetchTestMessage(user: User) {
+    private fun userJoin(user: User) {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8111/")
             .addConverterFactory(GsonConverterFactory.create())
