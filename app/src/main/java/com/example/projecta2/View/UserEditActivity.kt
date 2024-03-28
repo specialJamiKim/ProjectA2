@@ -1,5 +1,6 @@
 package com.example.projecta2.View
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -7,17 +8,34 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class UserEditActivity : AppCompatActivity() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_edit)
 
         // 액션 바가 있다면 숨깁니다.
         supportActionBar?.hide()
+
+        // 홈 버튼 클릭 리스너 설정
+        val homeImageView = findViewById<ImageView>(R.id.homeImageViewUserEdit)
+        homeImageView.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 지도 버튼 클릭 리스너 설정
+        val mapFloatingActionButton = findViewById<FloatingActionButton>(R.id.mapFabUserEdit)
+        mapFloatingActionButton.setOnClickListener {
+            val intent = Intent(this, MapActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {

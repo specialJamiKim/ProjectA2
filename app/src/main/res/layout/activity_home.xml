@@ -106,12 +106,15 @@
                         android:padding="8dp">
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/myTicketCardView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             app:cardCornerRadius="8dp"
                             app:cardElevation="4dp"
                             app:cardUseCompatPadding="true"
+                            android:clickable="true"
+                            android:focusable="true"
                             app:contentPadding="12dp">
 
                             <LinearLayout
@@ -246,15 +249,16 @@
                             </androidx.cardview.widget.CardView>-->
 
                             <androidx.cardview.widget.CardView
+                                android:id="@+id/imgBannerCardView"
                                 android:layout_width="240dp"
                                 android:layout_height="100dp"
                                 app:cardCornerRadius="20dp"
                                 app:cardElevation="3dp">
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/bannerimg" />
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/imgBannerRecyclerView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
 
                             </androidx.cardview.widget.CardView>
 
