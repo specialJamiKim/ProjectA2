@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    kotlin("plugin.serialization") version "1.5.31"
 }
 
 android {
@@ -66,6 +67,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
+    implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -92,4 +94,6 @@ dependencies {
     //retrofit2
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 }
