@@ -121,17 +121,19 @@
                                 android:paddingTop="5dp"
                                 android:text="이름 : "
                                 android:textSize="20dp" />
-                        <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:paddingLeft="15dp"
-                            android:fontFamily="@font/calibri"
-                            android:hint="이름을 입력하세요"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:textColor="@android:color/black"
-                            android:textSize="16sp" />
+
+                            <EditText
+                                android:id="@+id/etName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:fontFamily="@font/calibri"
+                                android:hint="이름을 입력하세요"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:paddingLeft="15dp"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp" />
                         </LinearLayout>
 
                         <!-- 간격 추가 -->
@@ -151,15 +153,17 @@
                                 android:paddingTop="5dp"
                                 android:text="ID : "
                                 android:textSize="20dp" />
+
                             <EditText
+                                android:id="@+id/etEmail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
-                                android:paddingLeft="15dp"
                                 android:fontFamily="@font/calibri"
                                 android:hint="ID을 입력하세요"
                                 android:inputType="text"
                                 android:maxLines="1"
+                                android:paddingLeft="15dp"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp" />
                         </LinearLayout>
@@ -180,14 +184,16 @@
                                 android:textSize="20dp"
                                 android:layout_weight="0.5"
                                 android:text="비밀번호 : "/>
+
                             <EditText
+                                android:id="@+id/etPassword"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
-                                android:paddingLeft="15dp"
                                 android:fontFamily="@font/calibri"
                                 android:hint="비밀번호를 입력하세요"
                                 android:inputType="textPassword"
+                                android:paddingLeft="15dp"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp" />
                         </LinearLayout>
@@ -256,14 +262,16 @@
                                 android:textSize="20dp"
                                 android:layout_weight="0.5"
                                 android:text="전화번호 : "/>
+
                             <EditText
+                                android:id="@+id/etPhoneNumber"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
-                                android:paddingLeft="15dp"
                                 android:fontFamily="@font/calibri"
                                 android:hint="전화번호를 입력하세요"
                                 android:inputType="phone"
+                                android:paddingLeft="15dp"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp" />
                         </LinearLayout>
@@ -307,7 +315,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/edit"
+                        android:id="@+id/btnJoinPro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
