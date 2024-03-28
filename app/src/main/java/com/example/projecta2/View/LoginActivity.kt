@@ -19,8 +19,9 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var login: Button
     private lateinit var btnJoinPage: Button
-    private lateinit var userEmailTextView: TextView
-    private lateinit var userPwTextView: TextView
+
+    private lateinit var btnTest: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,9 @@ class LoginActivity : AppCompatActivity() {
         userPwTextView = findViewById(R.id.userPwTextView)
 
         login = findViewById(R.id.login)
+        btnJoinPage = findViewById(R.id.btnJoinPage)
+        btnTest = findViewById(R.id.btnTest)
+
         login.setOnClickListener {
             val email = userEmailTextView.text.toString()
             val password = userPwTextView.text.toString()
@@ -43,6 +47,12 @@ class LoginActivity : AppCompatActivity() {
         btnJoinPage.setOnClickListener {
             val intent = Intent(applicationContext, JoinActivity::class.java)
             startActivity(intent)
+
+        }
+
+        btnTest.setOnClickListener {
+            fetchTestMessage()
+
         }
     }
 
