@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("plugin.serialization") version "1.5.31"
+    id("org.jetbrains.kotlin.plugin.serialization' version '1.6.10'")
 }
 
 android {
@@ -97,5 +98,7 @@ dependencies {
 
     // Dependency to include Maps SDK for Android
     implementation ("com.google.android.gms:play-services-maps:17.0.0")
+
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
 }

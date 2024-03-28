@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
@@ -19,8 +20,11 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var login: Button
     private lateinit var btnJoinPage: Button
-
+    private lateinit var userEmailTextView : EditText
+    private lateinit var userPwTextView : EditText
     private lateinit var btnTest: Button
+    private lateinit var email : String
+    private lateinit var password : String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +42,8 @@ class LoginActivity : AppCompatActivity() {
         btnTest = findViewById(R.id.btnTest)
 
         login.setOnClickListener {
-            val email = userEmailTextView.text.toString()
-            val password = userPwTextView.text.toString()
+            email = userEmailTextView.text.toString()
+            password = userPwTextView.text.toString()
             Log.d(">", "$email , $password")
             signIn(email, password)
         }
@@ -51,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnTest.setOnClickListener {
-            fetchTestMessage()
+            signIn(email, password)
 
         }
     }

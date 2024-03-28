@@ -1,11 +1,15 @@
 package com.example.projecta2.View
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 
 import android.widget.EditText
 import android.widget.RadioButton
@@ -36,6 +40,7 @@ class JoinActivity : AppCompatActivity() {
     private lateinit var role : ArrayList<String>
     private lateinit var selectedGender : String
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join)

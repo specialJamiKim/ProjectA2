@@ -66,13 +66,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
-            android:name=".View.JoinActivity"
-            android:label="Home Activity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-
-        <activity
             android:name=".View.UserEditActivity"
             android:label="User Edit Activity"
             android:screenOrientation="portrait"
