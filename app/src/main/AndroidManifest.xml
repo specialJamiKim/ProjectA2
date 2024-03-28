@@ -18,7 +18,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".View.JoinActivity"
+            android:exported="false"
+            android:label="Map Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.MapActivity"
             android:exported="false"
