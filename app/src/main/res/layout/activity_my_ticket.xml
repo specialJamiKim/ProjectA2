@@ -17,7 +17,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="15dp"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:theme="@style/AppTheme.Toolbar">
 
@@ -40,6 +40,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/ticketPageUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -51,6 +52,7 @@
                     android:textSize="35sp" />
 
                 <TextView
+                    android:id="@+id/ticketPageUserGrade"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -58,6 +60,12 @@
                     android:fontFamily="@font/calibri"
                     android:text="일반회원"
                     android:textSize="20sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="#3C5E6163" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -70,6 +78,7 @@
                     android:paddingRight="16dp"
                     android:weightSum="100">
                     <TextView
+                        android:id="@+id/ticketPageTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="보유 일일권 확인"
@@ -88,6 +97,7 @@
                     android:weightSum="100">
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/ticketPageTicket"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -187,6 +197,7 @@
 
 
         </ScrollView>
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/mapFabUserEdit4"

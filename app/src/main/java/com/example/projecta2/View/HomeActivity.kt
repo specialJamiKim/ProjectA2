@@ -21,7 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var personLinearLayout: LinearLayout
-    private lateinit var favorite: FloatingActionButton
+    private lateinit var homeToMap: FloatingActionButton
     private lateinit var cactusCardView: CardView
     private lateinit var myTicketCardView: CardView
     private lateinit var wannaGymCardView: CardView
@@ -42,7 +42,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun initView() {
         personLinearLayout = findViewById(R.id.person_linear_layout)
-        favorite = findViewById(R.id.favorite)
+        homeToMap = findViewById(R.id.homeToMap)
         cactusCardView = findViewById(R.id.cactus_card_view)
         wannaGymCardView = findViewById(R.id.wannaGym_card_view)
         myTicketCardView = findViewById(R.id.myTicketCardView)
@@ -54,7 +54,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MyPageActivity::class.java))
         }
 
-        favorite.setOnClickListener {
+        homeToMap.setOnClickListener {
             startActivity(Intent(this, MapActivity::class.java))
         }
 

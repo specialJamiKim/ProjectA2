@@ -73,6 +73,7 @@
                         android:textSize="22sp" />
 
                     <TextView
+                        android:id="@+id/userEditTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -110,6 +111,7 @@
                         android:orientation="vertical">
 
                         <EditText
+                            android:id="@+id/userEditId"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:paddingLeft="15dp"
@@ -121,6 +123,7 @@
                             android:textSize="16sp" />
 
                         <EditText
+                            android:id="@+id/userEditName"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:paddingLeft="15dp"
@@ -131,6 +134,7 @@
                             android:textColor="@android:color/black"
                             android:textSize="16sp" />
                         <EditText
+                            android:id="@+id/userEditAddress"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:paddingLeft="15dp"
@@ -141,6 +145,7 @@
                             android:textColor="@android:color/black"
                             android:textSize="16sp" />
                         <EditText
+                            android:id="@+id/userEditSex"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:paddingLeft="15dp"
@@ -151,6 +156,7 @@
                             android:textColor="@android:color/black"
                             android:textSize="16sp" />
                         <EditText
+                            android:id="@+id/userEditTel"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:paddingLeft="15dp"
@@ -161,6 +167,7 @@
                             android:textColor="@android:color/black"
                             android:textSize="16sp" />
                         <EditText
+                            android:id="@+id/userEditBirth"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:paddingLeft="15dp"
@@ -181,7 +188,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/edit"
+                        android:id="@+id/editBth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -195,7 +202,7 @@
                         android:textSize="24sp" />
 
                     <Button
-                        android:id="@+id/editback"
+                        android:id="@+id/editBackBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

@@ -164,11 +164,16 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
                     android:background="@drawable/buttonshape"
@@ -177,6 +182,21 @@
                     android:textAllCaps="false"
                     android:textColor="#ffffff"
                     android:textSize="24sp" />
+
+                    <Button
+                        android:id="@+id/btnJoinPage"
+                        android:textSize="24sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/buttonshape3"
+                        android:fontFamily="@font/calibri"
+                        android:text="Join"
+                        android:textAllCaps="false"
+                        android:textColor="#ffffff"/>
+                </LinearLayout>
             </LinearLayout>
 
 

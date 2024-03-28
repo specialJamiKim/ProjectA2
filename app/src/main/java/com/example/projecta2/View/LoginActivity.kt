@@ -17,6 +17,7 @@ import retrofit2.http.GET
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var login: Button
+    private lateinit var btnJoinPage: Button
     private lateinit var btnTest: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,11 +25,19 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         login = findViewById(R.id.login)
+        btnJoinPage = findViewById(R.id.btnJoinPage)
+        btnTest = findViewById(R.id.btnTest)
+
         login.setOnClickListener {
             val intent = Intent(applicationContext, HomeActivity::class.java)
             startActivity(intent)
         }
-        btnTest = findViewById<Button>(R.id.btnTest)
+
+        btnJoinPage.setOnClickListener {
+            val intent = Intent(applicationContext, JoinActivity::class.java)
+            startActivity(intent)
+        }
+
         btnTest.setOnClickListener {
             fetchTestMessage()
         }

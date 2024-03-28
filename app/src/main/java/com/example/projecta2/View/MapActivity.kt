@@ -1,11 +1,14 @@
 package com.example.projecta2.View
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,14 +34,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fitnessCenterAdapter: FitnessCenterAdapter
     private lateinit var fitnessCenters: List<FitnessCenter>
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        val homeButton: LinearLayout = findViewById(R.id.home_linear_layout2)
-        val myPageButton: LinearLayout = findViewById(R.id.person_linear_layout2)
+        val homeButton: LinearLayout = findViewById(R.id.mapToHome)
+        val myPageButton: LinearLayout = findViewById(R.id.mapToMyPage)
 
         homeButton.setOnClickListener {
             startActivity(Intent(this@MapActivity, HomeActivity::class.java))
@@ -55,6 +60,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setupRecyclerView()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupRecyclerView() {
         fitnessCenters = listOf(
             FitnessCenter(1, "어나더짐", "부산진구", "051-111-2222", 10000, LocalTime.of(6, 0), LocalTime.of(23, 0), null),

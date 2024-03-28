@@ -27,6 +27,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/homePageTitle"
                     android:layout_width="373dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
@@ -82,6 +83,7 @@
 
 
                 <TextView
+                    android:id="@+id/homePageContent1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
@@ -270,6 +272,7 @@
                 </HorizontalScrollView>
 
                 <TextView
+                    android:id="@+id/homePageContent2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
@@ -290,6 +293,7 @@
                     android:paddingBottom="64dp">
 
                     <LinearLayout
+                        android:id="@+id/upCenterBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
@@ -308,6 +312,7 @@
                                 android:layout_height="wrap_content">
 
                                 <ImageView
+                                    android:id="@+id/homePageCenterImg1"
                                     android:layout_width="match_parent"
                                     android:layout_height="200dp"
                                     android:scaleType="centerCrop"
@@ -378,6 +383,7 @@
                                 android:layout_height="wrap_content">
 
                                 <ImageView
+                                    android:id="@+id/homePageCenterImg2"
                                     android:layout_width="match_parent"
                                     android:layout_height="200dp"
                                     android:scaleType="centerCrop"
@@ -436,6 +442,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/midCenterBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
@@ -453,6 +460,7 @@
                                 android:layout_height="wrap_content">
 
                                 <ImageView
+                                    android:id="@+id/homePageCenterImg3"
                                     android:layout_width="match_parent"
                                     android:layout_height="200dp"
                                     android:scaleType="centerCrop"
@@ -522,6 +530,7 @@
                                 android:layout_height="wrap_content">
 
                                 <ImageView
+                                    android:id="@+id/homePageCenterImg4"
                                     android:layout_width="match_parent"
                                     android:layout_height="200dp"
                                     android:scaleType="centerCrop"
@@ -580,6 +589,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/bottomCenterBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
@@ -597,6 +607,7 @@
                                 android:layout_height="wrap_content">
 
                                 <ImageView
+                                    android:id="@+id/homePageCenterImg5"
                                     android:layout_width="match_parent"
                                     android:layout_height="200dp"
                                     android:scaleType="centerCrop"
@@ -665,6 +676,7 @@
                                 android:layout_height="wrap_content">
 
                                 <ImageView
+                                    android:id="@+id/homePageCenterImg6"
                                     android:layout_width="match_parent"
                                     android:layout_height="200dp"
                                     android:scaleType="centerCrop"
@@ -731,7 +743,7 @@
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/favorite"
+            android:id="@+id/homeToMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -780,6 +792,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/HomeToMyPage"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_gravity="center"
