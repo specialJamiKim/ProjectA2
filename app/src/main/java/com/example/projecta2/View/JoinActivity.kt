@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 
 import android.content.Context
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -26,6 +27,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 class JoinActivity : AppCompatActivity() {
@@ -68,8 +71,13 @@ class JoinActivity : AppCompatActivity() {
         }
     }
 
-    // 사용자 입력에서 사용자 객체 생성
+
     private fun createUserFromInput(): User {
+/*        val dateString = etBirthDate.text.toString()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val birthDate: LocalDateDate = dateFormat.parse(dateString)*/
+
+        // 사용자 입력에서 사용자 객체 생성
         return User(
             id = 0,
             name = etName.text.toString(),
@@ -79,7 +87,7 @@ class JoinActivity : AppCompatActivity() {
             gender = selectedGender,
             address = "부산광역시",
             joinDate = joinDate,
-            birthDate = etBirthDate.text.toString(),
+            birthDate = "1995-04-28", // LocalDate 객체로 변경
             role = listOf("ROLE_USER")
         )
     }
