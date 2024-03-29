@@ -68,7 +68,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/calibri"
-                        android:text="Your Future"
+                        android:text="Fit-pass plater"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
                         android:textSize="22sp" />
@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/calibri"
-                        android:text="Furniture"
+                        android:text="로그인"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
                         android:textSize="36sp"
@@ -116,7 +116,7 @@
                             android:layout_marginTop="36dp"
                             android:layout_marginBottom="24dp"
                             android:fontFamily="@font/calibri"
-                            android:text="Login First"
+                            android:text="회원 로그인"
                             android:textAlignment="center"
                             android:textColor="#000000"
                             android:textSize="24sp" />
@@ -134,7 +134,7 @@
                                 android:drawableStart="@drawable/ic_person_gray_24dp"
                                 android:drawablePadding="16dp"
                                 android:fontFamily="@font/calibri"
-                                android:hint="Username"
+                                android:hint="ID"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:textColor="@android:color/black"
@@ -155,7 +155,7 @@
                                 android:drawableStart="@drawable/ic_lock_gray_24dp"
                                 android:drawablePadding="16dp"
                                 android:fontFamily="@font/calibri"
-                                android:hint="Password"
+                                android:hint="비밀번호"
                                 android:inputType="textPassword"
                                 android:maxLines="1"
                                 android:textColor="@android:color/black"
@@ -180,7 +180,7 @@
                         android:layout_margin="16dp"
                         android:background="@drawable/buttonshape"
                         android:fontFamily="@font/calibri"
-                        android:text="Login"
+                        android:text="로그인"
                         android:textAllCaps="false"
                         android:textColor="#ffffff"
                         android:textSize="24sp" />
@@ -195,7 +195,7 @@
                         android:layout_margin="16dp"
                         android:background="@drawable/buttonshape3"
                         android:fontFamily="@font/calibri"
-                        android:text="Join"
+                        android:text="회원가입"
                         android:textAllCaps="false"
                         android:textColor="#ffffff"/>
                 </LinearLayout>

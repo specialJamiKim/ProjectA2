@@ -1,11 +1,14 @@
 package com.example.projecta2.View
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
 import com.example.projecta2.api.SignIn
@@ -20,38 +23,35 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var login: Button
     private lateinit var btnJoinPage: Button
-    private lateinit var userEmailTextView : EditText
-    private lateinit var userPwTextView : EditText
-    private lateinit var btnTest: Button
-    private lateinit var email : String
-    private lateinit var password : String
-
+    private lateinit var userEmailTextView: EditText
+    private lateinit var userPwTextView: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        //회원가입페이지 버튼
-        btnJoinPage = findViewById(R.id.btnJoinPage)
+        // 타이틀바 숨기기
+        supportActionBar?.hide()
 
         userEmailTextView = findViewById(R.id.userEmailTextView)
         userPwTextView = findViewById(R.id.userPwTextView)
-
         login = findViewById(R.id.login)
         btnJoinPage = findViewById(R.id.btnJoinPage)
 
         login.setOnClickListener {
-            email = userEmailTextView.text.toString()
-            password = userPwTextView.text.toString()
-            signIn(email, password)
+            val email = userEmailTextView.text.toString().trim()
+            val password = userPwTextView.text.toString().trim()
+            if (email.isEmpty() || password.isEmpty()) {
+                showAlert("입력란에 공백이 있습니다.")
+            } else {
+                signIn(email, password)
+            }
         }
 
         btnJoinPage.setOnClickListener {
             val intent = Intent(applicationContext, JoinActivity::class.java)
             startActivity(intent)
-
         }
-
     }
 
     private fun signIn(email: String, password: String) {
@@ -63,35 +63,51 @@ class LoginActivity : AppCompatActivity() {
         val service = retrofit.create(SignIn::class.java)
 
         service.signIn(email, password).enqueue(object : Callback<User> {
-
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     val user = response.body()
 
                     if (user != null) {
-                        // 받은 User 객체의 이메일과 이름을 로그에 출력
-                        Log.d(">>>>", "Email : ${user.email}, name : ${user.name} ${user.phoneNumber}, ${user.address}, 생일 > ${user.birthDate}")
-
-                        // 로그인에 성공했으므로 HomeActivity로 이동
+                        Log.d("LoginActivity", "Email : ${user.email}, name : ${user.name}")
                         val intent = Intent(applicationContext, HomeActivity::class.java)
                         startActivity(intent)
-                        finish() // 현재 액티비티를 종료하여 뒤로가기 버튼을 눌렀을 때 다시 돌아오지 않도록 함
+                        finish()
                     } else {
-                        // 사용자 객체가 null인 경우 처리할 내용 추가
-                        Log.e("Response Error", "Received null user object")
+                        Log.e("LoginActivity", "Received null user object")
                     }
                 } else {
-                    // 응답이 실패한 경우 처리할 내용 추가
-                    Log.e("Response Error", "Code: ${response.code()}")
+                    Log.e("LoginActivity", "Response Error: Code: ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                // 요청이 실패한 경우 처리할 내용 추가
-                Log.e("Request Failed", "Error: ${t.message}", t)
+                Log.e("LoginActivity", "Request Failed: Error: ${t.message}", t)
             }
         })
-
-
     }
+
+    private fun showAlert(message: String) {
+        AlertDialog.Builder(this)
+            .setMessage(message)
+            .setPositiveButton("확인", null)
+            .show()
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val view = currentFocus
+            if (view is EditText) {
+                val outRect = android.graphics.Rect()
+                view.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    view.clearFocus()
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
+
 }
