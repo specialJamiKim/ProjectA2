@@ -7,9 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
-import com.example.projecta2.api.GymService
-import com.example.projecta2.api.SignIn
-import com.example.projecta2.model.FitnessCenter
 import com.example.projecta2.model.User
 import com.example.projecta2.util.RetrofitInstance
 import retrofit2.Call
@@ -47,9 +44,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signIn(email: String, password: String) {
-        val signService = RetrofitInstance.signService
+        val userService = RetrofitInstance.userService
 
-        signService.signIn(email, password).enqueue(object : Callback<User> {
+        userService.signIn(email, password).enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     val user = response.body()
