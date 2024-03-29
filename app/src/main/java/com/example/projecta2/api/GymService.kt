@@ -10,4 +10,6 @@ interface GymService {
     @FormUrlEncoded
     @POST("/m_centerManage/gymList")
     fun getGymList(@Field("id") id: Long): Call<FitnessCenter>
+
+
 }

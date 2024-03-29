@@ -14,7 +14,6 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
-import com.example.projecta2.api.Join
 import com.example.projecta2.model.User
 import com.example.projecta2.util.RetrofitInstance
 import okhttp3.ResponseBody
@@ -75,9 +74,9 @@ class JoinActivity : AppCompatActivity() {
     }
 
     private fun userJoin(user: User) {
-        val joinService = RetrofitInstance.joinService
+        val userService = RetrofitInstance.userService
 
-        joinService.join(user).enqueue(object : Callback<ResponseBody> {
+        userService.join(user).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
