@@ -22,5 +22,4 @@ interface UserService {
     @POST("/m_user/join")
     fun join(@Body user: User): Call<ResponseBody>
 
-
 }
