@@ -62,11 +62,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupRecyclerView() {
-        fitnessCenters = listOf(
+/*        fitnessCenters = listOf(
             FitnessCenter(1, "어나더짐", "부산진구", "051-111-2222", 10000, LocalTime.of(6, 0), LocalTime.of(23, 0), null),
             FitnessCenter(2, "워너짐", "부산 수영구", "051-765-4321", 20000, LocalTime.of(6, 30), LocalTime.of(22, 0), null)
             // 추가 임시 데이터
-        )
+        )*/
 
         recyclerView = findViewById<RecyclerView>(R.id.recycler).apply {
             layoutManager = LinearLayoutManager(this@MapActivity, LinearLayoutManager.VERTICAL, false)

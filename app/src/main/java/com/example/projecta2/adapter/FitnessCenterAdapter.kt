@@ -18,9 +18,9 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
         with(holder) {
             val fitnessCenter = fitnessCenterList[position]
             binding.tvFitnessCenterName.text = fitnessCenter.name
-            binding.tvFitnessCenterPrice.text = "${fitnessCenter.dailyPassPrice}원"
+    /*        binding.tvFitnessCenterPrice.text = "${fitnessCenter.dailyPassPrice}원"
             binding.tvFitnessCenterPhoneNumber.text = fitnessCenter.phoneNumber
-            binding.tvFitnessCenterAddress.text = fitnessCenter.address
+            binding.tvFitnessCenterAddress.text = fitnessCenter.address*/
         }
     }
 

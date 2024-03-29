@@ -5,40 +5,34 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
+import com.example.projecta2.api.GymService
 import com.example.projecta2.api.SignIn
+import com.example.projecta2.model.FitnessCenter
 import com.example.projecta2.model.User
+import com.example.projecta2.util.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var login: Button
     private lateinit var btnJoinPage: Button
-    private lateinit var userEmailTextView : EditText
-    private lateinit var userPwTextView : EditText
-    private lateinit var btnTest: Button
-    private lateinit var email : String
-    private lateinit var password : String
-
+    private lateinit var userEmailTextView: EditText
+    private lateinit var userPwTextView: EditText
+    private lateinit var email: String
+    private lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        //회원가입페이지 버튼
         btnJoinPage = findViewById(R.id.btnJoinPage)
-
         userEmailTextView = findViewById(R.id.userEmailTextView)
         userPwTextView = findViewById(R.id.userPwTextView)
-
         login = findViewById(R.id.login)
-        btnJoinPage = findViewById(R.id.btnJoinPage)
 
         login.setOnClickListener {
             email = userEmailTextView.text.toString()
@@ -49,25 +43,16 @@ class LoginActivity : AppCompatActivity() {
         btnJoinPage.setOnClickListener {
             val intent = Intent(applicationContext, JoinActivity::class.java)
             startActivity(intent)
-
         }
-
     }
 
     private fun signIn(email: String, password: String) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8111/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(SignIn::class.java)
+        val service = RetrofitInstance.signService
 
         service.signIn(email, password).enqueue(object : Callback<User> {
-
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     val user = response.body()
-
                     if (user != null) {
                         // 받은 User 객체의 이메일과 이름을 로그에 출력
                         Log.d(">>>>", "Email : ${user.email}, name : ${user.name} ${user.phoneNumber}, ${user.address}, 생일 > ${user.birthDate}")
@@ -91,7 +76,5 @@ class LoginActivity : AppCompatActivity() {
                 Log.e("Request Failed", "Error: ${t.message}", t)
             }
         })
-
-
     }
 }

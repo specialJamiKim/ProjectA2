@@ -90,6 +90,12 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         android:background="#ffc6c6" />
+
+                    <Button
+                        android:id="@+id/btnCenterChk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Button" />
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView

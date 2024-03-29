@@ -1,14 +1,11 @@
 package com.example.projecta2.model
 
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 import java.time.LocalTime
 
+@Serializable
 data class FitnessCenter(
-    val id: Long = 0 ,
-    var name: String,
-    var address: String,
-    var phoneNumber: String,
-    var dailyPassPrice: Long,
-    var openTime: LocalTime,
-    var closingTime: LocalTime,
-    var imagePath: String?=null,
+    val id: Long = 0,
+    val name : String
 )
