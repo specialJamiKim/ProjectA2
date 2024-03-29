@@ -39,12 +39,10 @@ class LoginActivity : AppCompatActivity() {
 
         login = findViewById(R.id.login)
         btnJoinPage = findViewById(R.id.btnJoinPage)
-        btnTest = findViewById(R.id.btnTest)
 
         login.setOnClickListener {
             email = userEmailTextView.text.toString()
             password = userPwTextView.text.toString()
-            Log.d(">", "$email , $password")
             signIn(email, password)
         }
 
@@ -72,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
 
                     if (user != null) {
                         // 받은 User 객체의 이메일과 이름을 로그에 출력
-                        Log.d(">>>>", "Email : ${user.email}, name : ${user.name} ${user.address}")
+                        Log.d(">>>>", "Email : ${user.email}, name : ${user.name} ${user.phoneNumber}, ${user.address}, ${user.birthDate}")
 
                         // 로그인에 성공했으므로 HomeActivity로 이동
                         val intent = Intent(applicationContext, HomeActivity::class.java)
