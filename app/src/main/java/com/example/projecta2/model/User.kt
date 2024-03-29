@@ -28,7 +28,7 @@ data class User(
         password = password,
         phoneNumber = "",
         gender = "",
-        address = "",
+        address = "부산광역시 부산진구 부전동",
         birthDate = "",
         joinDate = "",
         role = emptyList()

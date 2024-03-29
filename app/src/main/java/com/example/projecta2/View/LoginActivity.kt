@@ -54,10 +54,6 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
-        btnTest.setOnClickListener {
-            signIn(email, password)
-
-        }
     }
 
     private fun signIn(email: String, password: String) {
