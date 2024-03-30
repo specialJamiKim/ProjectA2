@@ -11,10 +11,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
 import com.example.projecta2.model.User
+import com.example.projecta2.util.DialogHelper
 import com.example.projecta2.util.RetrofitInstance
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -23,7 +23,6 @@ import retrofit2.Response
 
 class JoinActivity : AppCompatActivity() {
 
-    private lateinit var btnJoinPro: Button
     private lateinit var etName: EditText
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
@@ -31,13 +30,13 @@ class JoinActivity : AppCompatActivity() {
     private lateinit var etBirthDate: EditText
     private lateinit var joinDate: String
     private lateinit var selectedGender: String
+    private lateinit var selectedGenderEng: String
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join)
 
-        btnJoinPro = findViewById(R.id.btnJoinPro)
         etName = findViewById(R.id.etName)
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
@@ -49,12 +48,12 @@ class JoinActivity : AppCompatActivity() {
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             val radioButton = findViewById<RadioButton>(checkedId)
             selectedGender = radioButton.text.toString()
-            Log.d("SelectedGender", "Selected gender: $selectedGender")
+            selectedGenderEng = if (selectedGender.equals("남자")) "mail" else "female"
         }
 
-        btnJoinPro.setOnClickListener {
+        findViewById<Button>(R.id.btnJoinPro).setOnClickListener {
             val user = createUserFromInput()
-            userJoin(user)
+            checkEmailAndSignUp(user)
         }
     }
 
@@ -65,12 +64,48 @@ class JoinActivity : AppCompatActivity() {
             email = etEmail.text.toString(),
             password = etPassword.text.toString(),
             phoneNumber = etPhoneNumber.text.toString(),
-            gender = selectedGender,
+            gender = selectedGenderEng,
             address = "부산광역시",
             joinDate = joinDate,
             birthDate = "1995-04-28",
             role = listOf("ROLE_USER")
         )
+    }
+
+    private fun checkEmailAndSignUp(user: User) {
+        val userService = RetrofitInstance.userService
+        userService.inquiryEmail(user.email).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    userJoin(user)
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    if (response.code() == 409) {
+                        DialogHelper.showMessageDialog(
+                            this@JoinActivity,
+                            "사용중인 email",
+                            "사용중인 이메일입니다.\n변경 후, 다시 시도해 주세요."
+                        )
+                        etEmail.requestFocus()
+                    } else {
+                        DialogHelper.showMessageDialog(
+                            this@JoinActivity,
+                            "중복 확인 실패",
+                            "이메일 중복 확인 실패: $errorBody"
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("Check Email", "Error: ${t.message}", t)
+                DialogHelper.showMessageDialog(
+                    this@JoinActivity,
+                    "통신 실패",
+                    "서버와 통신이 실패했습니다.\n연결을 확인해주세요."
+                )
+            }
+        })
     }
 
     private fun userJoin(user: User) {
@@ -79,11 +114,11 @@ class JoinActivity : AppCompatActivity() {
         userService.join(user).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    responseBody?.let {
-                        val message = it.string()
-                        Log.d(">>>>", "Response message: $message")
-                        showToast("회원가입 성공했습니다")
+                    DialogHelper.showMessageDialog(
+                        this@JoinActivity,
+                        "회원가입 성공",
+                        "${etName.text.toString()}님\n회원가입에 성공했습니다."
+                    ) {
                         val intent = Intent(applicationContext, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -93,12 +128,13 @@ class JoinActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("Request Failed", "Error: ${t.message}", t)
+                DialogHelper.showMessageDialog(
+                    this@JoinActivity,
+                    "통신 실패",
+                    "서버와 통신이 실패했습니다.\n연결을 확인해주세요."
+                )
             }
         })
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

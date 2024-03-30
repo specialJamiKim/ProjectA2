@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
 import com.example.projecta2.model.User
+import com.example.projecta2.util.DialogHelper
 import com.example.projecta2.util.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,7 +54,6 @@ class LoginActivity : AppCompatActivity() {
                     if (user != null) {
                         // 받은 User 객체의 이메일과 이름을 로그에 출력
                         Log.d(">>>>", "Email : ${user.email}, name : ${user.name} ${user.phoneNumber}, ${user.address}, 생일 > ${user.birthDate}")
-
                         // 로그인에 성공했으므로 HomeActivity로 이동
                         val intent = Intent(applicationContext, HomeActivity::class.java)
                         startActivity(intent)
@@ -63,14 +63,18 @@ class LoginActivity : AppCompatActivity() {
                         Log.e("Response Error", "Received null user object")
                     }
                 } else {
-                    // 응답이 실패한 경우 처리할 내용 추가
-                    Log.e("Response Error", "Code: ${response.code()}")
+                    // 응답이 실패한 경우 처리할 내용 추가 => 로그인 실패
+                    Log.e("Response Error", "Code: ${response.code()} , 서버 연결 실패")
+                    // 여기에 notification을 통한 메시지 표시
+                    DialogHelper.showMessageDialog(this@LoginActivity, "Login Fail", "없는 회원입니다.\n아이디와 비밀번호를 확인해주세요.")
+
                 }
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
                 // 요청이 실패한 경우 처리할 내용 추가
                 Log.e("Request Failed", "Error: ${t.message}", t)
+
             }
         })
     }
