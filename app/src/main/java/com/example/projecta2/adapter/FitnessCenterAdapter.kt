@@ -1,5 +1,6 @@
 package com.example.projecta2.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val fitnessCenter = fitnessCenterList[position]
         with(holder) {
             val fitnessCenter = fitnessCenterList[position]
 
@@ -31,6 +33,7 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
             } else {
                 // 이미지가 없을 경우에 대한 처리
                 binding.ivFitnessCenterImage.setImageResource(R.drawable.favorite_img_7)
+
             }
 
             // 나머지 데이터 표시
@@ -38,6 +41,17 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
             binding.tvFitnessCenterDailyPassPrice.text = "${fitnessCenter.dailyPassPrice}원"
             binding.tvFitnessCenterdistance.text = "${fitnessCenter.distance} m"
             binding.tvFitnessCenterAddress.text = fitnessCenter.address
+
+            // 클릭 리스너 설정
+            itemView.setOnClickListener {
+                val intent = Intent(it.context, CenterDetailActivity::class.java).apply {
+                    putExtra("itemName1", fitnessCenter.name)
+                    putExtra("itemPrice1", fitnessCenter.dailyPassPrice.toString())
+                    putExtra("itemAddress1", fitnessCenter.address)
+                    putExtra("itemImageUrl", "http://10.0.2.2:8111/img/${fitnessCenter.imagePath}") // 이미지 URL 추가
+                }
+                it.context.startActivity(intent)
+            }
         }
     }
 
