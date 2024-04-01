@@ -109,7 +109,7 @@
               android:textStyle="bold" />
 
           <TextView
-              android:id="@+id/mapName"
+              android:id="@+id/mapDistance"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_weight="0.5"
@@ -128,6 +128,7 @@
 
               android:textSize="20dp"
               android:textStyle="bold" />
+
 
 
           <TextView
