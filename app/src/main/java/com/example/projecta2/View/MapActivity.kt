@@ -2,42 +2,30 @@ package com.example.projecta2.View
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projecta2.R
 import com.example.projecta2.adapter.FitnessCenterAdapter
-
 import com.example.projecta2.model.FitnessCenter
-import com.example.projecta2.model.User
 import com.example.projecta2.util.RetrofitInstance
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import java.time.LocalTime
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import kotlinx.coroutines.*
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -45,7 +33,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var recyclerView: RecyclerView
     private lateinit var fitnessCenterAdapter: FitnessCenterAdapter
-    private lateinit var fitnessCenters: List<FitnessCenter>
 
     private lateinit var zoomInButton: ImageButton
     private lateinit var zoomOutButton: ImageButton
@@ -61,18 +48,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // UI 컴포넌트 초기화
         zoomInButton = findViewById(R.id.zoomInButton)
         zoomOutButton = findViewById(R.id.zoomOutButton)
         homeButton = findViewById(R.id.mapToHome)
         myPageButton = findViewById(R.id.mapToMyPage)
 
-
-        // Zoom 버튼 클릭 리스너
         zoomInButton.setOnClickListener { zoomIn() }
         zoomOutButton.setOnClickListener { zoomOut() }
 
-        // 홈 및 마이페이지 버튼 클릭 리스너
         homeButton.setOnClickListener {
             startActivity(
                 Intent(
@@ -90,11 +73,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
 
-        // 지도 및 리사이클러뷰 설정
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.mapView) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
-
     }
 
     private fun zoomIn() {
@@ -105,77 +86,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         map.animateCamera(CameraUpdateFactory.zoomOut())
     }
 
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    private fun setupRecyclerView() {
-//        // 임시 데이터 및 RecyclerView 설정
-//        fitnessCenters = listOf(
-//            FitnessCenter(
-//                1,
-//                "어나더짐",
-//                "부산진구",
-//                "051-111-2222",
-//                10000,
-//                LocalTime.of(6, 0),
-//                LocalTime.of(23, 0),
-//                null
-//            ),
-//            FitnessCenter(
-//                2,
-//                "워너짐",
-//                "부산 수영구",
-//                "051-765-4321",
-//                20000,
-//                LocalTime.of(6, 30),
-//                LocalTime.of(22, 0),
-//                null
-//            )
-//        )
-//
-//        recyclerView = findViewById(R.id.recycler)
-//        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        recyclerView.adapter = FitnessCenterAdapter(fitnessCenters)
-//    }
-
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         getUserLocation()
-        checkCenter()
-    }
-
-    private fun checkCenter() {
-        val gymService = RetrofitInstance.gymService
-
-        gymService.getGymList().enqueue(object : Callback<List<FitnessCenter>> {
-
-            override fun onResponse(call: Call<List<FitnessCenter>>, response: Response<List<FitnessCenter>>) {
-                if (response.isSuccessful) {
-                    val centerList = response.body()
-
-                    if (centerList != null) {
-                        // Fitness Center 목록을 받은 후에 리사이클러뷰에 표시하기 위해 어댑터에 설정
-                        fitnessCenters = centerList
-                        setupRecyclerView()
-                    } else {
-                        Log.e("Response Error", "Received null center list")
-                    }
-                } else {
-                    Log.e("Response Error", "Code: ${response.code()}")
-                }
-            }
-
-            override fun onFailure(call: Call<List<FitnessCenter>>, t: Throwable) {
-                Log.e("Request Failed", "Error: ${t.message}", t)
-            }
-        })
-    }
-
-    private fun setupRecyclerView() {
-        recyclerView = findViewById(R.id.recycler)
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        // Fitness Center 목록을 표시하기 위해 어댑터 설정
-        fitnessCenterAdapter = FitnessCenterAdapter(fitnessCenters)
-        recyclerView.adapter = fitnessCenterAdapter
     }
 
     @SuppressLint("MissingPermission")
@@ -200,22 +113,96 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
 
-        // 사용자의 마지막 위치를 가져오고, 위치가 존재하는 경우 Google Map에 표시
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             location?.let {
                 val userLocation = LatLng(it.latitude, it.longitude)
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14f))
-                map.addMarker(MarkerOptions().position(userLocation).title("Your Location"))
+                val userMarkerOptions = MarkerOptions()
+                    .position(userLocation)
+                    .title("Your Location")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    .alpha(0.7f)
+                map.addMarker(userMarkerOptions)
 
-                // 사용자 위치 주변에 원을 그립니다. (옵션)
-                map.addCircle(
-                    CircleOptions()
-                        .center(userLocation)
-                        .radius(1000.0) // 1km
-                        .strokeWidth(0f)
-                        .fillColor(0x5500ff00.toInt())
-                )
+                CoroutineScope(Dispatchers.Main).launch {
+                    fetchFitnessCenters(userLocation)
+                }
             }
         }
+    }
+
+    private suspend fun fetchFitnessCenters(userLocation: LatLng) {
+        val gymService = RetrofitInstance.gymService
+        try {
+            val response = withContext(Dispatchers.IO) {
+                gymService.getGymList().execute()
+            }
+            if (response.isSuccessful) {
+                response.body()?.let { list ->
+                    val geocoder = Geocoder(applicationContext)
+                    val fitnessCentersWithLatLng = convertAddressToLatLng(list, geocoder)
+                    val fitnessCentersNearby = getFitnessCentersNearby(userLocation, fitnessCentersWithLatLng)
+                    showFitnessCentersOnMapAndList(userLocation, fitnessCentersNearby)
+                } ?: run {
+                    Log.e("Response Error", "Received null center list")
+                }
+            } else {
+                Log.e("Response Error", "Code: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            Log.e("Request Failed", "Error: ${e.message}", e)
+        }
+    }
+
+    private fun showFitnessCentersOnMapAndList(userLocation: LatLng, fitnessCentersNearby: List<FitnessCenter>) {
+        for (center in fitnessCentersNearby) {
+            val location = LatLng(center.latitude, center.longitude)
+            map.addMarker(MarkerOptions().position(location).title(center.name))
+        }
+        setupRecyclerView(fitnessCentersNearby)
+    }
+
+    private fun setupRecyclerView(fitnessCentersNearby: List<FitnessCenter>) {
+        recyclerView = findViewById(R.id.recycler)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby)
+        recyclerView.adapter = fitnessCenterAdapter
+    }
+
+    private fun convertAddressToLatLng(
+        centerList: List<FitnessCenter>,
+        geocoder: Geocoder
+    ): List<FitnessCenter> {
+        val fitnessCentersWithLatLng = mutableListOf<FitnessCenter>()
+        for (center in centerList) {
+            val addresses = geocoder.getFromLocationName(center.address, 1)
+            if (addresses != null) {
+                if (addresses.isNotEmpty()) {
+                    val lat = addresses[0].latitude
+                    val lng = addresses[0].longitude
+                    val centerWithLatLng = center.copy(latitude = lat, longitude = lng)
+                    fitnessCentersWithLatLng.add(centerWithLatLng)
+                }
+            }
+        }
+        return fitnessCentersWithLatLng
+    }
+
+    private fun getFitnessCentersNearby(userLocation: LatLng, fitnessCenters: List<FitnessCenter>): List<FitnessCenter> {
+        val fitnessCentersNearby = mutableListOf<FitnessCenter>()
+        for (center in fitnessCenters) {
+            val location = LatLng(center.latitude, center.longitude)
+            val distance = distanceBetween(userLocation.latitude, userLocation.longitude, location.latitude, location.longitude)
+            if (distance <= 1000) {
+                fitnessCentersNearby.add(center)
+            }
+        }
+        return fitnessCentersNearby
+    }
+
+    private fun distanceBetween(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
+        val result = FloatArray(1)
+        Location.distanceBetween(lat1, lon1, lat2, lon2, result)
+        return result[0]
     }
 }
