@@ -10,5 +10,6 @@ data class FitnessCenter(
     val name : String,
     val dailyPassPrice : Long,
     val distance : Long?,
-    val address : String
+    val address : String,
+    val imagePath: String? // 이미지 경로 변수 추가
 )

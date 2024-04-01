@@ -102,5 +102,8 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.10.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.10.0")
 
 }
