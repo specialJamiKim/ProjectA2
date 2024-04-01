@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -6,8 +8,15 @@ plugins {
 }
 
 android {
+
+    buildFeatures {
+        dataBinding = true
+    }
+
     namespace = "com.example.projecta2"
     compileSdk = 34
+
+
 
     defaultConfig {
         applicationId = "com.example.projecta2"
@@ -104,5 +113,9 @@ dependencies {
     // Add the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth-ktx")
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.10.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.10.0")
 
 }
