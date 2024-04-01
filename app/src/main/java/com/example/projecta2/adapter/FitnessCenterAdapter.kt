@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.projecta2.R
+import com.example.projecta2.View.CenterDetailActivity
 import com.example.projecta2.databinding.FitnessCenterItemBinding
 import com.example.projecta2.model.FitnessCenter
 

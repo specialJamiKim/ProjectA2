@@ -113,9 +113,4 @@ dependencies {
     // Add the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth-ktx")
-
-    // glide
-    implementation("com.github.bumptech.glide:glide:4.10.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.10.0")
-
 }
