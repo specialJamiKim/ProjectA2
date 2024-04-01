@@ -7,11 +7,15 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
+import com.example.projecta2.model.User
+import com.example.projecta2.util.RetrofitInstance
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class UserEditActivity : AppCompatActivity() {
 

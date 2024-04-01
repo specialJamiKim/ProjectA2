@@ -27,4 +27,10 @@ interface UserService {
     @FormUrlEncoded
     @POST("/m_user/inquiryEmail")
     fun inquiryEmail(@Field("email")email : String) : Call<Void>
+
+    //회원정보 수정
+    @POST("/m_user/update")
+    fun userUpdate(@Body updatedUser: User): Call<User>
+
+
 }
