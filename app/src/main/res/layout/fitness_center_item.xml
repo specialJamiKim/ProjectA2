@@ -5,33 +5,48 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/tvFitnessCenterName"
-        android:layout_width="74dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="textStart"
-        android:textSize="12sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tvFitnessCenterDailyPassPrice"
+    <!-- ImageView for displaying image -->
+    <ImageView
+        android:id="@+id/ivFitnessCenterImage"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="textStart"
-        android:textSize="12sp" />
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/chair_white_bg" />
 
-    <TextView
-        android:id="@+id/tvFitnessCenterdistance"
-        android:layout_width="130dp"
+    <!-- TextViews for other data -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="textStart"
-        android:textSize="12sp" />
+        android:orientation="vertical"
+        android:layout_marginStart="16dp">
 
-    <TextView
-        android:id="@+id/tvFitnessCenterAddress"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="textStart"
-        android:textSize="12sp"/>
+        <TextView
+            android:id="@+id/tvFitnessCenterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/tvFitnessCenterDailyPassPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvFitnessCenterdistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvFitnessCenterAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textSize="12sp"/>
+    </LinearLayout>
 </LinearLayout>

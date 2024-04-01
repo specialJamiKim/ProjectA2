@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -6,8 +8,15 @@ plugins {
 }
 
 android {
+
+    buildFeatures {
+        dataBinding = true
+    }
+
     namespace = "com.example.projecta2"
     compileSdk = 34
+
+
 
     defaultConfig {
         applicationId = "com.example.projecta2"
@@ -102,5 +111,9 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.10.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.10.0")
 
 }
