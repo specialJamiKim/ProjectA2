@@ -7,5 +7,8 @@ import java.time.LocalTime
 @Serializable
 data class FitnessCenter(
     val id: Long = 0,
-    val name : String
+    val name : String,
+    val dailyPassPrice : Long,
+    val distance : Long?,
+    val address : String
 )

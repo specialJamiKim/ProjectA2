@@ -64,8 +64,29 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent" />
 
+          <ImageButton
+              android:id="@+id/zoomInButton"
+              android:layout_width="30dp"
+              android:layout_height="30dp"
+              android:layout_marginLeft="16dp"
+              android:layout_alignParentEnd="true"
+              android:layout_gravity="bottom|start"
+              android:layout_marginBottom="25dp"
+              android:background="@drawable/plus_pic" />
+
+          <ImageButton
+              android:id="@+id/zoomOutButton"
+              android:layout_width="30dp"
+              android:layout_height="30dp"
+              android:layout_above="@id/zoomInButton"
+              android:layout_alignEnd="@id/zoomInButton"
+              android:layout_gravity="bottom|end"
+              android:layout_marginBottom="25dp"
+              android:layout_marginEnd="20dp"
+              android:background="@drawable/minus_pic" />
+
         </FrameLayout>
-        <!-- 간격 추가 -->
+
         <View
             android:layout_width="match_parent"
             android:layout_height="8dp"/>
@@ -101,7 +122,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_weight="1"
-              android:text="전화번호"
+              android:text="거리"
               android:textAlignment="center"
               android:textSize="20dp"
               android:textStyle="bold" />
@@ -110,7 +131,7 @@
               android:id="@+id/mapAddress"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_weight="3"
+              android:layout_weight="5"
               android:text="주소"
               android:textAlignment="center"
               android:textSize="20dp"
