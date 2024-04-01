@@ -49,6 +49,11 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
                     putExtra("itemPrice1", fitnessCenter.dailyPassPrice.toString())
                     putExtra("itemAddress1", fitnessCenter.address)
                     putExtra("itemImageUrl", "http://10.0.2.2:8111/img/${fitnessCenter.imagePath}") // 이미지 URL 추가
+                    putExtra("centerName", fitnessCenter.name)
+                    putExtra("centerPrice", fitnessCenter.dailyPassPrice)
+                    putExtra("centerLocation", fitnessCenter.address)
+                    // 'centerImageUrl'에 해당하는 정확한 키를 사용하여 이미지 URL을 넘겨줍니다.
+                    putExtra("centerImageUrl", fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" })
                 }
                 it.context.startActivity(intent)
             }

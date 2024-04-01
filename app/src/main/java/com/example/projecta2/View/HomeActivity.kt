@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -16,19 +16,25 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projecta2.R
 import com.example.projecta2.adapter.BannerAdapter
+import com.example.projecta2.adapter.HomeAdapter
+import com.example.projecta2.model.FitnessCenter
+import com.example.projecta2.util.RetrofitInstance
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var personLinearLayout: LinearLayout
     private lateinit var homeToMap: FloatingActionButton
-    private lateinit var cactusCardView: CardView
     private lateinit var myTicketCardView: CardView
-    private lateinit var wannaGymCardView: CardView
     private lateinit var imgBannerRecyclerView: RecyclerView
     private lateinit var autoScrollHandler: Handler
     private lateinit var autoScrollRunnable: Runnable
     private var autoScrollDelay: Long = 2000 // 2초
+    private lateinit var HomeRecycler: RecyclerView
+    private lateinit var fitnessCenters: List<FitnessCenter>
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,15 +42,14 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         initView()
-        setupListeners()
         setupBannerRecyclerView()
+        checkCenter()
+        setupListeners()
     }
 
     private fun initView() {
         personLinearLayout = findViewById(R.id.person_linear_layout)
         homeToMap = findViewById(R.id.homeToMap)
-        cactusCardView = findViewById(R.id.cactus_card_view)
-        wannaGymCardView = findViewById(R.id.wannaGym_card_view)
         myTicketCardView = findViewById(R.id.myTicketCardView)
         imgBannerRecyclerView = findViewById(R.id.imgBannerRecyclerView)
     }
@@ -58,23 +63,44 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MapActivity::class.java))
         }
 
-        cactusCardView.setOnClickListener {
-            startActivity(Intent(this, CenterDetailActivity::class.java).apply {
-                putExtra("itemName1", "비나이더짐")
-                putExtra("itemPrice1", "15,000원")
-            })
-        }
-
-        wannaGymCardView.setOnClickListener {
-            startActivity(Intent(this, CenterDetailActivity::class.java).apply {
-                putExtra("itemName2", "워너짐 수영구점")
-                putExtra("itemPrice2", "10,000원")
-            })
-        }
-
         myTicketCardView.setOnClickListener {
             startActivity(Intent(this, MyTicketActivity::class.java))
         }
+    }
+
+    private fun checkCenter() {
+        val gymService = RetrofitInstance.gymService
+
+        gymService.getGymList().enqueue(object : Callback<List<FitnessCenter>> {
+            override fun onResponse(call: Call<List<FitnessCenter>>, response: Response<List<FitnessCenter>>) {
+                if (response.isSuccessful) {
+                    fitnessCenters = response.body() ?: emptyList()
+                    setupRecyclerView()
+                } else {
+                    Log.e("Response Error", "Code: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<FitnessCenter>>, t: Throwable) {
+                Log.e("Request Failed", "Error: ${t.message}", t)
+            }
+        })
+    }
+
+    private fun setupRecyclerView() {
+        HomeRecycler = findViewById(R.id.HomeRecycler)
+        HomeRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        val adapter = HomeAdapter(fitnessCenters) { fitnessCenter ->
+            val intent = Intent(this@HomeActivity, CenterDetailActivity::class.java).apply {
+                putExtra("centerName", fitnessCenter.name)
+                putExtra("centerPrice", fitnessCenter.dailyPassPrice) // Long 타입으로 전달
+                putExtra("centerLocation", fitnessCenter.address)
+                putExtra("centerImageUrl", fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" })
+            }
+            startActivity(intent)
+        }
+        HomeRecycler.adapter = adapter
     }
 
     private fun setupBannerRecyclerView() {

@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -23,7 +23,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="281dp">
-
 
                     <ImageView
                         android:id="@+id/centerImg"
@@ -44,7 +43,6 @@
                         android:padding="8dp"
                         android:textColor="#000000"
                         android:textSize="16sp" />
-
 
                     <ImageView
                         android:layout_width="32dp"
@@ -165,11 +163,43 @@
                     android:textColor="#ffffff"
                     android:textSize="24sp" />
 
+                <!-- 리뷰 적는 란 추가 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
+                    <!-- 리뷰 텍스트 입력란 -->
+                    <EditText
+                        android:id="@+id/reviewEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="리뷰를 작성해주세요"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:gravity="start|top" />
+
+                    <!-- 리뷰 전송 버튼 -->
+                    <Button
+                        android:id="@+id/submitReviewBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="리뷰 작성" />
+
+                    <!-- 작성된 리뷰 보기 -->
+                    <TextView
+                        android:id="@+id/reviewTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="작성된 리뷰"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:layout_marginTop="16dp"/>
+
+                </LinearLayout>
             </LinearLayout>
-
-
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/centerToMap"
@@ -234,6 +264,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

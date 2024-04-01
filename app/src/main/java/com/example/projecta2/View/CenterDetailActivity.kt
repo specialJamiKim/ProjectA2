@@ -20,7 +20,7 @@ class CenterDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_center_detail)
 
-        //액션바 숨기기
+        // 액션바 숨기기
         supportActionBar?.hide()
 
         // UI 컴포넌트 초기화
@@ -36,37 +36,41 @@ class CenterDetailActivity : AppCompatActivity() {
         val reserveButton = findViewById<Button>(R.id.centerReservBtn)
 
         // Intent에서 데이터 추출
-        val itemName = intent.getStringExtra("itemName1")
-        val itemPrice = intent.getStringExtra("itemPrice1")
-        val itemAddress = intent.getStringExtra("itemAddress1")
-        val imageUrl = intent.getStringExtra("itemImageUrl")
+        val centerName = intent.getStringExtra("centerName")
+        val centerPrice = intent.getLongExtra("centerPrice", 0L) // Long 타입으로 받음
+        val centerLocation = intent.getStringExtra("centerLocation")
+        val centerImageUrl = intent.getStringExtra("centerImageUrl")
 
         // 데이터 설정
-        textViewItemName.text = itemName
-        textViewItemPrice.text = itemPrice
-        textViewItemAddress.text = itemAddress
-        textViewCenterText.text = "$itemAddress 에 자리잡은 저희 헬스장은 최상의 시설과 탁월한 관리로 여러분의 만족을 최우선으로 합니다.\n일일권 $itemPrice 원의 가격으로 친절한 직원들과, 깨끗하고 넓은 시설을 체험해 보세요.\n다양한 최신 운동 기구와 넓은 공간에서 여러분만의 운동 루틴도 만들어 보세요."
+        textViewItemName.text = centerName
+        textViewItemPrice.text = "${centerPrice}원"
+        textViewItemAddress.text = centerLocation
+        textViewCenterText.text = """
+            $centerLocation 에 자리잡은 저희 헬스장은 최상의 시설과 탁월한 관리로 여러분의 만족을 최우선으로 합니다.
+            일일권 ${centerPrice}원의 가격으로 친절한 직원들과, 깨끗하고 넓은 시설을 체험해 보세요.
+            다양한 최신 운동 기구와 넓은 공간에서 여러분만의 운동 루틴도 만들어 보세요.
+        """.trimIndent()
+
+        // 이미지 로딩
+        Glide.with(this)
+            .load(centerImageUrl)
+            .apply(RequestOptions()
+                .placeholder(R.drawable.bannerimg)
+                .error(R.drawable.bannerimg2)
+                .diskCacheStrategy(DiskCacheStrategy.ALL))
+            .into(imageView)
 
         // 클릭 리스너 설정
         homeImageView.setOnClickListener { startActivity(Intent(this, HomeActivity::class.java)) }
         mapFloatingActionButton.setOnClickListener { startActivity(Intent(this, MapActivity::class.java)) }
         myPageImageView.setOnClickListener { startActivity(Intent(this, MyPageActivity::class.java)) }
         backButton.setOnClickListener { finish() }
-        reserveButton.setOnClickListener { startActivity(Intent(this, ReservationActivity::class.java)) }
-
-        // 이미지 로딩
-        imageUrl?.let {
-            if (it.isNotEmpty()) {
-                Glide.with(this)
-                    .load(it)
-                    .apply(RequestOptions()
-                        .placeholder(R.drawable.bannerimg)
-                        .error(R.drawable.bannerimg2)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .into(imageView)
-            } else {
-                imageView.setImageResource(R.drawable.favorite_img_7) // 기본 이미지 설정
+        reserveButton.setOnClickListener {
+            val intent = Intent(this, ReservationActivity::class.java).apply {
+                putExtra("centerName", centerName)
+                // 추가 데이터 전달이 필요한 경우 여기에 추가
             }
+            startActivity(intent)
         }
     }
 }
