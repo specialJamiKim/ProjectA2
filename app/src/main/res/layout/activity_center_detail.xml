@@ -125,7 +125,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/calibri"
-                                android:text="부산 부산진구 전포동"
+                                android:text="centeraddress1"
                                 android:textSize="16sp" />
 
                         </LinearLayout>
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/calibri"
                     android:padding="16dp"
-                    android:text="부산 진구에 위치한 체육관, 여러분을 환영합니다. 우리의 모던하고 친근한 환경에서 건강한 삶을 위한 다양한 프로그램을 경험해보세요."
+                    android:text="introText"
                     android:textColor="#444444"
                     android:textSize="16sp" />
 
