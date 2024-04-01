@@ -4,9 +4,11 @@ import com.example.projecta2.model.User
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface UserService {
@@ -29,8 +31,17 @@ interface UserService {
     fun inquiryEmail(@Field("email")email : String) : Call<Void>
 
     //회원정보 수정
-    @POST("/m_user/update")
+    @PUT("/m_user/update")
     fun userUpdate(@Body updatedUser: User): Call<User>
 
+
+    // 회원 정보 조회
+    @POST("/m_user/user-info")
+    @FormUrlEncoded
+    fun getUserInfo(@Field("email") email: String): Call<User>
+
+    // 회원 삭제
+    @DELETE("/m_user/deleteUser")
+    fun deleteUser(@Query("email") email: String): Call<ResponseBody>
 
 }

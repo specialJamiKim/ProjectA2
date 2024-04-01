@@ -141,7 +141,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 response.body()?.let { list ->
                     val geocoder = Geocoder(applicationContext)
                     val fitnessCentersWithLatLng = convertAddressToLatLng(list, geocoder)
-                    val fitnessCentersNearby = getFitnessCentersNearby(userLocation, fitnessCentersWithLatLng)
+                    val fitnessCentersNearby =
+                        getFitnessCentersNearby(userLocation, fitnessCentersWithLatLng)
                     showFitnessCentersOnMapAndList(userLocation, fitnessCentersNearby)
                 } ?: run {
                     Log.e("Response Error", "Received null center list")
@@ -154,7 +155,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun showFitnessCentersOnMapAndList(userLocation: LatLng, fitnessCentersNearby: List<FitnessCenter>) {
+    private fun showFitnessCentersOnMapAndList(
+        userLocation: LatLng,
+        fitnessCentersNearby: List<FitnessCenter>
+    ) {
         for (center in fitnessCentersNearby) {
             val location = LatLng(center.latitude, center.longitude)
             map.addMarker(MarkerOptions().position(location).title(center.name))
@@ -162,12 +166,24 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setupRecyclerView(fitnessCentersNearby)
     }
 
+    /*    private fun setupRecyclerView(fitnessCentersNearby: List<FitnessCenter>) {
+            recyclerView = findViewById(R.id.recycler)
+            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby)
+            recyclerView.adapter = fitnessCenterAdapter
+        }*/
     private fun setupRecyclerView(fitnessCentersNearby: List<FitnessCenter>) {
-        recyclerView = findViewById(R.id.recycler)
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby)
-        recyclerView.adapter = fitnessCenterAdapter
+        if (fitnessCentersNearby.isNotEmpty()) {
+            recyclerView = findViewById(R.id.recycler)
+            recyclerView.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby)
+            recyclerView.adapter = fitnessCenterAdapter
+        } else {
+            Log.e("RecyclerView Error", "Fitness centers list is empty or null")
+        }
     }
+
 
     private fun convertAddressToLatLng(
         centerList: List<FitnessCenter>,
@@ -188,11 +204,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         return fitnessCentersWithLatLng
     }
 
-    private fun getFitnessCentersNearby(userLocation: LatLng, fitnessCenters: List<FitnessCenter>): List<FitnessCenter> {
+    private fun getFitnessCentersNearby(
+        userLocation: LatLng,
+        fitnessCenters: List<FitnessCenter>
+    ): List<FitnessCenter> {
         val fitnessCentersNearby = mutableListOf<FitnessCenter>()
         for (center in fitnessCenters) {
             val location = LatLng(center.latitude, center.longitude)
-            val distance = distanceBetween(userLocation.latitude, userLocation.longitude, location.latitude, location.longitude)
+            val distance = distanceBetween(
+                userLocation.latitude,
+                userLocation.longitude,
+                location.latitude,
+                location.longitude
+            )
             if (distance <= 1000) {
                 fitnessCentersNearby.add(center)
             }
