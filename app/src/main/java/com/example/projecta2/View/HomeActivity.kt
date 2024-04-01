@@ -49,6 +49,7 @@ class HomeActivity : AppCompatActivity() {
         initView()
         setupBannerRecyclerView()
         checkCenter()
+        setupListeners()
     }
 
     private fun initView() {
@@ -58,7 +59,7 @@ class HomeActivity : AppCompatActivity() {
         imgBannerRecyclerView = findViewById(R.id.imgBannerRecyclerView)
     }
 
-   /* private fun setupListeners() {
+    private fun setupListeners() {
         personLinearLayout.setOnClickListener {
             startActivity(Intent(this, MyPageActivity::class.java))
         }
@@ -67,24 +68,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MapActivity::class.java))
         }
 
-        cactusCardView.setOnClickListener {
-            startActivity(Intent(this, CenterDetailActivity::class.java).apply {
-                putExtra("itemName1", "비나이더짐")
-                putExtra("itemPrice1", "15,000원")
-            })
-        }
-
-        wannaGymCardView.setOnClickListener {
-            startActivity(Intent(this, CenterDetailActivity::class.java).apply {
-                putExtra("itemName2", "워너짐 수영구점")
-                putExtra("itemPrice2", "10,000원")
-            })
-        }
-
         myTicketCardView.setOnClickListener {
             startActivity(Intent(this, MyTicketActivity::class.java))
         }
-    }*/
+    }
 
     private fun checkCenter() {
         val gymService = RetrofitInstance.gymService
