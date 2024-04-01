@@ -14,14 +14,14 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tvFitnessCenterPrice"
+        android:id="@+id/tvFitnessCenterDailyPassPrice"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:textAlignment="textStart"
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/tvFitnessCenterPhoneNumber"
+        android:id="@+id/tvFitnessCenterdistance"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:textAlignment="textStart"
