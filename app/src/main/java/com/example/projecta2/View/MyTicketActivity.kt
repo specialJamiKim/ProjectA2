@@ -3,18 +3,29 @@ package com.example.projecta2.View
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MyTicketActivity : AppCompatActivity() {
+
+    private lateinit var userInfo : UserInfo
+    private lateinit var ticketPageUserName : TextView
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_ticket)
+
+        ticketPageUserName = findViewById<TextView>(R.id.ticketPageUserName)
+        userInfo = intent.getParcelableExtra<UserInfo>("userInfo")!!
+        ticketPageUserName.text = userInfo.name
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.home_linear_layout)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

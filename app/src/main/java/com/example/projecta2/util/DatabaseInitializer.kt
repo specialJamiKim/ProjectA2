@@ -14,7 +14,9 @@ class DatabaseInitializer private constructor() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     UserDB::class.java, "UserDB"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // 스키마 변경 시 데이터 손실 가능성이 있는 옵션
+                    .build()
                 INSTANCE = instance
                 instance
             }

@@ -11,15 +11,19 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
 import com.example.projecta2.adapter.BannerAdapter
 import com.example.projecta2.adapter.HomeAdapter
 import com.example.projecta2.model.FitnessCenter
 import com.example.projecta2.util.RetrofitInstance
+import com.example.projecta2.util.getUserObject
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,10 +58,23 @@ class HomeActivity : AppCompatActivity() {
         imgBannerRecyclerView = findViewById(R.id.imgBannerRecyclerView)
     }
 
+    //내 보유 일일권 클릭 처리 intetn에 담아서 보냄
     private fun setupListeners() {
-        personLinearLayout.setOnClickListener {
-            startActivity(Intent(this, MyPageActivity::class.java))
+        lifecycleScope.launch {
+            val userInfo : UserInfo? = getUserObject(this@HomeActivity).getUserInfo()
+            // 내 보유 일일권 클릭
+            myTicketCardView.setOnClickListener {
+                val intent = Intent(this@HomeActivity, MyTicketActivity::class.java).apply {
+                    // 여기에 정보를 추가합니다
+                    putExtra("userInfo", userInfo)
+                    // 필요한 만큼 계속해서 추가합니다
+                }
+                startActivity(intent)
+            }
         }
+
+
+
 
         homeToMap.setOnClickListener {
             startActivity(Intent(this, MapActivity::class.java))
@@ -91,16 +108,25 @@ class HomeActivity : AppCompatActivity() {
         HomeRecycler = findViewById(R.id.HomeRecycler)
         HomeRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val adapter = HomeAdapter(fitnessCenters) { fitnessCenter ->
-            val intent = Intent(this@HomeActivity, CenterDetailActivity::class.java).apply {
-                putExtra("centerName", fitnessCenter.name)
-                putExtra("centerPrice", fitnessCenter.dailyPassPrice) // Long 타입으로 전달
-                putExtra("centerLocation", fitnessCenter.address)
-                putExtra("centerImageUrl", fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" })
+        lifecycleScope.launch {
+            val userInfo: UserInfo? = getUserObject(this@HomeActivity).getUserInfo()
+            val adapter = HomeAdapter(fitnessCenters) { fitnessCenter ->
+                val intent = Intent(this@HomeActivity, CenterDetailActivity::class.java).apply {
+                    putExtra("centerId", fitnessCenter.id) //센터 아이디 ==> 예약, 리뷰작성 시, 사용하세요!!
+                    putExtra("centerName", fitnessCenter.name)
+                    putExtra("centerPrice", fitnessCenter.dailyPassPrice) // Long 타입으로 전달
+                    putExtra("centerLocation", fitnessCenter.address)
+                    putExtra(
+                        "centerImageUrl",
+                        fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" })
+                    //유저 정보 => entity=>userInfo 참고
+                    putExtra("userInfo", userInfo)
+                }
+                Log.d("센터아이디 홈에서", "${fitnessCenter.id}")
+                startActivity(intent)
             }
-            startActivity(intent)
+            HomeRecycler.adapter = adapter
         }
-        HomeRecycler.adapter = adapter
     }
 
     private fun setupBannerRecyclerView() {

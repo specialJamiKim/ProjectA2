@@ -6,16 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import com.example.projecta2.Dao.UserDB
 import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
-import com.example.projecta2.View.HomeActivity
-import com.example.projecta2.View.JoinActivity
 import com.example.projecta2.model.User
 import com.example.projecta2.util.DialogHelper
 import com.example.projecta2.util.RetrofitInstance
@@ -51,8 +47,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         db = DatabaseInitializer.initDatabase(this)
-
-        // 데이터베이스 초기화
+        // Room 데이터베이스 초기화
         deleteAllUsers()
 
         val account = GoogleSignIn.getLastSignedInAccount(this)
@@ -109,6 +104,55 @@ class LoginActivity : AppCompatActivity() {
         resultLauncher.launch(signInIntent)
     }
 
+    // 구글 로그인 결과 처리
+    private fun setResultSignUp() {
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                    handleSignInResult(task)
+                }
+            }
+    }
+
+    //
+    private fun saveToRoomDB(account: GoogleSignInAccount) {
+        // Room을 사용하여 내장 DB에 구글 계정 정보를 저장하는 작업 수행
+        val userInfo = UserInfo(
+            Id = null,
+            email = account.email,
+            name = account.displayName,
+            password = null, // 비밀번호는 구글 로그인 시 필요하지 않음
+            phoneNumber = null,
+            gender = null,
+            address = null,
+            joinDate = null,
+            role = emptyList(),
+            birthDate = null
+        )
+        Thread {
+            db.getDao().insertUser(userInfo)
+        }.start()
+    }
+
+    // 구글 로그인 결과 핸들링
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+            saveToRoomDB(account) // Room 데이터베이스에 사용자 정보 저장
+
+            Log.d("GoogleLoginSuccess", "이메일: ${account.email}, 성: ${account.familyName}, 이름: ${account.givenName}, 전체 이름: ${account.displayName}, 프로필 사진 URL: ${account.photoUrl}")
+            val intent = Intent(applicationContext, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        } catch (e: ApiException) {
+            Log.w("GoogleLoginFailure", "signInResult:실패 code=${e.statusCode}", e)
+        }
+    }
+
+
+
+
     // 일반 로그인
     private fun signIn(email: String, password: String) {
         val userService = RetrofitInstance.userService
@@ -161,30 +205,5 @@ class LoginActivity : AppCompatActivity() {
                 Log.e("RequestFailed", "오류: ${t.message}", t)
             }
         })
-    }
-
-
-    // 구글 로그인 결과 처리
-    private fun setResultSignUp() {
-        resultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                    handleSignInResult(task)
-                }
-            }
-    }
-
-    // 구글 로그인 결과 핸들링
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
-            Log.d("GoogleLoginSuccess", "이메일: ${account.email}, 성: ${account.familyName}, 이름: ${account.givenName}, 전체 이름: ${account.displayName}, 프로필 사진 URL: ${account.photoUrl}")
-            val intent = Intent(applicationContext, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        } catch (e: ApiException) {
-            Log.w("GoogleLoginFailure", "signInResult:실패 code=${e.statusCode}", e)
-        }
     }
 }
