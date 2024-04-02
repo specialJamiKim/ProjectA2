@@ -60,7 +60,7 @@ class CenterDetailActivity : AppCompatActivity() {
 
         // 클릭 리스너 설정
         backButton.setOnClickListener { finish() }
-        reserveButton.setOnClickListener { testReservation() }
+        reserveButton.setOnClickListener { showReservationDialog() }
 
         // 이미지 로딩
         imageUrl?.let {
@@ -80,12 +80,35 @@ class CenterDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun testReservation() {
+    private fun showReservationDialog() {
+        val calendar = Calendar.getInstance()
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                val selectedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                createReservation(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun createReservation(selectedDate: String) {
+        val calendar = Calendar.getInstance()
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
         val reservationService = RetrofitInstance.reservationService
 
         // 예약 객체 생성 및 센터 ID, 사용자 ID 설정
         val reservation = Reservation(
-            0, FitnessCenter(8), User(6), "gggg"
+            0,
+            center = FitnessCenter(1),
+            user = User(1),
+            reservationTime = "11"
         )
 
         // 서버로 예약 생성 요청 전송
@@ -103,54 +126,6 @@ class CenterDetailActivity : AppCompatActivity() {
             }
         })
     }
-
-//    private fun showReservationDialog() {
-//        val calendar = Calendar.getInstance()
-//
-//        val datePickerDialog = DatePickerDialog(
-//            this,
-//            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-//                //val selectedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
-//                val selectedDate = "11"
-//                createReservation(selectedDate)
-//            },
-//            calendar.get(Calendar.YEAR),
-//            calendar.get(Calendar.MONTH),
-//            calendar.get(Calendar.DAY_OF_MONTH)
-//        )
-//
-//        datePickerDialog.show()
-//    }
-
-//    private fun createReservation(selectedDate: String) {
-//        val calendar = Calendar.getInstance()
-//        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-//
-//        val reservationService = RetrofitInstance.reservationService
-//
-//        // 예약 객체 생성 및 센터 ID, 사용자 ID 설정
-//        val reservation = Reservation(
-//            0,
-//            center = FitnessCenter(1),
-//            user = User(1),
-//            reservationTime = "11"
-//        )
-//
-//        // 서버로 예약 생성 요청 전송
-//        reservationService.createReservation(reservation).enqueue(object : Callback<ResponseBody> {
-//            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-//                if (response.isSuccessful) {
-//                    showToast("예약이 완료되었습니다.")
-//                } else {
-//                    showToast("예약에 실패했습니다.")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//                showToast("네트워크 오류가 발생했습니다.")
-//            }
-//        })
-//    }
 
 
     private fun getLoggedInUserId(): Long {
