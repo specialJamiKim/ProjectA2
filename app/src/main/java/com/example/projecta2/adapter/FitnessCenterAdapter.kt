@@ -21,19 +21,20 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val fitnessCenter = fitnessCenterList[position]
         with(holder) {
+            val fitnessCenter = fitnessCenterList[position]
+
             // 이미지 로드 및 표시
-            fitnessCenter.imagePath?.let {
-                if (it.isNotEmpty()) {
-                    val imageUrl = "http://10.0.2.2:8111/img/$it"
-                    Glide.with(binding.ivFitnessCenterImage.context)
-                        .load(imageUrl)
-                        .placeholder(R.drawable.chair_white_bg) // 로딩 중에 표시할 이미지
-                        .error(R.drawable.chair_light_orange_bg) // 에러 발생 시 표시할 이미지
-                        .into(binding.ivFitnessCenterImage)
-                } else {
-                    // 이미지가 없을 경우에 대한 처리
-                    binding.ivFitnessCenterImage.setImageResource(R.drawable.favorite_img_7)
-                }
+            if (fitnessCenter.imagePath != null && fitnessCenter.imagePath.isNotEmpty()) {
+                val imageUrl = "http://10.0.2.2:8111/img/${fitnessCenter.imagePath}"
+                Glide.with(binding.ivFitnessCenterImage.context)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.chair_white_bg) // 로딩 중에 표시할 이미지
+                    .error(R.drawable.chair_light_orange_bg) // 에러 발생 시 표시할 이미지
+                    .into(binding.ivFitnessCenterImage)
+            } else {
+                // 이미지가 없을 경우에 대한 처리
+                binding.ivFitnessCenterImage.setImageResource(R.drawable.favorite_img_7)
+
             }
 
             // 나머지 데이터 표시
