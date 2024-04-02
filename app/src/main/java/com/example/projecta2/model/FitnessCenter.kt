@@ -7,11 +7,13 @@ import java.time.LocalTime
 @Serializable
 data class FitnessCenter(
     val id: Long = 0,
-    val name : String,
-    val dailyPassPrice : Long,
-    val distance : Long?,
-    val address : String,
+    val name: String,
+    val dailyPassPrice: Long,
+    val distance: Long?,
+    val address: String,
     val imagePath: String?, // 이미지 경로 변수 추가
     val latitude: Double,
     val longitude: Double
-)
+) {
+    constructor(id: Long) : this(id, "", 0, null, "", null, 0.0, 0.0)
+}

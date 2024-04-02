@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projecta2.R
 import com.example.projecta2.adapter.BannerAdapter
-import com.example.projecta2.adapter.FitnessCenterAdapter
 import com.example.projecta2.adapter.HomeAdapter
 import com.example.projecta2.model.FitnessCenter
 import com.example.projecta2.util.RetrofitInstance
@@ -30,16 +28,13 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var personLinearLayout: LinearLayout
     private lateinit var homeToMap: FloatingActionButton
-    private lateinit var cactusCardView: CardView
     private lateinit var myTicketCardView: CardView
-    private lateinit var wannaGymCardView: CardView
     private lateinit var imgBannerRecyclerView: RecyclerView
     private lateinit var autoScrollHandler: Handler
     private lateinit var autoScrollRunnable: Runnable
     private var autoScrollDelay: Long = 2000 // 2초
     private lateinit var HomeRecycler: RecyclerView
     private lateinit var fitnessCenters: List<FitnessCenter>
-    private lateinit var HomeAdapter: HomeAdapter
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,18 +72,10 @@ class HomeActivity : AppCompatActivity() {
         val gymService = RetrofitInstance.gymService
 
         gymService.getGymList().enqueue(object : Callback<List<FitnessCenter>> {
-
             override fun onResponse(call: Call<List<FitnessCenter>>, response: Response<List<FitnessCenter>>) {
                 if (response.isSuccessful) {
-                    val centerList = response.body()
-
-                    if (centerList != null) {
-                        // Fitness Center 목록을 받은 후에 리사이클러뷰에 표시하기 위해 어댑터에 설정
-                        fitnessCenters = centerList
-                        setupRecyclerView()
-                    } else {
-                        Log.e("Response Error", "Received null center list")
-                    }
+                    fitnessCenters = response.body() ?: emptyList()
+                    setupRecyclerView()
                 } else {
                     Log.e("Response Error", "Code: ${response.code()}")
                 }
@@ -104,9 +91,16 @@ class HomeActivity : AppCompatActivity() {
         HomeRecycler = findViewById(R.id.HomeRecycler)
         HomeRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        // Fitness Center 목록을 표시하기 위해 어댑터 설정
-        HomeAdapter = HomeAdapter(fitnessCenters)
-        HomeRecycler.adapter = HomeAdapter
+        val adapter = HomeAdapter(fitnessCenters) { fitnessCenter ->
+            val intent = Intent(this@HomeActivity, CenterDetailActivity::class.java).apply {
+                putExtra("centerName", fitnessCenter.name)
+                putExtra("centerPrice", fitnessCenter.dailyPassPrice) // Long 타입으로 전달
+                putExtra("centerLocation", fitnessCenter.address)
+                putExtra("centerImageUrl", fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" })
+            }
+            startActivity(intent)
+        }
+        HomeRecycler.adapter = adapter
     }
 
     private fun setupBannerRecyclerView() {

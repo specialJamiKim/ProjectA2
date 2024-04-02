@@ -18,6 +18,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projecta2.Dao.UserDB
 import com.example.projecta2.R
 import com.example.projecta2.api.UserService
 import com.example.projecta2.model.User
@@ -36,15 +37,23 @@ class UserEditActivity : AppCompatActivity() {
     //  private lateinit var deleteButton: Button
     private lateinit var userEmail: String
     private lateinit var userService: UserService
+    // Room Database instance
+    lateinit var db: UserDB
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_edit)
         userService = RetrofitInstance.userService
-
+        //db 싱글톤 가져옴
+        db = DatabaseInitializer.initDatabase(this)
         // 액션 바가 있다면 숨깁니다.
         supportActionBar?.hide()
+
+
+        // Retrieve email value when needed
+        userEmail = SessionManager.getUserEmail(this).toString()
+
 
         // EditText 초기화
         nameEditText = findViewById(R.id.userEditName)
@@ -53,7 +62,7 @@ class UserEditActivity : AppCompatActivity() {
         birthEditText = findViewById(R.id.userEditBirth)
 
         // 사용자 정보 가져오기(수정예정)
-        getUserInfo("12")
+        getUserInfo(userEmail)
 
 
 
@@ -69,7 +78,7 @@ class UserEditActivity : AppCompatActivity() {
         val deleteButton = findViewById<Button>(R.id.editBackBtn)
         deleteButton.setOnClickListener {
             // 사용자 정보를 삭제하는 함수 호출
-            deleteUser("12")
+            deleteUser(userEmail)
         }
 
         // 홈 버튼 클릭 리스너 설정

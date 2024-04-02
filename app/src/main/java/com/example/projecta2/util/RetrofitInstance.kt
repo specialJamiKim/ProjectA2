@@ -1,6 +1,7 @@
 package com.example.projecta2.util
 
 import com.example.projecta2.api.GymService
+import com.example.projecta2.api.ReservationService
 import com.example.projecta2.api.UserService
 import com.example.projecta2.model.User
 import okhttp3.OkHttpClient
@@ -36,6 +37,10 @@ object RetrofitInstance {
     //유저 관련 Service
     val userService : UserService by lazy{
         retrofit.create(UserService::class.java)
+    }
+
+    val reservationService : ReservationService by lazy{
+        retrofit.create(ReservationService::class.java)
     }
 
 

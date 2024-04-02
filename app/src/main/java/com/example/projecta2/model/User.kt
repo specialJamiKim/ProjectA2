@@ -23,4 +23,6 @@ data class User(
     var birthDate : LocalDate, // Date 형식으로 변경*/
     var joinDate: String, // 여전히 String 형식으로 유지
     var role: List<String>
-)
+) {
+    constructor(id: Long) : this(id, "", "", "", "", "", "", "", "", emptyList())
+}
