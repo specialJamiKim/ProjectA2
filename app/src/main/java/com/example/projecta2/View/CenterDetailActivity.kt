@@ -8,17 +8,48 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.example.projecta2.Dao.UserDB
 import com.example.projecta2.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CenterDetailActivity : AppCompatActivity() {
+
+    private lateinit var db: UserDB
+    private var userId: Long = 0
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_center_detail)
+
+        // DB 사용 준비
+        db = DatabaseInitializer.initDatabase(this)
+        val email = SessionManager.getUserEmail(this) // toString() 호출 제거
+
+        if (email != null) { // email이 null인 경우를 안전하게 처리
+            Log.d("Email Log", email) // 실제 로그 메시지를 명확하게 변경
+            // 코루틴을 사용하여 데이터베이스 작업을 백그라운드 스레드에서 실행
+            lifecycleScope.launch {
+                val stUserId = withContext(Dispatchers.IO) {
+                    db.getDao().getUserInfoId(email)
+                }
+                // 유저 이름 저장
+                userId = stUserId
+
+                // 메인 스레드에서 로그 출력
+                Log.d("로그인 상태", "고유 id 는 ${userId} 입니다")
+            }
+        } else {
+            Log.d("Email Log", "Email is null")
+        }
+
 
         // 액션바 숨기기
         supportActionBar?.hide()
@@ -41,8 +72,8 @@ class CenterDetailActivity : AppCompatActivity() {
         val centerLocation = intent.getStringExtra("centerLocation")
         val centerImageUrl = intent.getStringExtra("centerImageUrl")
 
-        val ffff : String = SessionManager.getUserEmail(this).toString()
-        Log.d("로그인 된 사람" , "${ffff} 이메일을 가짐")
+        val ffff: String = SessionManager.getUserEmail(this).toString()
+        Log.d("로그인 된 사람", "${ffff} 이메일을 가짐")
 
         // 데이터 설정
         textViewItemName.text = centerName
@@ -57,16 +88,32 @@ class CenterDetailActivity : AppCompatActivity() {
         // 이미지 로딩
         Glide.with(this)
             .load(centerImageUrl)
-            .apply(RequestOptions()
-                .placeholder(R.drawable.bannerimg)
-                .error(R.drawable.bannerimg2)
-                .diskCacheStrategy(DiskCacheStrategy.ALL))
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.bannerimg)
+                    .error(R.drawable.bannerimg2)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+            )
             .into(imageView)
 
         // 클릭 리스너 설정
         homeImageView.setOnClickListener { startActivity(Intent(this, HomeActivity::class.java)) }
-        mapFloatingActionButton.setOnClickListener { startActivity(Intent(this, MapActivity::class.java)) }
-        myPageImageView.setOnClickListener { startActivity(Intent(this, MyPageActivity::class.java)) }
+        mapFloatingActionButton.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    MapActivity::class.java
+                )
+            )
+        }
+        myPageImageView.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    MyPageActivity::class.java
+                )
+            )
+        }
         backButton.setOnClickListener { finish() }
         reserveButton.setOnClickListener {
             val intent = Intent(this, ReservationActivity::class.java).apply {

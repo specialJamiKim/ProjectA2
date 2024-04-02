@@ -16,6 +16,9 @@ interface UserDao {
     @Query("DELETE FROM UserInfo WHERE email = :email")
     fun deleteByEmail(email: String): Int
 
+    @Query("select id from UserInfo where email = :email")
+    fun getUserInfoId(email : String) : Long
+
     @Query("DELETE FROM UserInfo")
     fun deleteAllUsers()
 }
