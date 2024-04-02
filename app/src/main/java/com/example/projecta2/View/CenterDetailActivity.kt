@@ -19,14 +19,16 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.ParseException
+
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CenterDetailActivity : AppCompatActivity() {
     private var centerName: String? = null
     private var imageUrl: String? = null
-    private var centerId: Long = 0 // 예약에 필요한 센터 아이디
+
+    private var centerId: Long? = 0 // 예약에 필요한 센터 아이디
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +51,9 @@ class CenterDetailActivity : AppCompatActivity() {
         val itemPrice = intent.getStringExtra("itemPrice1")
         val itemAddress = intent.getStringExtra("itemAddress1")
         imageUrl = intent.getStringExtra("itemImageUrl")
-        centerId = intent.getLongExtra("centerId", 0) // 센터 아이디 받아오기
+
+        centerId = intent.getLongExtra("centerId",0) // 센터 아이디 받아오기
+        Log.d(">>>", "${centerId}")
 
         // 데이터 설정
         textViewItemName.text = centerName
@@ -60,7 +64,9 @@ class CenterDetailActivity : AppCompatActivity() {
 
         // 클릭 리스너 설정
         backButton.setOnClickListener { finish() }
-        reserveButton.setOnClickListener { testReservation() }
+
+        reserveButton.setOnClickListener { showReservationDialog() }
+
 
         // 이미지 로딩
         imageUrl?.let {
@@ -80,12 +86,39 @@ class CenterDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun showReservationDialog() {
+        val calendar = Calendar.getInstance()
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                val selectedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                createReservation(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun createReservation(selectedDate: String) {
+        val calendar = Calendar.getInstance()
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+
     private fun testReservation() {
+
         val reservationService = RetrofitInstance.reservationService
 
         // 예약 객체 생성 및 센터 ID, 사용자 ID 설정
         val reservation = Reservation(
-            0, FitnessCenter(8), User(6), "gggg"
+
+            0,
+            center = FitnessCenter(5),
+            user = User(4),
+            reservationTime = "11"
         )
 
         // 서버로 예약 생성 요청 전송
@@ -103,6 +136,7 @@ class CenterDetailActivity : AppCompatActivity() {
             }
         })
     }
+
 
 //    private fun showReservationDialog() {
 //        val calendar = Calendar.getInstance()
@@ -153,6 +187,7 @@ class CenterDetailActivity : AppCompatActivity() {
 //    }
 
 
+
     private fun getLoggedInUserId(): Long {
         // 여기에서 로그인된 사용자의 ID를 가져오는 로직을 구현
         // 예시로 -1을 반환
@@ -162,4 +197,6 @@ class CenterDetailActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
+
 }
+
