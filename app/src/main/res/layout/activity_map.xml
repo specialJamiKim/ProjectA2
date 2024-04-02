@@ -10,7 +10,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="#6889E1"
-      android:paddingTop="24dp"
+      android:paddingTop="0dp"
       android:theme="@style/AppTheme.AppBarOverlay"
       app:elevation="0dp">
     <TextView
@@ -29,26 +29,22 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="24dp"
         android:background="#ffc6c6" />
-
   </com.google.android.material.appbar.AppBarLayout>
 
   <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="-24dp"
+      android:layout_marginTop="0dp"
       app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
 
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical"
-          android:layout_marginTop="15dp"
+          android:layout_marginTop="10dp"
           android:paddingLeft="16dp"
-          android:paddingTop="16dp"
           android:paddingRight="16dp"
           android:paddingBottom="44dp">
 
@@ -99,37 +95,23 @@
 
           <TextView
               android:id="@+id/mapImage"
-
-              android:layout_width="wrap_content"
+              android:layout_width="55dp"
               android:layout_height="wrap_content"
               android:layout_weight="2"
               android:text="센터사진"
-              android:textAlignment="center"
+              android:paddingLeft="10dp"
               android:textSize="20dp"
               android:textStyle="bold" />
 
           <TextView
-              android:id="@+id/mapDistance"
-              android:layout_width="wrap_content"
+              android:id="@+id/mapName"
+              android:layout_width="161dp"
               android:layout_height="wrap_content"
               android:layout_weight="0.5"
-              android:text="이름"
-              android:textAlignment="center"
+              android:paddingLeft="25dp"
+              android:text="센터정보"
               android:textSize="20dp"
               android:textStyle="bold" />
-
-          <TextView
-              android:id="@+id/mapPrice"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_weight="0.5"
-              android:text="가격"
-              android:textAlignment="center"
-
-              android:textSize="20dp"
-              android:textStyle="bold" />
-
-
 
           <TextView
               android:id="@+id/mapAddress"
@@ -147,11 +129,8 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-
       </LinearLayout>
 
-    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/favorite"

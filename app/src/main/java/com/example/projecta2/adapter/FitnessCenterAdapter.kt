@@ -21,20 +21,19 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val fitnessCenter = fitnessCenterList[position]
         with(holder) {
-            val fitnessCenter = fitnessCenterList[position]
-
             // 이미지 로드 및 표시
-            if (fitnessCenter.imagePath != null && fitnessCenter.imagePath.isNotEmpty()) {
-                val imageUrl = "http://10.0.2.2:8111/img/${fitnessCenter.imagePath}"
-                Glide.with(binding.ivFitnessCenterImage.context)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.chair_white_bg) // 로딩 중에 표시할 이미지
-                    .error(R.drawable.chair_light_orange_bg) // 에러 발생 시 표시할 이미지
-                    .into(binding.ivFitnessCenterImage)
-            } else {
-                // 이미지가 없을 경우에 대한 처리
-                binding.ivFitnessCenterImage.setImageResource(R.drawable.favorite_img_7)
-
+            fitnessCenter.imagePath?.let {
+                if (it.isNotEmpty()) {
+                    val imageUrl = "http://10.0.2.2:8111/img/$it"
+                    Glide.with(binding.ivFitnessCenterImage.context)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.chair_white_bg) // 로딩 중에 표시할 이미지
+                        .error(R.drawable.chair_light_orange_bg) // 에러 발생 시 표시할 이미지
+                        .into(binding.ivFitnessCenterImage)
+                } else {
+                    // 이미지가 없을 경우에 대한 처리
+                    binding.ivFitnessCenterImage.setImageResource(R.drawable.favorite_img_7)
+                }
             }
 
             // 나머지 데이터 표시
@@ -50,6 +49,11 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
                     putExtra("itemPrice1", fitnessCenter.dailyPassPrice.toString())
                     putExtra("itemAddress1", fitnessCenter.address)
                     putExtra("itemImageUrl", "http://10.0.2.2:8111/img/${fitnessCenter.imagePath}") // 이미지 URL 추가
+                    putExtra("centerName", fitnessCenter.name)
+                    putExtra("centerPrice", fitnessCenter.dailyPassPrice)
+                    putExtra("centerLocation", fitnessCenter.address)
+                    // 'centerImageUrl'에 해당하는 정확한 키를 사용하여 이미지 URL을 넘겨줍니다.
+                    putExtra("centerImageUrl", fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" })
                 }
                 it.context.startActivity(intent)
             }
