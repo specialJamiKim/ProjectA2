@@ -95,7 +95,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDIEQuAzIdlZ3rP03XJkMiPulEkzxIvil0" />
+            android:value="AIzaSyBqg6C89usTtrkQeJ6CgVAZvAc2x-F-y5s" />
 
         <uses-library android:name="com.google.android.maps" />
     </application>

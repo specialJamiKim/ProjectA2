@@ -114,5 +114,9 @@ dependencies {
     // glide
     implementation("com.github.bumptech.glide:glide:4.10.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.10.0")
+    // OkHttp
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0") // OkHttp 기본 라이브러리
+    // OkHttp 로깅 인터셉터
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
 }
