@@ -10,7 +10,12 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import com.example.projecta2.Dao.UserDB
+import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
+import com.example.projecta2.View.HomeActivity
+import com.example.projecta2.View.JoinActivity
 import com.example.projecta2.model.User
 import com.example.projecta2.util.DialogHelper
 import com.example.projecta2.util.RetrofitInstance
@@ -38,9 +43,17 @@ class LoginActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
+    // Room Database instance
+    lateinit var db: UserDB
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        db = DatabaseInitializer.initDatabase(this)
+
+        // 데이터베이스 초기화
+        deleteAllUsers()
 
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if (account != null) {
@@ -66,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
         login.setOnClickListener {
             email = userEmailTextView.text.toString()
             password = userPwTextView.text.toString()
+            SessionManager.saveUserEmail(this, email)
             signIn(email, password)
         }
 
@@ -82,6 +96,13 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // 데이터베이스에서 모든 사용자 삭제
+    private fun deleteAllUsers() {
+        Thread {
+            db.getDao().deleteAllUsers()
+        }.start()
+    }
+
     // 구글 로그인
     private fun googleSignIn() {
         val signInIntent: Intent = mGoogleSignInClient.signInIntent
@@ -95,24 +116,52 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     response.body()?.let { user ->
-                        Log.d("LoginSuccess", "Email: ${user.email}, Name: ${user.name}")
-                        val intent = Intent(applicationContext, HomeActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        Log.d("LoginSuccess", "이메일: ${user.email}, 이름: ${user.name}")
+
+                        // 사용자 정보를 Room 데이터베이스에 저장하고 저장된 정보를 로그로 출력
+                        Thread {
+                            val userInfo = UserInfo(
+                                Id = user.id,
+                                email = user.email,
+                                name = user.name,
+                                password = password,
+                                phoneNumber = user.phoneNumber,
+                                gender = user.gender,
+                                address = user.address,
+                                joinDate = user.joinDate,
+                                role = user.role,
+                                birthDate = user.birthDate
+                            )
+
+                            db.getDao().insertUser(userInfo)
+
+                            // 저장된 비밀번호를 가져와서 로그로 출력
+                            val stUser = db.getDao().getPwByEmail(email)
+                            Log.d("StoredUserInfo", "${stUser}")
+
+
+
+                            runOnUiThread {
+                                val intent = Intent(applicationContext, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+                        }.start()
                     } ?: run {
-                        Log.e("ResponseError", "Received null user object")
+                        Log.e("ResponseError", "null 사용자 객체를 받았습니다.")
                     }
                 } else {
-                    Log.e("ResponseError", "Code: ${response.code()} , 서버 연결 실패")
-                    DialogHelper.showMessageDialog(this@LoginActivity, "Login Fail", "없는 회원입니다.\n아이디와 비밀번호를 확인해주세요.")
+                    Log.e("ResponseError", "코드: ${response.code()}, 서버 연결 실패")
+                    DialogHelper.showMessageDialog(this@LoginActivity, "로그인 실패", "회원 정보가 없습니다.\n이메일과 비밀번호를 확인해주세요.")
                 }
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.e("RequestFailed", "Error: ${t.message}", t)
+                Log.e("RequestFailed", "오류: ${t.message}", t)
             }
         })
     }
+
 
     // 구글 로그인 결과 처리
     private fun setResultSignUp() {

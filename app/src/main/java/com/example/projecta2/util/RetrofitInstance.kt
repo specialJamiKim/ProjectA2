@@ -2,7 +2,6 @@ package com.example.projecta2.util
 
 import com.example.projecta2.api.GymService
 import com.example.projecta2.api.ReservationService
-
 import com.example.projecta2.api.UserService
 import com.example.projecta2.model.User
 import okhttp3.OkHttpClient

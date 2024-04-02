@@ -9,6 +9,7 @@ import java.util.Date
 
 @Serializable
 data class User(
+
     var id: Long = 0,
     var name: String = "",
     @SerializedName("email")
@@ -21,6 +22,7 @@ data class User(
     var birthDate: String = "",
     var joinDate: String = "",
     var role: List<String> = emptyList()
+
 ) {
     constructor(id: Long) : this(id, "", "", "", "", "", "", "", "", emptyList())
 }

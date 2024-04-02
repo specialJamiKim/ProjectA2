@@ -15,4 +15,6 @@ interface ReservationService {
 
     @GET("/m_reservation/list/{reservationId}")
     fun getUserReservations(@Path("reservationId") reservationId: Long): Call<List<Reservation>>
+
 }
+

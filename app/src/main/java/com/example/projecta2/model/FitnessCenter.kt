@@ -6,7 +6,9 @@ import java.time.LocalTime
 
 @Serializable
 data class FitnessCenter(
+
     val id: Long =0 ,
+
     val name: String,
     val dailyPassPrice: Long,
     val distance: Long?,
@@ -16,4 +18,6 @@ data class FitnessCenter(
     val longitude: Double
 ) {
     constructor(id: Long) : this(id, "", 0, null, "", null, 0.0, 0.0)
+
 }
+
