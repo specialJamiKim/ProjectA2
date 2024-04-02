@@ -41,6 +41,9 @@ class CenterDetailActivity : AppCompatActivity() {
         val centerLocation = intent.getStringExtra("centerLocation")
         val centerImageUrl = intent.getStringExtra("centerImageUrl")
 
+        val ffff : String = SessionManager.getUserEmail(this).toString()
+        Log.d("로그인 된 사람" , "${ffff} 이메일을 가짐")
+
         // 데이터 설정
         textViewItemName.text = centerName
         textViewItemPrice.text = "${centerPrice}원"

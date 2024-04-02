@@ -20,6 +20,7 @@ object SessionManager {
         return sharedPreferences.getString(KEY_USER_EMAIL, null)
     }
 
+
     fun clearSession(context: Context) {
         val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         sharedPreferences.edit().clear().apply()
