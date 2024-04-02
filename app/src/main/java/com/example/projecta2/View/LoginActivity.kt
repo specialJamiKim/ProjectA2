@@ -136,7 +136,8 @@ class LoginActivity : AppCompatActivity() {
                             db.getDao().insertUser(userInfo)
 
                             // 저장된 비밀번호를 가져와서 로그로 출력
-                            val stUser = db.getDao().getPwByEmail(email)
+                            val stUser = db.getDao().getUserInfoObj(email)
+
                             Log.d("StoredUserInfo", "${stUser}")
 
 
