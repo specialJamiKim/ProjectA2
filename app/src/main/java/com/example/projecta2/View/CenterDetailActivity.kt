@@ -135,12 +135,12 @@ class CenterDetailActivity : AppCompatActivity() {
 
                     // 사용자 정보 생성
                     val userInfo = intent.getParcelableExtra<UserInfo>("userInfo")
-                    Log.d("UserInfo", "UserInfo2: $userInfo")
-                    Log.d("CenterId", "CenterId2: $centerId")
+                    val userId = userInfo?.Id
+
                     // Review 객체 생성
                     val review = Review(
-                        user = userInfo!!,
-                        fitnessCenter = FitnessCenter(id = centerId), // 센터 ID만 사용하여 객체 생성
+                        userId = userId,
+                        centerId = centerId, // 센터 ID만 사용하여 객체 생성
                         rating = null, // 선택된 평점
                         reviewText = reviewText
                     )
@@ -154,18 +154,28 @@ class CenterDetailActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         // 성공적으로 추가되면 리뷰 목록을 다시 불러옴
 
-                        Toast.makeText(this@CenterDetailActivity, "리뷰가 성공적으로 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@CenterDetailActivity,
+                            "리뷰가 성공적으로 등록되었습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         // 실패 시 메시지 출력 또는 다른 처리
-                        Toast.makeText(this@CenterDetailActivity, "리뷰 등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@CenterDetailActivity,
+                            "리뷰 등록에 실패했습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } catch (e: HttpException) {
                     // HTTP 요청 실패 시 처리
-                    Toast.makeText(this@CenterDetailActivity, "리뷰 등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CenterDetailActivity, "리뷰 등록에 실패했습니다.", Toast.LENGTH_SHORT)
+                        .show()
                     Log.e("Add Review", "Failed to add review: ${e.message()}")
                 } catch (e: Throwable) {
                     // 그 외 에러 처리
-                    Toast.makeText(this@CenterDetailActivity, "리뷰 등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CenterDetailActivity, "리뷰 등록에 실패했습니다.", Toast.LENGTH_SHORT)
+                        .show()
                     Log.e("Add Review", "Failed to add review: ${e.message}")
                 }
             }
