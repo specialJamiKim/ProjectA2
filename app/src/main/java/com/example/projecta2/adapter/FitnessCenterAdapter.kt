@@ -5,12 +5,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
 import com.example.projecta2.View.CenterDetailActivity
 import com.example.projecta2.databinding.FitnessCenterItemBinding
 import com.example.projecta2.model.FitnessCenter
+import com.example.projecta2.util.getUserObject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
+class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>, private val userInfo: UserInfo?) :
     RecyclerView.Adapter<FitnessCenterAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +29,7 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
             // 이미지 로드 및 표시
             fitnessCenter.imagePath?.let {
                 if (it.isNotEmpty()) {
-                    val imageUrl = "http://10.0.2.2:8111/img/$it"
+                    val imageUrl = "http://10.100.103.49:8111/img/$it"
                     Glide.with(binding.ivFitnessCenterImage.context)
                         .load(imageUrl)
                         .placeholder(R.drawable.chair_white_bg) // 로딩 중에 표시할 이미지
@@ -44,18 +49,21 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>) :
 
             // 클릭 리스너 설정
             itemView.setOnClickListener {
-                val intent = Intent(it.context, CenterDetailActivity::class.java).apply {
-                    putExtra("itemName1", fitnessCenter.name)
-                    putExtra("itemPrice1", fitnessCenter.dailyPassPrice.toString())
-                    putExtra("itemAddress1", fitnessCenter.address)
-                    putExtra("itemImageUrl", "http://10.0.2.2:8111/img/${fitnessCenter.imagePath}") // 이미지 URL 추가
-                    putExtra("centerName", fitnessCenter.name)
-                    putExtra("centerPrice", fitnessCenter.dailyPassPrice)
-                    putExtra("centerLocation", fitnessCenter.address)
-                    // 'centerImageUrl'에 해당하는 정확한 키를 사용하여 이미지 URL을 넘겨줍니다.
-                    putExtra("centerImageUrl", fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" })
+                // 클릭 시 유저 정보를 가져옴
+                CoroutineScope(Dispatchers.Main).launch {
+                    val userInfo: UserInfo? = getUserObject(it.context).getUserInfo()
+                    val intent = Intent(it.context, CenterDetailActivity::class.java).apply {
+                        putExtra("centerId", fitnessCenter.id) // 센터 아이디
+                        putExtra("centerName", fitnessCenter.name) // 센터 이름
+                        putExtra("centerPrice", fitnessCenter.dailyPassPrice) // 센터 가격
+                        putExtra("centerLocation", fitnessCenter.address) // 센터 위치
+                        putExtra("centerImageUrl", fitnessCenter.imagePath?.let { imagePath ->
+                            "http://10.100.103.49:8111/img/$imagePath"
+                        }) // 센터 이미지 URL
+                        putExtra("userInfo", userInfo) // 유저 정보 전달
+                    }
+                    it.context.startActivity(intent)
                 }
-                it.context.startActivity(intent)
             }
         }
     }

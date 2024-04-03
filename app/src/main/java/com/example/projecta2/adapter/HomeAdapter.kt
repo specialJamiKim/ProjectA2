@@ -9,8 +9,8 @@ import com.example.projecta2.databinding.HomeFitnessListItemBinding
 import com.example.projecta2.model.FitnessCenter
 
 class HomeAdapter(
-    private val fitnessCenterList: List<FitnessCenter>, // 수정됨: 타입을 List<FitnessCenter>로 변경
-    private val onItemClicked: (FitnessCenter) -> Unit
+    private val fitnessCenterList: List<FitnessCenter>,
+    private val onItemClicked: (FitnessCenter) -> Unit // 클릭 리스너를 매개변수로 추가
 ) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +24,7 @@ class HomeAdapter(
             binding.apply {
                 // 이미지 로드 및 표시
                 Glide.with(homePageCenterImg.context)
-                    .load(fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" } ?: R.drawable.favorite_img_7)
+                    .load(fitnessCenter.imagePath?.let { "http://10.100.103.49:8111/img/$it" })
                     .placeholder(R.drawable.chair_white_bg) // 로딩 중에 표시할 이미지
                     .error(R.drawable.chair_light_orange_bg) // 에러 발생 시 표시할 이미지
                     .into(homePageCenterImg)
@@ -34,7 +34,7 @@ class HomeAdapter(
                 textViewItemPrice.text = "${fitnessCenter.dailyPassPrice}원"
 
                 root.setOnClickListener {
-                    onItemClicked(fitnessCenter)
+                    onItemClicked(fitnessCenter) // 클릭된 항목의 정보를 전달
                 }
             }
         }

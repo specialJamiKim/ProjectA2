@@ -31,8 +31,8 @@ interface UserService {
     fun inquiryEmail(@Field("email")email : String) : Call<Void>
 
     //회원정보 수정
-    @PUT("/m_user/update")
-    fun userUpdate(@Body updatedUser: User): Call<User>
+    @POST("/m_user/update")
+    fun userUpdate(@Body currentUser: User, @Body updatedUser: User): Call<User>
 
 
     // 회원 정보 조회

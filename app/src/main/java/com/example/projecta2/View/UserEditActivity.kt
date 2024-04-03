@@ -205,16 +205,16 @@ class UserEditActivity : AppCompatActivity() {
         val newPassword = passwordEditText.text.toString()
         val addRole = listOf("ROLE_USER")
 
+
         // 수정된 사용자 정보 생성
         var updatedUser =
-            User(id = 0, email = "12", name = newName, password = newPassword, gender = "male", joinDate= "20240403", address = newAddress, phoneNumber = newTel, birthDate = newBirth, role = addRole)
+            User(id = 0, email = "12", name = newName, password = newPassword, gender = "male", joinDate= "20240401", address = newAddress, phoneNumber = newTel, birthDate = newBirth, role = addRole)
         Log.d(">>", "${updatedUser}")
-
 
         val userInfo: UserInfo = updatedUser.toUserInfo()
 
         val userService = RetrofitInstance.userService
-        userService.userUpdate(updatedUser).enqueue(object : Callback<User> {
+        userService.userUpdate(updatedUser,updatedUser).enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     db.getDao().insertUser(userInfo)
@@ -238,7 +238,9 @@ class UserEditActivity : AppCompatActivity() {
     // 회원 정보 삭제
     // 사용자 삭제 메서드
     private fun deleteUser(email: String) {
-        DialogHelper.showDeleteConfirmationDialog(this, {
+        val dialogTitle = "삭제하시겠습니까?"
+        val dialogMessage = "정말로 사용자를 삭제하시겠습니까?"
+        DialogHelper.showDeleteConfirmationDialog(this, dialogTitle, dialogMessage, {
             userService.deleteUser(email).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,

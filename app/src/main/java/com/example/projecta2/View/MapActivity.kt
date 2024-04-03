@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
 import com.example.projecta2.adapter.FitnessCenterAdapter
 import com.example.projecta2.model.FitnessCenter
@@ -33,6 +34,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var recyclerView: RecyclerView
     private lateinit var fitnessCenterAdapter: FitnessCenterAdapter
+    private var userInfo: UserInfo? = null
 
     private lateinit var zoomInButton: ImageButton
     private lateinit var zoomOutButton: ImageButton
@@ -177,7 +179,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             recyclerView = findViewById(R.id.recycler)
             recyclerView.layoutManager =
                 LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby)
+
+            // 사용자 정보를 생성자에 전달합니다.
+            fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby, userInfo)
             recyclerView.adapter = fitnessCenterAdapter
         } else {
             Log.e("RecyclerView Error", "Fitness centers list is empty or null")

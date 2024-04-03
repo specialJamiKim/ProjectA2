@@ -8,7 +8,6 @@ import android.os.Handler
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -31,14 +30,13 @@ import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
 
-    // 뷰 변수 선언
     private lateinit var personLinearLayout: LinearLayout
     private lateinit var homeToMap: FloatingActionButton
     private lateinit var myTicketCardView: CardView
     private lateinit var imgBannerRecyclerView: RecyclerView
     private lateinit var autoScrollHandler: Handler
     private lateinit var autoScrollRunnable: Runnable
-    private var autoScrollDelay: Long = 2000 // 배너 자동 스크롤 지연 시간 (2초)
+    private var autoScrollDelay: Long = 2000 // 2초
     private lateinit var HomeRecycler: RecyclerView
     private lateinit var fitnessCenters: List<FitnessCenter>
 
@@ -53,7 +51,6 @@ class HomeActivity : AppCompatActivity() {
         setupListeners()
     }
 
-    // 뷰 초기화 메서드
     private fun initView() {
         personLinearLayout = findViewById(R.id.person_linear_layout)
         homeToMap = findViewById(R.id.homeToMap)
@@ -61,32 +58,30 @@ class HomeActivity : AppCompatActivity() {
         imgBannerRecyclerView = findViewById(R.id.imgBannerRecyclerView)
     }
 
-    // 리스너 설정 메서드
+    //내 보유 일일권 클릭 처리 intetn에 담아서 보냄
     private fun setupListeners() {
         lifecycleScope.launch {
-            val userInfo: UserInfo? = getUserObject(this@HomeActivity).getUserInfo()
-
-            // 내 보유 일일권 카드뷰 클릭 이벤트 리스너
+            val userInfo : UserInfo? = getUserObject(this@HomeActivity).getUserInfo()
+            // 내 보유 일일권 클릭
             myTicketCardView.setOnClickListener {
                 val intent = Intent(this@HomeActivity, MyTicketActivity::class.java).apply {
+                    // 여기에 정보를 추가합니다
                     putExtra("userInfo", userInfo)
+                    // 필요한 만큼 계속해서 추가합니다
                 }
                 startActivity(intent)
             }
         }
 
-        // 지도 보기 버튼 클릭 이벤트 리스너
         homeToMap.setOnClickListener {
             startActivity(Intent(this, MapActivity::class.java))
         }
 
-        // 마이페이지로 이동하는 ImageView 리스너
-        findViewById<ImageView>(R.id.HomeToMyPage).setOnClickListener {
-            startActivity(Intent(this, MyPageActivity::class.java)) // MyPageActivity는 마이페이지 액티비티의 실제 클래스명으로 변경해주세요.
+        myTicketCardView.setOnClickListener {
+            startActivity(Intent(this, MyTicketActivity::class.java))
         }
     }
 
-    // 피트니스 센터 확인 메서드
     private fun checkCenter() {
         val gymService = RetrofitInstance.gymService
 
@@ -106,7 +101,6 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-    // 리사이클러뷰 설정 메서드
     private fun setupRecyclerView() {
         HomeRecycler = findViewById(R.id.HomeRecycler)
         HomeRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -115,21 +109,23 @@ class HomeActivity : AppCompatActivity() {
             val userInfo: UserInfo? = getUserObject(this@HomeActivity).getUserInfo()
             val adapter = HomeAdapter(fitnessCenters) { fitnessCenter ->
                 val intent = Intent(this@HomeActivity, CenterDetailActivity::class.java).apply {
-                    // 센터 상세 정보에 대한 인텐트 설정
-                    putExtra("centerId", fitnessCenter.id)
+                    putExtra("centerId", fitnessCenter.id) //센터 아이디 ==> 예약, 리뷰작성 시, 사용하세요!!
                     putExtra("centerName", fitnessCenter.name)
-                    putExtra("centerPrice", fitnessCenter.dailyPassPrice)
+                    putExtra("centerPrice", fitnessCenter.dailyPassPrice) // Long 타입으로 전달
                     putExtra("centerLocation", fitnessCenter.address)
-                    putExtra("centerImageUrl", fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" })
+                    putExtra(
+                        "centerImageUrl",
+                        fitnessCenter.imagePath?.let { "http://10.100.103.49:8111/img/$it" })
+                    //유저 정보 => entity=>userInfo 참고
                     putExtra("userInfo", userInfo)
                 }
+                Log.d("센터아이디 홈에서", "${fitnessCenter.id}")
                 startActivity(intent)
             }
             HomeRecycler.adapter = adapter
         }
     }
 
-    // 배너 리사이클러뷰 설정 메서드
     private fun setupBannerRecyclerView() {
         val images = listOf(R.drawable.bannerimg, R.drawable.bannerimg2, R.drawable.bannerimg3)
         imgBannerRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -139,19 +135,16 @@ class HomeActivity : AppCompatActivity() {
         snapHelper.attachToRecyclerView(imgBannerRecyclerView)
     }
 
-    // 액티비티 재개시 배너 자동 스크롤 시작
     override fun onResume() {
         super.onResume()
         startAutoScrollBanner()
     }
 
-    // 액티비티 일시정지시 배너 자동 스크롤 중지
     override fun onPause() {
         stopAutoScrollBanner()
         super.onPause()
     }
 
-    // 배너 자동 스크롤 시작 메서드
     private fun startAutoScrollBanner() {
         autoScrollHandler = Handler()
         autoScrollRunnable = object : Runnable {
@@ -165,12 +158,10 @@ class HomeActivity : AppCompatActivity() {
         autoScrollHandler.postDelayed(autoScrollRunnable, autoScrollDelay)
     }
 
-    // 배너 자동 스크롤 중지 메서드
     private fun stopAutoScrollBanner() {
         autoScrollHandler.removeCallbacks(autoScrollRunnable)
     }
 
-    // 화면 터치 이벤트 처리 메서드
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {
             currentFocus?.let { v ->

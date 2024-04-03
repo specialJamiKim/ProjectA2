@@ -2,6 +2,7 @@ package com.example.projecta2.util
 
 import com.example.projecta2.api.GymService
 import com.example.projecta2.api.ReservationService
+import com.example.projecta2.api.ReviewService
 import com.example.projecta2.api.UserService
 import com.example.projecta2.model.User
 import okhttp3.OkHttpClient
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
 
-    private const val BASE_URL = "http://10.0.2.2:8111/"
+    private const val BASE_URL = "http://10.100.103.49:8111/"
 
     private const val CONNECT_TIMEOUT_SECONDS = 30L // 연결 Timeout 시간 (초)
     private const val READ_TIMEOUT_SECONDS = 30L // 읽기 Timeout 시간 (초)
@@ -41,6 +42,10 @@ object RetrofitInstance {
 
     val reservationService : ReservationService by lazy{
         retrofit.create(ReservationService::class.java)
+    }
+
+    val reviewService : ReviewService by lazy{
+        retrofit.create(ReviewService::class.java)
     }
 
 
