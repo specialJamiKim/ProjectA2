@@ -76,7 +76,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
-                                android:fontFamily="@font/calibri"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:text="Item Name1"
                                 android:textColor="#000000"
                                 android:textSize="24sp" />
@@ -86,7 +86,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:fontFamily="@font/calibri"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:text="center Price1"
                                 android:textColor="#FF0000"
                                 android:textSize="20sp" />
@@ -102,6 +102,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingTop="20dp"
                             android:gravity="right"
                             android:orientation="vertical">
 
@@ -109,9 +110,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
-                                android:fontFamily="@font/calibri"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:text="평점"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
 
                             <ImageView
                                 android:layout_width="72dp"
@@ -120,11 +121,12 @@
 
                             <TextView
                                 android:id="@+id/centeraddress"
+                                android:textAlignment="textEnd"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/calibri"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:text="centeraddress1"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
 
                         </LinearLayout>
 
@@ -144,7 +146,7 @@
                     android:id="@+id/centerText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/calibri"
+                    android:fontFamily="@font/radibatang"
                     android:padding="16dp"
                     android:text="introText"
                     android:textColor="#444444"
@@ -156,8 +158,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:background="@drawable/buttonshape"
-                    android:fontFamily="@font/calibri"
+                    android:background="@drawable/buttonshape4"
+                    android:fontFamily="@font/puradak_gentle_gothic"
                     android:text="예약 하기"
                     android:textAllCaps="false"
                     android:textColor="#ffffff"
@@ -175,24 +177,31 @@
                         android:id="@+id/reviewEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/puradak_gentle_gothic"
                         android:hint="리뷰를 작성해주세요"
                         android:inputType="textMultiLine"
-                        android:minLines="3"
+                        android:minLines="2"
                         android:gravity="start|top" />
 
                     <!-- 리뷰 전송 버튼 -->
                     <Button
                         android:id="@+id/submitReviewBtn"
+                        android:fontFamily="@font/puradak_gentle_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/buttonshape4"
                         android:text="리뷰 작성" />
 
                     <!-- 작성된 리뷰 보기 -->
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/reviewView"
+                    <TextView
+                        android:id="@+id/reviewTextView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content"
+                        android:text="작성된 리뷰"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:layout_marginTop="16dp"/>
 
                 </LinearLayout>
             </LinearLayout>

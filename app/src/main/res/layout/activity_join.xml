@@ -58,7 +58,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:background="#8793eb"
+                    android:background="#292929"
                     android:orientation="vertical">
 
                     <TextView
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
                         android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/calibri"
+                        android:fontFamily="@font/puradak_gentle_gothic"
                         android:text="Fit-pass plater"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
@@ -78,7 +78,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/calibri"
+                        android:fontFamily="@font/puradak_gentle_gothic"
                         android:text="회원가입"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
@@ -90,7 +90,7 @@
                         android:layout_height="4dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
-                        android:background="#ffc6c6" />
+                        android:background="#FFFFFF" />
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -123,6 +123,7 @@
                                 android:layout_weight="0.5"
                                 android:paddingTop="5dp"
                                 android:text="이름 : "
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:textSize="20dp" />
                             <EditText
                                 android:id="@+id/etName"
@@ -130,7 +131,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
                                 android:paddingLeft="15dp"
-                                android:fontFamily="@font/calibri"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:hint="이름을 입력하세요"
                                 android:inputType="text"
                                 android:maxLines="1"
@@ -141,7 +142,7 @@
                         <!-- 간격 추가 -->
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="8dp"/>
+                            android:layout_height="12dp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -155,6 +156,7 @@
                                 android:layout_weight="0.5"
                                 android:paddingTop="5dp"
                                 android:text="ID : "
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:textSize="20dp" />
                             <EditText
                                 android:id="@+id/etEmail"
@@ -162,7 +164,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
                                 android:paddingLeft="15dp"
-                                android:fontFamily="@font/calibri"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:hint="ID을 입력하세요"
                                 android:inputType="text"
                                 android:maxLines="1"
@@ -173,7 +175,7 @@
                         <!-- 간격 추가 -->
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="8dp"/>
+                            android:layout_height="12dp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -186,6 +188,7 @@
                                 android:paddingTop="5dp"
                                 android:textSize="20dp"
                                 android:layout_weight="0.5"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:text="비밀번호 : "/>
                             <EditText
                                 android:id="@+id/etPassword"
@@ -193,7 +196,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
                                 android:paddingLeft="15dp"
-                                android:fontFamily="@font/calibri"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:hint="비밀번호를 입력하세요"
                                 android:inputType="textPassword"
                                 android:textColor="@android:color/black"
@@ -203,7 +206,7 @@
                         <!-- 간격 추가 -->
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="8dp"/>
+                            android:layout_height="12dp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -216,6 +219,7 @@
                                 android:paddingTop="5dp"
                                 android:textSize="20dp"
                                 android:layout_weight="0.5"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:text="전화번호 : "/>
                             <EditText
                                 android:id="@+id/etPhoneNumber"
@@ -223,7 +227,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
                                 android:paddingLeft="15dp"
-                                android:fontFamily="@font/calibri"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:hint="전화번호를 입력하세요"
                                 android:inputType="phone"
                                 android:textColor="@android:color/black"
@@ -233,7 +237,7 @@
                         <!-- 간격 추가 -->
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="8dp"/>
+                            android:layout_height="12dp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -246,6 +250,7 @@
                                 android:paddingTop="5dp"
                                 android:textSize="20dp"
                                 android:layout_weight="0.5"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:text="생년월일 : "/>
                             <EditText
                                 android:id="@+id/etBirthDate"
@@ -253,7 +258,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
                                 android:paddingLeft="15dp"
-                                android:fontFamily="@font/calibri"
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:hint="생년월일 입력하세요"
                                 android:inputType="phone"
                                 android:textColor="@android:color/black"
@@ -262,7 +267,7 @@
                         <!-- 간격 추가 -->
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="8dp"/>
+                            android:layout_height="12dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -275,6 +280,7 @@
                                 android:layout_weight="1"
                                 android:paddingTop="5dp"
                                 android:text="성별 : "
+                                android:fontFamily="@font/puradak_gentle_gothic"
                                 android:textSize="20dp" />
 
                             <RadioGroup
@@ -290,7 +296,7 @@
                                     android:id="@+id/rbMale"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/calibri"
+                                    android:fontFamily="@font/puradak_gentle_gothic"
                                     android:text="남자"
                                     android:textColor="@android:color/black"
                                     android:textSize="16sp" />
@@ -299,7 +305,7 @@
                                     android:id="@+id/rbFemale"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/calibri"
+                                    android:fontFamily="@font/puradak_gentle_gothic"
                                     android:text="여자"
                                     android:textColor="@android:color/black"
                                     android:textSize="16sp" />
@@ -322,8 +328,8 @@
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:layout_margin="16dp"
-                        android:background="@drawable/buttonshape"
-                        android:fontFamily="@font/calibri"
+                        android:background="@drawable/buttonshape4"
+                        android:fontFamily="@font/puradak_gentle_gothic"
                         android:text="회원가입"
                         android:textAllCaps="false"
                         android:textColor="#ffffff"

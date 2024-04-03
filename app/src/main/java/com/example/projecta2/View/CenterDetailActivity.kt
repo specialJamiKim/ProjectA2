@@ -41,7 +41,7 @@ class CenterDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_center_detail)
 
-        reviewView = findViewById(R.id.reviewView)
+        //reviewView = findViewById(R.id.reviewView)
         reviewEditText = findViewById(R.id.reviewEditText)
         submitReviewBtn = findViewById(R.id.submitReviewBtn)
         submitReviewBtn.setOnClickListener {

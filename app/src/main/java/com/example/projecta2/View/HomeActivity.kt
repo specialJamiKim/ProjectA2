@@ -49,10 +49,12 @@ class HomeActivity : AppCompatActivity() {
         setupBannerRecyclerView()
         checkCenter()
         setupListeners()
+
+        val userInfo : String? = SessionManager.getUserEmail(this)
+        Log.d("세션에 있는 정보", "${userInfo}")
     }
 
     private fun initView() {
-        personLinearLayout = findViewById(R.id.person_linear_layout)
         homeToMap = findViewById(R.id.homeToMap)
         myTicketCardView = findViewById(R.id.myTicketCardView)
         imgBannerRecyclerView = findViewById(R.id.imgBannerRecyclerView)

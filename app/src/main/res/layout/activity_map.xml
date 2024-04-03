@@ -9,26 +9,48 @@
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="#6889E1"
+      android:background="#292929"
       android:paddingTop="0dp"
       android:theme="@style/AppTheme.AppBarOverlay"
       app:elevation="0dp">
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/calibri"
-        android:layout_marginTop="15dp"
-        android:text="내 주변 헬스장 찾기"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="27sp" />
-    <View
-        android:layout_width="100dp"
-        android:layout_height="4dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
-        android:background="#ffc6c6" />
+        android:layout_height="200dp"
+        android:background="#292929"
+        android:orientation="vertical">
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="40dp"
+          android:layout_marginBottom="16dp"
+          android:fontFamily="@font/puradak_gentle_gothic"
+          android:text="Fit-pass plater"
+          android:textAlignment="center"
+          android:textColor="#FFFFFF"
+          android:textSize="22sp" />
+
+      <TextView
+          android:id="@+id/userEditTitle"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:layout_marginBottom="5dp"
+          android:fontFamily="@font/puradak_gentle_gothic"
+          android:text="내 주변 헬스장 찾기"
+          android:textAlignment="center"
+          android:textColor="#FFFFFF"
+          android:textSize="36sp"
+          android:textStyle="bold" />
+
+      <View
+          android:layout_width="180dp"
+          android:layout_height="4dp"
+          android:layout_gravity="center"
+          android:layout_marginTop="16dp"
+          android:background="#FFFFFF" />
+    </LinearLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
   <RelativeLayout
@@ -98,9 +120,10 @@
               android:layout_width="55dp"
               android:layout_height="wrap_content"
               android:layout_weight="2"
+              android:fontFamily="@font/puradak_gentle_gothic"
               android:text="센터사진"
               android:paddingLeft="10dp"
-              android:textSize="20dp"
+              android:textSize="18dp"
               android:textStyle="bold" />
 
           <TextView
@@ -109,8 +132,9 @@
               android:layout_height="wrap_content"
               android:layout_weight="0.5"
               android:paddingLeft="25dp"
+              android:fontFamily="@font/puradak_gentle_gothic"
               android:text="센터정보"
-              android:textSize="20dp"
+              android:textSize="18dp"
               android:textStyle="bold" />
 
           <TextView
@@ -119,9 +143,10 @@
               android:layout_height="wrap_content"
               android:layout_weight="5"
               android:paddingLeft="13dp"
+              android:fontFamily="@font/puradak_gentle_gothic"
               android:text="가격"
               android:textAlignment="center"
-              android:textSize="20dp"
+              android:textSize="18dp"
               android:textStyle="bold" />
         </LinearLayout>
 
@@ -140,7 +165,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
         android:src="@drawable/favorite_img_7"
-        app:backgroundTint="#A3BCFE"
+        app:backgroundTint="#676768"
         app:fabSize="normal" />
 
     <LinearLayout

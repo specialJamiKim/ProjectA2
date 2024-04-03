@@ -65,7 +65,7 @@ class UserEditActivity : AppCompatActivity() {
 
 
         // EditText 초기화
-        passwordEditText = findViewById(R.id.userEditPassword)
+        //passwordEditText = findViewById(R.id.userEditPassword)
         idEditText = findViewById(R.id.userEditId)
         nameEditText = findViewById(R.id.userEditName)
         addressEditText = findViewById(R.id.userEditAddress)

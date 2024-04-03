@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:background="#292929"
         android:paddingTop="24dp"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
@@ -31,7 +31,7 @@
                     android:layout_width="373dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:fontFamily="@font/calibri"
+                    android:fontFamily="@font/puradak_gentle_gothic"
                     android:text="Fit-pass plater"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -89,11 +89,11 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="13dp"
                     android:layout_marginRight="4dp"
-                    android:fontFamily="@font/calibri"
+                    android:fontFamily="@font/puradak_gentle_gothic"
                     android:padding="8dp"
                     android:text="Fit-Pass plater의 놀라운 할인혜택!"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="15sp" />
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                         <androidx.cardview.widget.CardView
                             android:id="@+id/myTicketCardView"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="110dp"
                             android:layout_marginStart="4dp"
                             app:cardCornerRadius="8dp"
                             app:cardElevation="4dp"
@@ -137,7 +137,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:fontFamily="@font/calibri"
+                                        android:fontFamily="@font/puradak_gentle_gothic"
                                         android:text="내 보유 일일권"
                                         android:textColor="#3C3C3C"
                                         android:textSize="11sp" />
@@ -253,8 +253,9 @@
                             <androidx.cardview.widget.CardView
                                 android:id="@+id/imgBannerCardView"
                                 android:layout_width="240dp"
-                                android:layout_height="100dp"
-                                app:cardCornerRadius="20dp"
+                                android:layout_height="95dp"
+                                android:layout_marginTop="8dp"
+                                app:cardCornerRadius="10dp"
                                 app:cardElevation="3dp">
 
                                 <androidx.recyclerview.widget.RecyclerView
@@ -277,14 +278,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
-                    android:fontFamily="@font/calibri"
+                    android:fontFamily="@font/puradak_gentle_gothic"
                     android:padding="8dp"
-                    android:text="오직 Fit-pass plater에서만 할인중! "
+                    android:text="오직 Fit-pass plater에서만 할인중!"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="15sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/HomeRecycler"
+                    android:fontFamily="@font/puradak_gentle_gothic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -307,6 +309,7 @@
             app:fabSize="normal" />
 
         <LinearLayout
+            android:id="@+id/HomeToHomeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -333,12 +336,12 @@
                     android:layout_height="2dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
-                    android:background="@color/colorPrimaryDark" />
+                    android:background="#292929" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/person_linear_layout"
+                android:id="@+id/HomeToMyPageLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
