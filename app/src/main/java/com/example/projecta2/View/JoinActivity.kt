@@ -48,7 +48,7 @@ class JoinActivity : AppCompatActivity() {
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             val radioButton = findViewById<RadioButton>(checkedId)
             selectedGender = radioButton.text.toString()
-            selectedGenderEng = if (selectedGender.equals("남자")) "mail" else "female"
+            selectedGenderEng = if (selectedGender.equals("남자")) "male" else "female"
         }
 
         findViewById<Button>(R.id.btnJoinPro).setOnClickListener {
@@ -108,7 +108,7 @@ class JoinActivity : AppCompatActivity() {
         })
     }
 
-    private fun userJoin(user: User) {
+    fun userJoin(user: User) {
         val userService = RetrofitInstance.userService
 
         userService.join(user).enqueue(object : Callback<ResponseBody> {

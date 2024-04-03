@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.appcompat.app.AlertDialog
 
 object DialogHelper {
-    fun showMessageDialog(context: Context, title: String, message: String, onPositiveClick: (() -> Unit)? = null) {
+    fun showMessageDialog(context: Context, title: String, message: String, onPositiveClick: (() -> Unit)? = null,
+                          onNegativeClick: (() -> Unit)? = null) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle(title)
             .setMessage(message)
@@ -18,4 +19,12 @@ object DialogHelper {
         val dialog = builder.create()
         dialog.show()
     }
+
+    // 삭제 확인
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit, onCancel: () -> Unit) {
+        showMessageDialog(context, "삭제 확인", "삭제하시겠습니까?",
+            onPositiveClick = onDeleteConfirmed,
+            onNegativeClick = onCancel)
+    }
 }
+

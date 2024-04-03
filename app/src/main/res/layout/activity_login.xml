@@ -68,7 +68,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/calibri"
-                        android:text="Your Future"
+                        android:text="Fit-pass plater"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
                         android:textSize="22sp" />
@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/calibri"
-                        android:text="Furniture"
+                        android:text="회원 로그인"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
                         android:textSize="36sp"
@@ -90,12 +90,6 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         android:background="#ffc6c6" />
-
-                    <Button
-                        android:id="@+id/btnGoogleLogin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Button" />
 
                 </LinearLayout>
 
@@ -123,10 +117,10 @@
                             android:layout_marginTop="36dp"
                             android:layout_marginBottom="24dp"
                             android:fontFamily="@font/calibri"
-                            android:text="Login First"
+                            android:text="이용을 위해 로그인을 해주세요"
                             android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:textSize="24sp" />
+                            android:textColor="#5C5B5B"
+                            android:textSize="14sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -141,7 +135,7 @@
                                 android:drawableStart="@drawable/ic_person_gray_24dp"
                                 android:drawablePadding="16dp"
                                 android:fontFamily="@font/calibri"
-                                android:hint="Username"
+                                android:hint="ID"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:textColor="@android:color/black"
@@ -162,7 +156,7 @@
                                 android:drawableStart="@drawable/ic_lock_gray_24dp"
                                 android:drawablePadding="16dp"
                                 android:fontFamily="@font/calibri"
-                                android:hint="Password"
+                                android:hint="비밀번호"
                                 android:inputType="textPassword"
                                 android:maxLines="1"
                                 android:textColor="@android:color/black"
@@ -176,7 +170,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/login"
@@ -184,27 +178,48 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center"
-                        android:layout_margin="16dp"
-                        android:background="@drawable/buttonshape"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/buttonshape4"
                         android:fontFamily="@font/calibri"
-                        android:text="Login"
+                        android:text="로그인"
                         android:textAllCaps="false"
                         android:textColor="#ffffff"
-                        android:textSize="24sp" />
+                        android:textSize="20sp" />
+
+
 
                     <Button
                         android:id="@+id/btnJoinPage"
-                        android:textSize="24sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="150dp"
+                        android:layout_marginRight="150dp"
+                        android:fontFamily="@font/calibri"
+                        android:text="회원가입"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp"
+                        android:background="@android:color/transparent" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        app:srcCompat="@drawable/login_line" />
+
+                    <Button
+                        android:id="@+id/btnGoogleLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_margin="16dp"
-                        android:background="@drawable/buttonshape3"
-                        android:fontFamily="@font/calibri"
-                        android:text="Join"
-                        android:textAllCaps="false"
-                        android:textColor="#ffffff"/>
+                        android:background="@android:color/transparent"
+                        android:drawableLeft="@drawable/google_s3" />
+
+
                 </LinearLayout>
             </LinearLayout>
 

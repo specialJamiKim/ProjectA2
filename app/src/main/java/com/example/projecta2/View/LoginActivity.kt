@@ -9,18 +9,24 @@ import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.projecta2.Dao.UserDB
 import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
 import com.example.projecta2.model.User
 import com.example.projecta2.util.DialogHelper
 import com.example.projecta2.util.RetrofitInstance
+import com.example.projecta2.util.getUserObject
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,10 +51,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         db = DatabaseInitializer.initDatabase(this)
+
+        //초기화 관련
         // Room 데이터베이스 초기화
         deleteAllUsers()
+        // 세션 초기화
+        SessionManager.clearSession(this)
 
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if (account != null) {
@@ -86,7 +95,6 @@ class LoginActivity : AppCompatActivity() {
 
         // 구글 로그인 버튼 클릭 리스너
         btnGoogleLogin.setOnClickListener {
-            Log.d("GoogleLogin", "구글 로그인 버튼 클릭")
             googleSignIn()
         }
     }
@@ -97,6 +105,8 @@ class LoginActivity : AppCompatActivity() {
             db.getDao().deleteAllUsers()
         }.start()
     }
+
+
 
     // 구글 로그인
     private fun googleSignIn() {
@@ -109,49 +119,126 @@ class LoginActivity : AppCompatActivity() {
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                    val task: Task<GoogleSignInAccount> =
+                        GoogleSignIn.getSignedInAccountFromIntent(result.data)
                     handleSignInResult(task)
                 }
             }
-    }
-
-    //
-    private fun saveToRoomDB(account: GoogleSignInAccount) {
-        // Room을 사용하여 내장 DB에 구글 계정 정보를 저장하는 작업 수행
-        val userInfo = UserInfo(
-            Id = null,
-            email = account.email,
-            name = account.displayName,
-            password = null, // 비밀번호는 구글 로그인 시 필요하지 않음
-            phoneNumber = null,
-            gender = null,
-            address = null,
-            joinDate = null,
-            role = emptyList(),
-            birthDate = null
-        )
-        Thread {
-            db.getDao().insertUser(userInfo)
-        }.start()
     }
 
     // 구글 로그인 결과 핸들링
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            saveToRoomDB(account) // Room 데이터베이스에 사용자 정보 저장
-
-            Log.d("GoogleLoginSuccess", "이메일: ${account.email}, 성: ${account.familyName}, 이름: ${account.givenName}, 전체 이름: ${account.displayName}, 프로필 사진 URL: ${account.photoUrl}")
-            val intent = Intent(applicationContext, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
+            checkEmailAndSignUpGoogle(account)
         } catch (e: ApiException) {
             Log.w("GoogleLoginFailure", "signInResult:실패 code=${e.statusCode}", e)
         }
     }
 
+    // 서버에 email을 확인하고 회원가입하거나 로그인하는 함수
+    private fun checkEmailAndSignUpGoogle(account: GoogleSignInAccount) {
+        val userService = RetrofitInstance.userService
+        val googleEmail = account.email.toString() // 구글 이메일 가져오기
+        userService.inquiryEmail(googleEmail).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) { // 서버에 email 중복이 안됨 => 회원가입 가능
+                    //email, 이름 => 구글 계정 정보 사용
+                    val userObj = User(email = account.email.toString(), name = account.displayName.toString())
+                    // 서버에 회원가입 요청
+                    userJoin(userObj)
+                } else {
+                    // 서버에 해당 이메일이 이미 등록되어 있는 경우 => 로그인 처리
+                    loginUser(googleEmail)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("Check Email", "Error: ${t.message}", t)
+                // 서버 통신 실패 처리
+                DialogHelper.showMessageDialog(
+                    this@LoginActivity,
+                    "통신 실패",
+                    "서버와 통신이 실패했습니다.\n연결을 확인해주세요."
+                )
+            }
+        })
+    }
+
+    // 서버에 회원가입 요청하는 함수
+    private fun userJoin(user: User) {
+        val userService = RetrofitInstance.userService
+        userService.join(user).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    // 회원가입 성공
+                    loginUser(user.email) // 로그인 처리
+                    Log.d("구글회원가입 완료", "구글 회원가입 완료")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("Request Failed", "Error: ${t.message}", t)
+                // 서버 통신 실패 처리
+                DialogHelper.showMessageDialog(
+                    this@LoginActivity,
+                    "통신 실패",
+                    "서버와 통신이 실패했습니다.\n연결을 확인해주세요."
+                )
+            }
+        })
+    }
+
+    // 서버에 등록된 이메일로 로그인하는 함수
+    private fun loginUser(email: String) {
+        val userService = RetrofitInstance.userService
+        userService.getUserInfo(email).enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                if (response.isSuccessful) {
+                    val user = response.body() // 서버에서 받은 유저 정보
+
+                    // 내장 DB에 유저 정보 저장
+                    CoroutineScope(Dispatchers.IO).launch {
+                        user?.let {
+                            db.getDao().insertUser(it.toUserInfo())
+                        }
+                    }
+
+                    // account.email이 null이 아닐 때에만 세션에 이메일 저장
+                    SessionManager.saveUserEmail(
+                        this@LoginActivity,
+                        email
+                    )
+
+                    // 홈 화면으로 이동
+                    val intent = Intent(applicationContext, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    // 서버에서 유저 정보를 가져오지 못한 경우
+                    DialogHelper.showMessageDialog(
+                        this@LoginActivity,
+                        "회원 정보 가져오기 실패",
+                        "서버에서 회원 정보를 가져오지 못했습니다."
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.e("Get User Info", "Error: ${t.message}", t)
+                // 서버 통신 실패 처리
+                DialogHelper.showMessageDialog(
+                    this@LoginActivity,
+                    "통신 실패",
+                    "서버와 통신이 실패했습니다.\n연결을 확인해주세요."
+                )
+            }
+        })
+    }
 
 
+
+    ////여기까지 수정해야함
 
     // 일반 로그인
     private fun signIn(email: String, password: String) {
@@ -160,8 +247,6 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     response.body()?.let { user ->
-                        Log.d("LoginSuccess", "이메일: ${user.email}, 이름: ${user.name}")
-
                         // 사용자 정보를 Room 데이터베이스에 저장하고 저장된 정보를 로그로 출력
                         Thread {
                             val userInfo = UserInfo(
@@ -184,8 +269,6 @@ class LoginActivity : AppCompatActivity() {
 
                             Log.d("StoredUserInfo", "${stUser}")
 
-
-
                             runOnUiThread {
                                 val intent = Intent(applicationContext, HomeActivity::class.java)
                                 startActivity(intent)
@@ -197,7 +280,11 @@ class LoginActivity : AppCompatActivity() {
                     }
                 } else {
                     Log.e("ResponseError", "코드: ${response.code()}, 서버 연결 실패")
-                    DialogHelper.showMessageDialog(this@LoginActivity, "로그인 실패", "회원 정보가 없습니다.\n이메일과 비밀번호를 확인해주세요.")
+                    DialogHelper.showMessageDialog(
+                        this@LoginActivity,
+                        "로그인 실패",
+                        "회원 정보가 없습니다.\n이메일과 비밀번호를 확인해주세요."
+                    )
                 }
             }
 

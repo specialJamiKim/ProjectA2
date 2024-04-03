@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 //
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.projecta2.model.User
 
 @Entity
 data class UserInfo(
@@ -59,5 +60,20 @@ data class UserInfo(
         override fun newArray(size: Int): Array<UserInfo?> {
             return arrayOfNulls(size)
         }
+    }
+
+    public fun toUser(): User {
+        return User(
+            id = this.Id ?: 0,
+            name = this.name ?: "",
+            email = this.email ?: "",
+            password = this.password ?: "",
+            phoneNumber = this.phoneNumber ?: "",
+            gender = this.gender ?: "",
+            address = this.address ?: "",
+            birthDate = this.birthDate ?: "",
+            joinDate = this.joinDate ?: "",
+            role = this.role
+        )
     }
 }

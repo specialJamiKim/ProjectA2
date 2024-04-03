@@ -12,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.cardview.widget.CardView
 import com.example.projecta2.Dao.UserDB
 import com.example.projecta2.R
+import com.example.projecta2.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

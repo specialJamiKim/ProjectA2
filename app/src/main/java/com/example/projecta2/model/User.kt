@@ -1,5 +1,6 @@
 package com.example.projecta2.model
 
+import com.example.projecta2.Entity.UserInfo
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -25,4 +26,22 @@ data class User(
 
 ) {
     constructor(id: Long) : this(id, "", "", "", "", "", "", "", "", emptyList())
+
+    public fun toUserInfo(): UserInfo {
+        return UserInfo(
+            Id = this.id,
+            name = this.name,
+            email = this.email,
+            password = this.password,
+            phoneNumber = this.phoneNumber,
+            gender = this.gender,
+            address = this.address,
+            birthDate = this.birthDate,
+            joinDate = this.joinDate,
+            role = this.role
+        )
+    }
 }
+
+
+

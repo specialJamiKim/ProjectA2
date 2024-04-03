@@ -123,6 +123,19 @@
                             android:textSize="16sp" />
 
                         <EditText
+                            android:id="@+id/userEditPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:drawableStart="@drawable/ic_lock_gray_24dp"
+                            android:drawablePadding="16dp"
+                            android:fontFamily="@font/calibri"
+                            android:hint="Password"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <EditText
                             android:id="@+id/userEditName"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -133,6 +146,7 @@
                             android:maxLines="1"
                             android:textColor="@android:color/black"
                             android:textSize="16sp" />
+
                         <EditText
                             android:id="@+id/userEditAddress"
                             android:layout_width="match_parent"
