@@ -1,6 +1,7 @@
 package com.example.projecta2.View
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -19,13 +21,21 @@ import com.example.projecta2.Dao.UserDB
 import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
 import com.example.projecta2.model.FitnessCenter
+import com.example.projecta2.model.Reservation
 import com.example.projecta2.model.Review
+import com.example.projecta2.util.DialogHelper
 import com.example.projecta2.util.RetrofitInstance
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.HttpException
+import retrofit2.Response
+import java.util.Calendar
+import kotlin.properties.Delegates
 
 class CenterDetailActivity : AppCompatActivity() {
 
@@ -33,9 +43,10 @@ class CenterDetailActivity : AppCompatActivity() {
     private lateinit var reviewView: RecyclerView
     private lateinit var submitReviewBtn: Button
     private lateinit var reviewEditText: EditText
-    private lateinit var user: UserInfo
+    private lateinit var userInfo: UserInfo
     private lateinit var fitnessCenter: FitnessCenter
-
+    private var centerId by Delegates.notNull<Long>()
+    private var selectedDate: String? = null
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,11 +81,10 @@ class CenterDetailActivity : AppCompatActivity() {
         val centerImageUrl = intent.getStringExtra("centerImageUrl")
 
         // 추가부분 => centerId 가져오기
-        val centerId = intent.getLongExtra("centerId", 0L)
+        centerId = intent.getLongExtra("centerId", 0L)
+        fitnessCenter = FitnessCenter(id = centerId)
         // Intent에서 데이터 추출 => userInfo는 parcelable 처리하여 이렇게 사용해야함
-        val userInfo = intent.getParcelableExtra<UserInfo>("userInfo")
-        Log.d("UserInfo", "UserInfo: $userInfo")
-        Log.d("CenterId", "CenterId: $centerId")
+        userInfo = intent.getParcelableExtra<UserInfo>("userInfo")!!
 
         // 데이터 설정
         textViewItemName.text = centerName
@@ -117,11 +127,7 @@ class CenterDetailActivity : AppCompatActivity() {
         }
         backButton.setOnClickListener { finish() }
         reserveButton.setOnClickListener {
-            val intent = Intent(this, ReservationActivity::class.java).apply {
-                putExtra("centerName", centerName)
-                // 추가 데이터 전달이 필요한 경우 여기에 추가
-            }
-            startActivity(intent)
+            showDatePicker()
         }
     }
 
@@ -182,5 +188,77 @@ class CenterDetailActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "리뷰를 작성해주세요.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    //센터 예약 달력 함수
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, dayOfMonth ->
+                selectedDate = "$selectedYear/${selectedMonth + 1}/$dayOfMonth"
+                showReservationConfirmationDialog(selectedDate!!)
+            },
+            year,
+            month,
+            dayOfMonth
+        )
+        datePickerDialog.show()
+    }
+
+
+    //센터 예약 함수
+    private fun showReservationConfirmationDialog(reservationDate: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("예약 확인")
+        val message = "예약을 진행하시겠습니까?\n\n예약 날짜: $reservationDate"
+        builder.setMessage(message)
+        Log.d("예약일", "${reservationDate}")
+        builder.setPositiveButton("예약") { dialog, _ ->
+            DialogHelper.showMessageDialog(this, "예약 확인", "예약이 완료되었습니다.\n\n예약 날짜: $reservationDate") {
+
+                //서버 DB에 예약 정보 보내는 부분
+                serverDbSaveReservation(userInfo,fitnessCenter,reservationDate)
+
+                // 예약 완료 후 마이페이지로 이동
+                val intent = Intent(this, MyPageActivity::class.java)
+                startActivity(intent)
+            }
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("취소") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+    
+    private fun serverDbSaveReservation(userInfo : UserInfo , fitnessCenter: FitnessCenter, reservationDate: String){
+        //예약객체하나 만들기
+        val reservationObj = Reservation(center = fitnessCenter, user = userInfo.toUser(), reservationTime = reservationDate )
+
+        val reservationService = RetrofitInstance.reservationService
+        reservationService.createReservation(reservationObj).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("예약성공", "DB확인해보세요 있음 ㄹㅇㅋㅋ")
+                } else {
+                    // 예약 생성이 실패했을 때 처리하는 코드
+                    Log.e("Reservation Error", "Failed to create reservation. Code: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // 요청이 실패했을 때 처리하는 코드
+                Log.e("Reservation Error", "Failed to create reservation. Error: ${t.message}", t)
+            }
+        })
+        
     }
 }

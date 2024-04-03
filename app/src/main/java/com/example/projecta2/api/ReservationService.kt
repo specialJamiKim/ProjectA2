@@ -10,6 +10,7 @@ import retrofit2.http.Path
 
 interface ReservationService {
 
+    //예약저장
     @POST("/m_reservation/create")
     fun createReservation(@Body reservation: Reservation): Call<ResponseBody>
 
