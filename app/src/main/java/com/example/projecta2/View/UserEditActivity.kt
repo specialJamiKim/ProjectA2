@@ -27,8 +27,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import okhttp3.ResponseBody
 import java.util.Calendar
 import android.app.DatePickerDialog
+import androidx.lifecycle.lifecycleScope
 import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.util.DialogHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class UserEditActivity : AppCompatActivity() {
@@ -36,7 +40,6 @@ class UserEditActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var sexEditText: EditText
     private lateinit var nameEditText: EditText
-    private lateinit var addressEditText: EditText
     private lateinit var telEditText: EditText
     private lateinit var birthEditText: EditText
     private lateinit var idEditText: EditText
@@ -47,7 +50,7 @@ class UserEditActivity : AppCompatActivity() {
     private lateinit var userService: UserService
 
     // Room Database instance
-    lateinit var db: UserDB
+    private lateinit var db: UserDB
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,10 +68,9 @@ class UserEditActivity : AppCompatActivity() {
 
 
         // EditText 초기화
-        //passwordEditText = findViewById(R.id.userEditPassword)
+        passwordEditText = findViewById(R.id.userEditPassword)
         idEditText = findViewById(R.id.userEditId)
         nameEditText = findViewById(R.id.userEditName)
-        addressEditText = findViewById(R.id.userEditAddress)
         telEditText = findViewById(R.id.userEditTel)
         birthEditText = findViewById(R.id.userEditBirth)
         sexEditText = findViewById(R.id.userEditSex)
@@ -87,10 +89,13 @@ class UserEditActivity : AppCompatActivity() {
 
 
         // 수정 버튼 클릭 리스너 설정
-        submitButton = findViewById(R.id.editBth)
+        val submitButton = findViewById<Button>(R.id.editBth)
         submitButton.setOnClickListener {
             // 수정된 정보를 가져와서 처리하는 함수 호출
-            userUpdate()
+            lifecycleScope.launch {
+                // 수정된 정보를 가져와서 처리하는 함수 호출
+                userUpdate()
+            }
         }
 
         // 삭제 버튼 클릭 리스너 설정
@@ -148,10 +153,9 @@ class UserEditActivity : AppCompatActivity() {
                     val user = response.body()
                     if (user != null) {
                         // 사용자 정보가 있을 경우 EditText에 설정
-                        passwordEditText.setText(user.id.toString())
+
                         idEditText.setText(user.id.toString())
                         nameEditText.setText(user.name)
-                        addressEditText.setText(user.address)
                         telEditText.setText(user.phoneNumber)
                         birthEditText.setText(user.birthDate)
                         sexEditText.setText(user.gender)
@@ -192,14 +196,40 @@ class UserEditActivity : AppCompatActivity() {
 
 
     // 회원 정보 수정 함수
-    private fun userUpdate() {
+    private suspend fun userUpdate() {
+        // 기존 사용자 정보 불러오기
+        val currentUser = getCurrentUser()
 
-        //초기화 관련
-        // Room 데이터베이스 초기화
-        deleteAllUsers()
+        // 새로운 정보 객체 생성
+        val updatedUser = currentUser?.copy(
+            name = nameEditText.text.toString(),
+            address = addressEditText.text.toString(),
+            phoneNumber = telEditText.text.toString(),
+            birthDate = birthEditText.text.toString(),
+            password = passwordEditText.text.toString()
+        )
 
+<<<<<<< HEAD
+        // 업데이트된 사용자 정보로 API 호출
+        updatedUser?.let {
+            val userInfo: UserInfo = it.toUserInfo()
+            val userService = RetrofitInstance.userService
+            userService.userUpdate(updatedUser).enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        // 성공적으로 수정되었을 때의 처리
+                        Log.d("성공", "성공성공")
+                        // 사용자 정보가 성공적으로 업데이트되면 로컬 데이터베이스의 모든 사용자 정보 삭제
+                        deleteAllUsers()
+                        // 업데이트된 정보를 데이터베이스에 저장
+                        saveUpdatedUserInfo(userInfo)
+                    } else {
+                        // 수정에 실패했을 때의 처리
+                        val errorCode = response.code()
+                        Log.d("실패", "오류 코드: $errorCode")
+                    }
+=======
         val newName = nameEditText.text.toString()
-        val newAddress = addressEditText.text.toString()
         val newTel = telEditText.text.toString()
         val newBirth = birthEditText.text.toString()
         val newPassword = passwordEditText.text.toString()
@@ -208,7 +238,7 @@ class UserEditActivity : AppCompatActivity() {
 
         // 수정된 사용자 정보 생성
         var updatedUser =
-            User(id = 0, email = "12", name = newName, password = newPassword, gender = "male", joinDate= "20240401", address = newAddress, phoneNumber = newTel, birthDate = newBirth, role = addRole)
+            User(id = 0, email = "12", name = newName, password = newPassword, gender = "male", joinDate= "20240401", phoneNumber = newTel, birthDate = newBirth, role = addRole)
         Log.d(">>", "${updatedUser}")
 
         val userInfo: UserInfo = updatedUser.toUserInfo()
@@ -224,16 +254,37 @@ class UserEditActivity : AppCompatActivity() {
                     // 수정에 실패했을 때의 처리
                     val errorCode = response.code()
                     Log.d("실패", "오류 코드: $errorCode")
+>>>>>>> bfa4dc2148803a22619fa6ad893c7343706ac980
                 }
-            }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                // 통신 실패 처리
-                Log.d("통신실패", "통신실패실패")
-            }
-        })
-
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    // 통신 실패 처리
+                    Log.d("통신실패", "통신실패실패")
+                }
+            })
+        }
     }
+
+    private suspend fun getCurrentUser(): User? {
+        val email = SessionManager.getUserEmail(this)
+        return email?.let {
+            withContext(Dispatchers.IO) {
+                val user = db.getDao().getUserInfoObj(it)
+                user?.toUser()
+            }
+        }
+    }
+
+    // 업데이트된 사용자 정보를 데이터베이스에 저장
+    private fun saveUpdatedUserInfo(userInfo: UserInfo) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                db.getDao().insertUser(userInfo)
+            }
+        }
+    }
+
+
 
     // 회원 정보 삭제
     // 사용자 삭제 메서드

@@ -30,9 +30,11 @@ interface UserService {
     @POST("/m_user/inquiryEmail")
     fun inquiryEmail(@Field("email")email : String) : Call<Void>
 
+
     //회원정보 수정
     @POST("/m_user/update")
-    fun userUpdate(@Body currentUser: User, @Body updatedUser: User): Call<User>
+    fun userUpdate(@Body updatedUser: User): Call<ResponseBody>
+
 
 
     // 회원 정보 조회
