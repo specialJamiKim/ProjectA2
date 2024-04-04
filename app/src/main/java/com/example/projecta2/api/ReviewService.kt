@@ -11,7 +11,7 @@ import retrofit2.http.POST
 interface ReviewService {
 
     @POST("/m_review/add")
-    suspend fun addReview(@Body review: Review): Call<ResponseBody>
+    fun addReview(@Body review: Review): Call<ResponseBody>
 
     // 모든 리뷰 조회
     @GET("/m_review/all")

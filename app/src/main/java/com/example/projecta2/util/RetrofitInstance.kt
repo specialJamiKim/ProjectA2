@@ -5,6 +5,7 @@ import com.example.projecta2.api.ReservationService
 import com.example.projecta2.api.ReviewService
 import com.example.projecta2.api.UserService
 import com.example.projecta2.model.User
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -24,9 +25,10 @@ object RetrofitInstance {
         .build()
 
     private val retrofit by lazy {
+        var gson = GsonBuilder().setLenient().create()
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
