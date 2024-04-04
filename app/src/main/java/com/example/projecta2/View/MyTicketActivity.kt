@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
 import com.example.projecta2.model.Reservation
-
+import com.example.projecta2.model.Result
 import com.example.projecta2.util.RetrofitInstance
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,12 +30,18 @@ class MyTicketActivity : AppCompatActivity() {
     private lateinit var userInfo: UserInfo
 
     private lateinit var ticketPageUserName: TextView
+    private lateinit var tvMyTicketCount : TextView
+    private lateinit var ticketUseRecycler : RecyclerView
+    private lateinit var todayReservationList : List<Reservation>
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_ticket)
 
+        //예약개수
+        tvMyTicketCount = findViewById(R.id.tvMyTicketCount)
+        ticketUseRecycler = findViewById(R.id.ticketUseRecycler)
         // 사용자 정보를 인텐트로부터 가져옵니다.
         userInfo = intent.getParcelableExtra<UserInfo>("userInfo")!!
 
@@ -41,50 +49,40 @@ class MyTicketActivity : AppCompatActivity() {
         val ticketPageUserName: TextView = findViewById(R.id.ticketPageUserName)
         ticketPageUserName.text = userInfo.name
 
-
-        ///////////////
-
         val reservationService = RetrofitInstance.reservationService
 
-        // 클라이언트에서 호출하는 부분
         reservationService.getUserReservations(userInfo.Id).enqueue(object :
-            Callback<List<Reservation>> {
+            Callback<Result<Reservation>> {
             override fun onResponse(
-                call: Call<List<Reservation>>,
-                response: Response<List<Reservation>>
+                call: Call<Result<Reservation>>,
+                response: Response<Result<Reservation>>
             ) {
                 Log.d("수행시작", "요청부분 수행중입니다.")
                 if (response.isSuccessful) {
-                    val reservations = response.body()
-                    Log.d("성공부분 수행", "일단 여기 수행")
-                    if (reservations != null) {
-                        Log.d(">>>>", "여기까지 널값이 아님")
-                        // 예약 리스트를 로그에 출력하여 데이터 형식 확인
-                        for (reservation in reservations) {
-
-                            Log.d(
-                                "Reservation",
-                                "Id: ${reservation.id}, Center Name: ${reservation.center.name}, User Name: ${reservation.user.name}, Reservation Time: ${reservation.reservationTime}"
-                            )
-                        }
+                    val result: Result<Reservation>? = response.body()
+                    if (result != null) {
+                        //당일 날짜에 예약된 것만 표시 => 헬스장 정보, 카운트 따로 보관
+                        todayReservationList = result.data
+                        // 어댑터 인스턴스 생성
+                        val adapter = MyTicketAdapter(todayReservationList)
+                        //당일예약 숫자 카운팅 세팅
+                        tvMyTicketCount.text = todayReservationList.size.toString()
+                        // 리사이클러뷰에 어댑터 설정
+                        ticketUseRecycler.adapter = adapter
+                        // 리사이클러뷰에 변경 사항을 알림
+                        adapter.notifyDataSetChanged()
                     } else {
-                        // 예약 리스트가 null인 경우 처리하는 코드
-                        Log.e(
-                            "Reservation Error",
-                            "Failed to get reservation list. Response body is null."
-                        )
+                        // 응답 바디가 null인 경우 처리
+                        Log.e("Reservation Error", "Failed to get reservation list. Response body is null.")
                     }
                 } else {
-                    // 서버로부터 응답이 실패한 경우 처리하는 코드
-                    Log.e(
-                        "Reservation Error",
-                        "Failed to get reservation list. Code: ${response.code()}"
-                    )
+                    // 서버로부터 응답이 실패한 경우 처리
+                    Log.e("Reservation Error", "Failed to get reservation list. Code: ${response.code()}")
                 }
             }
 
-            override fun onFailure(call: Call<List<Reservation>>, t: Throwable) {
-                // 요청이 실패한 경우 처리하는 코드
+            override fun onFailure(call: Call<Result<Reservation>>, t: Throwable) {
+                // 요청이 실패한 경우 처리
                 Log.e(
                     "Reservation Error 통신 아예실패",
                     "Failed to get reservation list. Error: ${t.message}",

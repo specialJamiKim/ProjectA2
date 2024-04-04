@@ -1,10 +1,12 @@
 package com.example.projecta2.View
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -18,9 +20,12 @@ class ReservationActivity : AppCompatActivity() {
     private var selectedDate: String? = null
     private var centerId by Delegates.notNull<Long>()
     private var userId by Delegates.notNull<Long>()
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reservation)
+
 
         //center, user Id 받아서 가져옴 => 사용준비완료
         centerId = intent.getLongExtra("centerId", 0L) // Long 타입으로 받음

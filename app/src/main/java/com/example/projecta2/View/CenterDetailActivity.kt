@@ -24,6 +24,7 @@ import com.example.projecta2.Dao.UserDB
 import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
 import com.example.projecta2.model.FitnessCenter
+import com.example.projecta2.model.FitnessCenterDTO
 import com.example.projecta2.model.Reservation
 import com.example.projecta2.model.Review
 import com.example.projecta2.util.DialogHelper
@@ -270,8 +271,11 @@ class CenterDetailActivity : AppCompatActivity() {
 
         val datePickerDialog = DatePickerDialog(
             this,
-            { _, selectedYear, selectedMonth, dayOfMonth ->
-                selectedDate = "$selectedYear-${selectedMonth + 1}-$dayOfMonth"
+            { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                // 월과 일이 한 자리 수인 경우 앞에 0을 추가하여 문자열로 저장
+                val formattedMonth = String.format("%02d", selectedMonth + 1)
+                val formattedDayOfMonth = String.format("%02d", selectedDayOfMonth)
+                selectedDate = "$selectedYear-$formattedMonth-$formattedDayOfMonth"
                 showReservationConfirmationDialog(selectedDate!!)
             },
             year,
@@ -280,6 +284,7 @@ class CenterDetailActivity : AppCompatActivity() {
         )
         datePickerDialog.show()
     }
+
 
     //센터 예약 함수
     private fun showReservationConfirmationDialog(reservationDate: String) {
@@ -294,8 +299,10 @@ class CenterDetailActivity : AppCompatActivity() {
                 //서버 DB에 예약 정보 보내는 부분
                 serverDbSaveReservation(userInfo,fitnessCenter,reservationDate)
 
-                // 예약 완료 후 마이페이지로 이동
-                val intent = Intent(this, MyPageActivity::class.java)
+                // 내 보유 일일권 클릭 이벤트 처리
+                val intent = Intent(this, MyTicketActivity::class.java).apply {
+                    putExtra("userInfo", userInfo)
+                }
                 startActivity(intent)
             }
             dialog.dismiss()
@@ -309,7 +316,30 @@ class CenterDetailActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun serverDbSaveReservation(userInfo : UserInfo , fitnessCenter: FitnessCenter, reservationDate: String){
+/*    private fun serverDbSaveReservation(userInfo : UserInfo , fitnessCenter: FitnessCenter, reservationDate: String){
+        //예약객체하나 만들기
+        val reservationObj = Reservation(center = fitnessCenter, user = userInfo.toUser(), reservationTime = reservationDate )
+
+        val reservationService = RetrofitInstance.reservationService
+        reservationService.createReservation(reservationObj).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("예약성공", "DB확인해보세요 있음 ㄹㅇㅋㅋ")
+                } else {
+                    // 예약 생성이 실패했을 때 처리하는 코드
+                    Log.e("Reservation Error", "Failed to create reservation. Code: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // 요청이 실패했을 때 처리하는 코드
+                Log.e("Reservation Error", "Failed to create reservation. Error: ${t.message}", t)
+            }
+        })
+
+    }*/
+
+    private fun serverDbSaveReservation(userInfo : UserInfo, fitnessCenter: FitnessCenter, reservationDate: String){
         //예약객체하나 만들기
         val reservationObj = Reservation(center = fitnessCenter, user = userInfo.toUser(), reservationTime = reservationDate )
 
