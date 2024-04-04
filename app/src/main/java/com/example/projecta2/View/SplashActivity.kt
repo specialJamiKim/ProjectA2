@@ -21,3 +21,4 @@ class SplashActivity : AppCompatActivity() {
         }, 2000) // 2초 후에 로그인 액티비티로 이동
     }
 }
+

@@ -149,7 +149,7 @@
                                 android:layout_marginTop="16dp"
                                 android:textAlignment="center"
                                 android:fontFamily="@font/puradak_gentle_gothic"
-                                android:text="총 보유 일일권"
+                                android:text="오늘 사용 예정 일일권"
                                 android:textColor="#ffffff"
                                 android:textSize="16sp" />
 
@@ -185,32 +185,55 @@
                         android:background="#292929" />
 
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"/>
+
                 <LinearLayout
+                    android:id="@+id/ticketUseTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="24dp"
-                    android:orientation="horizontal"
-                    android:weightSum="100">
+                    android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:id="@+id/calendarView"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/ticketUseDate"
+                        android:layout_width="55dp"
                         android:layout_height="wrap_content"
-                        tools:context=".CalendarFragment">
+                        android:layout_weight="2"
+                        android:fontFamily="@font/puradak_gentle_gothic"
+                        android:text="방문날짜"
+                        android:paddingLeft="10dp"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
 
-                        <!-- 달력을 표시할 뷰 -->
+                    <TextView
+                        android:id="@+id/ticketUseCenterName"
+                        android:layout_width="161dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:paddingLeft="25dp"
+                        android:fontFamily="@font/puradak_gentle_gothic"
+                        android:text="센터명"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
 
-                        <CalendarView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-
-                    </RelativeLayout>
-
+                    <TextView
+                        android:id="@+id/ticketUseCenterAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:paddingLeft="13dp"
+                        android:fontFamily="@font/puradak_gentle_gothic"
+                        android:text="주소"
+                        android:textAlignment="center"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ticketUseRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
 

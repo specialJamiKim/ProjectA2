@@ -10,18 +10,5 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="00dp"
         android:src="@drawable/fit_pass_logo2" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="77dp"
-        android:fontFamily="@font/puradak_gentle_gothic"
-        android:text="Fit-pass plater\n \n 헬스장 일일권 찾기"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="40dp" />
-
 </RelativeLayout>
+
