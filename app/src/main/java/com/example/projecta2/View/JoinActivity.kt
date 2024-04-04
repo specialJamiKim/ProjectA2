@@ -87,14 +87,6 @@ class JoinActivity : AppCompatActivity() {
 
     // 유효성 검사 함수
     private fun validateInput(user: User): Boolean {
-
-        // 공백란이 있는지 검사
-        if (user.name.isBlank() || user.email.isBlank() || user.password.isBlank()
-            || user.phoneNumber.isBlank() || etBirthDate.text.toString().isBlank()) {
-            showAlert("공백란이 있습니다.", "모든 입력란을 채워주세요.")
-            return false
-        }
-
         // 이름에 숫자가 있는지 검사
         if (!Pattern.matches("^[가-힣a-zA-Z]+$", user.name)) {
             showAlert("이름에는 숫자가 들어갈 수 없습니다.", "영문 및 한글만 입력 가능합니다.")

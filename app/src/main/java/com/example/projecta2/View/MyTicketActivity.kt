@@ -25,10 +25,8 @@ import retrofit2.Response
 class MyTicketActivity : AppCompatActivity() {
 
     private lateinit var userInfo: UserInfo
-<<<<<<< HEAD
+
     private lateinit var ticketPageUserName: TextView
-=======
->>>>>>> bfa4dc2148803a22619fa6ad893c7343706ac980
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -158,29 +158,8 @@
                             android:fontFamily="@font/puradak_gentle_gothic"
                             android:textSize="20dp" />
                         <EditText
-<<<<<<< HEAD
-                            android:id="@+id/userEditPassword"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/puradak_gentle_gothic"
-                            android:hint="비밀번호"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:paddingLeft="15dp"
-                            android:textColor="@android:color/black"
-                            android:textSize="16sp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="12dp" />
-
-                        <EditText
-                            android:id="@+id/userEditAddress"
-                            android:layout_width="match_parent"
-=======
                             android:id="@+id/userEditId"
                             android:layout_width="wrap_content"
->>>>>>> bfa4dc2148803a22619fa6ad893c7343706ac980
                             android:layout_height="match_parent"
                             android:layout_weight="3"
                             android:paddingLeft="15dp"
