@@ -271,7 +271,7 @@ class CenterDetailActivity : AppCompatActivity() {
         val datePickerDialog = DatePickerDialog(
             this,
             { _, selectedYear, selectedMonth, dayOfMonth ->
-                selectedDate = "$selectedYear/${selectedMonth + 1}/$dayOfMonth"
+                selectedDate = "$selectedYear-${selectedMonth + 1}-$dayOfMonth"
                 showReservationConfirmationDialog(selectedDate!!)
             },
             year,
