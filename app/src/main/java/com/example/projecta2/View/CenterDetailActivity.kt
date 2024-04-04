@@ -24,7 +24,6 @@ import com.example.projecta2.Dao.UserDB
 import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
 import com.example.projecta2.model.FitnessCenter
-import com.example.projecta2.model.FitnessCenterDTO
 import com.example.projecta2.model.Reservation
 import com.example.projecta2.model.Review
 import com.example.projecta2.util.DialogHelper
