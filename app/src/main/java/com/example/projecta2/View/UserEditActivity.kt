@@ -40,6 +40,7 @@ class UserEditActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var sexEditText: EditText
     private lateinit var nameEditText: EditText
+    private lateinit var addressEditText: EditText
     private lateinit var telEditText: EditText
     private lateinit var birthEditText: EditText
     private lateinit var idEditText: EditText
@@ -71,6 +72,7 @@ class UserEditActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.userEditPassword)
         idEditText = findViewById(R.id.userEditId)
         nameEditText = findViewById(R.id.userEditName)
+        addressEditText = findViewById(R.id.userEditAddress)
         telEditText = findViewById(R.id.userEditTel)
         birthEditText = findViewById(R.id.userEditBirth)
         sexEditText = findViewById(R.id.userEditSex)
@@ -91,11 +93,16 @@ class UserEditActivity : AppCompatActivity() {
         // 수정 버튼 클릭 리스너 설정
         val submitButton = findViewById<Button>(R.id.editBth)
         submitButton.setOnClickListener {
-            // 수정된 정보를 가져와서 처리하는 함수 호출
-            lifecycleScope.launch {
-                // 수정된 정보를 가져와서 처리하는 함수 호출
-                userUpdate()
-            }
+            DialogHelper.showConfirmationDialog(this, "수정하시겠습니까?", "정말로 수정하시겠습니까?",
+                onPositiveClick = {
+                    // 수정된 정보를 가져와서 처리하는 함수 호출
+                    lifecycleScope.launch {
+                        // 수정된 정보를 가져와서 처리하는 함수 호출
+                        userUpdate()
+                    }
+                },
+                onNegativeClick = {}
+            )
         }
 
         // 삭제 버튼 클릭 리스너 설정
@@ -153,9 +160,9 @@ class UserEditActivity : AppCompatActivity() {
                     val user = response.body()
                     if (user != null) {
                         // 사용자 정보가 있을 경우 EditText에 설정
-
                         idEditText.setText(user.id.toString())
                         nameEditText.setText(user.name)
+                        addressEditText.setText(user.address)
                         telEditText.setText(user.phoneNumber)
                         birthEditText.setText(user.birthDate)
                         sexEditText.setText(user.gender)
@@ -209,7 +216,6 @@ class UserEditActivity : AppCompatActivity() {
             password = passwordEditText.text.toString()
         )
 
-<<<<<<< HEAD
         // 업데이트된 사용자 정보로 API 호출
         updatedUser?.let {
             val userInfo: UserInfo = it.toUserInfo()
@@ -223,43 +229,27 @@ class UserEditActivity : AppCompatActivity() {
                         deleteAllUsers()
                         // 업데이트된 정보를 데이터베이스에 저장
                         saveUpdatedUserInfo(userInfo)
+                        // 성공 다이얼로그 표시 및 MyPageActivity로 이동
+                        DialogHelper.showMessageDialog(this@UserEditActivity, "알림", "수정을 완료했습니다.") {
+                            val intent = Intent(this@UserEditActivity, MyPageActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
                     } else {
                         // 수정에 실패했을 때의 처리
                         val errorCode = response.code()
                         Log.d("실패", "오류 코드: $errorCode")
                     }
-=======
-        val newName = nameEditText.text.toString()
-        val newTel = telEditText.text.toString()
-        val newBirth = birthEditText.text.toString()
-        val newPassword = passwordEditText.text.toString()
-        val addRole = listOf("ROLE_USER")
-
-
-        // 수정된 사용자 정보 생성
-        var updatedUser =
-            User(id = 0, email = "12", name = newName, password = newPassword, gender = "male", joinDate= "20240401", phoneNumber = newTel, birthDate = newBirth, role = addRole)
-        Log.d(">>", "${updatedUser}")
-
-        val userInfo: UserInfo = updatedUser.toUserInfo()
-
-        val userService = RetrofitInstance.userService
-        userService.userUpdate(updatedUser,updatedUser).enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                if (response.isSuccessful) {
-                    db.getDao().insertUser(userInfo)
-                    // 성공적으로 수정되었을 때의 처리
-                    Log.d("성공", "성공성공")
-                } else {
-                    // 수정에 실패했을 때의 처리
-                    val errorCode = response.code()
-                    Log.d("실패", "오류 코드: $errorCode")
->>>>>>> bfa4dc2148803a22619fa6ad893c7343706ac980
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     // 통신 실패 처리
                     Log.d("통신실패", "통신실패실패")
+                    Toast.makeText(
+                        this@UserEditActivity,
+                        "네트워크 오류",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
         }
