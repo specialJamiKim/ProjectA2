@@ -2,9 +2,12 @@ package com.example.projecta2.View
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -327,5 +330,14 @@ class CenterDetailActivity : AppCompatActivity() {
             }
         })
 
+    }
+    // 빈 공간을 터치할 시 키보드 숨김 기능
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null && ev != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            currentFocus?.clearFocus() // 포커스를 클리어 합니다.
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }

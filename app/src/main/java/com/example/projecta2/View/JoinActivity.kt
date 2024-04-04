@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
 import com.example.projecta2.model.User
@@ -20,9 +22,11 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.regex.Pattern
 
 class JoinActivity : AppCompatActivity() {
 
+    // UI 요소 선언
     private lateinit var etName: EditText
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
@@ -37,26 +41,35 @@ class JoinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join)
 
+        // UI 요소 초기화
         etName = findViewById(R.id.etName)
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
         etPhoneNumber = findViewById(R.id.etPhoneNumber)
         etBirthDate = findViewById(R.id.etBirthDate)
-        joinDate = "1995-04-28"
+        joinDate = "1995-04-28" // 가입 날짜 초기값 설정
 
+        // 성별 선택 라디오 그룹 설정
         val radioGroup = findViewById<RadioGroup>(R.id.rgGender)
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             val radioButton = findViewById<RadioButton>(checkedId)
             selectedGender = radioButton.text.toString()
-            selectedGenderEng = if (selectedGender.equals("남자")) "male" else "female"
+            selectedGenderEng = if (selectedGender == "남자") "male" else "female"
         }
 
+        // 회원가입 버튼 클릭 리스너 설정
         findViewById<Button>(R.id.btnJoinPro).setOnClickListener {
+            Log.d("JoinActivity", "회원가입 버튼 클릭됨")
+            // 입력값으로부터 유저 객체 생성
             val user = createUserFromInput()
-            checkEmailAndSignUp(user)
+            // 입력값 유효성 검사 후, 이메일 중복 검사 및 회원가입
+            if (validateInput(user)) {
+                checkEmailAndSignUp(user)
+            }
         }
     }
 
+    // 입력값으로부터 User 객체를 생성하는 함수
     private fun createUserFromInput(): User {
         return User(
             id = 0,
@@ -72,6 +85,53 @@ class JoinActivity : AppCompatActivity() {
         )
     }
 
+    // 유효성 검사 함수
+    private fun validateInput(user: User): Boolean {
+        // 이름에 숫자가 있는지 검사
+        if (!Pattern.matches("^[가-힣a-zA-Z]+$", user.name)) {
+            showAlert("이름에는 숫자가 들어갈 수 없습니다.", "영문 및 한글만 입력 가능합니다.")
+            etName.requestFocus()
+            return false
+        }
+
+        // 아이디 형식 검사 (영문과 숫자만 허용)
+        if (!Pattern.matches("^[a-zA-Z0-9]+$", user.email)) {
+            showAlert("ID는 한글이 포함될 수 없습니다.", "영문 및 숫자만 입력 가능합니다.")
+            etEmail.requestFocus()
+            return false
+        }
+
+        // 전화번호 형식 검사 (000-0000-0000 형식)
+        if (!Pattern.matches("^01([0|1|6|7|8|9])-(\\d{3,4})-(\\d{4})$", user.phoneNumber)) {
+            showAlert("전화번호 양식이 올바르지 않습니다.", "ex) 010-1234-5678 \n \n 하이픈(-)을 포함 해주세요.")
+            etPhoneNumber.requestFocus()
+            return false
+        }
+
+        // 생년월일 형식 검사 (0000-00-00 형식)
+        if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2}$", etBirthDate.text.toString())) {
+            showAlert("생년월일 양식이 올바르지 않습니다.", "ex) 1996-08-09 (8자리)\n \n 하이픈(-)을 포함 해주세요.")
+            etBirthDate.requestFocus()
+            return false
+        }
+
+        // 모든 검사를 통과하면 true를 반환
+        return true
+    }
+
+    // Alert Dialog를 표시하는 함수
+    private fun showAlert(title: String, message: String) {
+        AlertDialog.Builder(this).apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
+            create()
+            show()
+        }
+    }
+
+
+    // 이메일 중복 검사 및 회원가입을 진행하는 함수
     private fun checkEmailAndSignUp(user: User) {
         val userService = RetrofitInstance.userService
         userService.inquiryEmail(user.email).enqueue(object : Callback<Void> {
@@ -108,6 +168,7 @@ class JoinActivity : AppCompatActivity() {
         })
     }
 
+    // 회원가입을 서버에 요청하는 함수
     fun userJoin(user: User) {
         val userService = RetrofitInstance.userService
 
@@ -137,7 +198,9 @@ class JoinActivity : AppCompatActivity() {
         })
     }
 
+    // 화면 터치 이벤트를 처리하는 함수
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        // 키보드 숨김 처리
         if (ev?.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus
             if (v is EditText) {
@@ -153,3 +216,5 @@ class JoinActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 }
+
+

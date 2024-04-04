@@ -36,7 +36,6 @@ class UserEditActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var sexEditText: EditText
     private lateinit var nameEditText: EditText
-    private lateinit var addressEditText: EditText
     private lateinit var telEditText: EditText
     private lateinit var birthEditText: EditText
     private lateinit var idEditText: EditText
@@ -68,7 +67,6 @@ class UserEditActivity : AppCompatActivity() {
         //passwordEditText = findViewById(R.id.userEditPassword)
         idEditText = findViewById(R.id.userEditId)
         nameEditText = findViewById(R.id.userEditName)
-        addressEditText = findViewById(R.id.userEditAddress)
         telEditText = findViewById(R.id.userEditTel)
         birthEditText = findViewById(R.id.userEditBirth)
         sexEditText = findViewById(R.id.userEditSex)
@@ -151,7 +149,6 @@ class UserEditActivity : AppCompatActivity() {
                         passwordEditText.setText(user.id.toString())
                         idEditText.setText(user.id.toString())
                         nameEditText.setText(user.name)
-                        addressEditText.setText(user.address)
                         telEditText.setText(user.phoneNumber)
                         birthEditText.setText(user.birthDate)
                         sexEditText.setText(user.gender)
@@ -199,7 +196,6 @@ class UserEditActivity : AppCompatActivity() {
         deleteAllUsers()
 
         val newName = nameEditText.text.toString()
-        val newAddress = addressEditText.text.toString()
         val newTel = telEditText.text.toString()
         val newBirth = birthEditText.text.toString()
         val newPassword = passwordEditText.text.toString()
@@ -208,7 +204,7 @@ class UserEditActivity : AppCompatActivity() {
 
         // 수정된 사용자 정보 생성
         var updatedUser =
-            User(id = 0, email = "12", name = newName, password = newPassword, gender = "male", joinDate= "20240401", address = newAddress, phoneNumber = newTel, birthDate = newBirth, role = addRole)
+            User(id = 0, email = "12", name = newName, password = newPassword, gender = "male", joinDate= "20240401", phoneNumber = newTel, birthDate = newBirth, role = addRole)
         Log.d(">>", "${updatedUser}")
 
         val userInfo: UserInfo = updatedUser.toUserInfo()
