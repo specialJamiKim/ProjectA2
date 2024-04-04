@@ -20,7 +20,8 @@
         tools:ignore="AllowBackup">
         <activity
             android:name=".View.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -87,7 +88,7 @@
             android:exported="true"
             android:label="Login Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyAppTheme"
+            android:theme="@style/AppTheme.JoinNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan"> <!-- 여기에 android:exported 속성 추가 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
