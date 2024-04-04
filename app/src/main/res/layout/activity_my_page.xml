@@ -61,6 +61,7 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
                             android:orientation="horizontal">
                         <TextView
                             android:id="@+id/MyPageUserName"
@@ -72,7 +73,7 @@
                             android:fontFamily="@font/puradak_gentle_gothic"
                             android:text="박산해"
                             android:textColor="#000000"
-                            android:textSize="35sp" />
+                            android:textSize="25sp" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -82,17 +83,17 @@
                                 android:fontFamily="@font/puradak_gentle_gothic"
                                 android:text="회원님"
                                 android:textColor="#000000"
-                                android:textSize="35sp"/>
+                                android:textSize="25sp"/>
                         </LinearLayout>
                         <TextView
                             android:id="@+id/MyPageUserGrade"
-                            android:layout_width="198dp"
+                            android:layout_width="160dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
                             android:textAlignment="center"
                             android:fontFamily="@font/puradak_gentle_gothic"
                             android:text="일반회원"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
                     </LinearLayout>
                 </LinearLayout>
 

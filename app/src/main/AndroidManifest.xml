@@ -32,63 +32,63 @@
             android:exported="false"
             android:label="Map Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.MapActivity"
             android:exported="false"
             android:label="Map Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.CenterDetailActivity"
             android:label="Center Detail Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyAppTheme"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.BookMarkActivity"
             android:label="Book Mark Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.MyPageActivity"
             android:label="My Page Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.MyTicketActivity"
             android:label="My Ticket Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.HomeActivity"
             android:label="Home Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.UserEditActivity"
             android:label="User Edit Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.ReservationActivity"
             android:label="Reservation Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".View.LoginActivity"
             android:exported="true"
             android:label="Login Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.JoinNoActionBar"
+            android:theme="@style/AppTheme.BlackNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan"> <!-- 여기에 android:exported 속성 추가 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

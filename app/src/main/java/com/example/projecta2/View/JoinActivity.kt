@@ -87,6 +87,34 @@ class JoinActivity : AppCompatActivity() {
 
     // 유효성 검사 함수
     private fun validateInput(user: User): Boolean {
+        // 이름 공백이 있는지 검사
+        if (user.name.isBlank()){showAlert("이름란이 공백 입니다.", "이름 입력란을 채워주세요.")
+            return false
+        }
+        // ID 공백이 있는지 검사
+        if (user.email.isBlank()){showAlert("ID란이 공백 입니다.", "ID 입력란을 채워주세요.")
+            return false
+        }
+        // Password 공백이 있는지 검사
+        if (user.password.isBlank()){showAlert("비밀번호란이 공백 입니다.", "비밀번호 입력란을 채워주세요.")
+            return false
+        }
+        // 휴대전화 공백이 있는지 검사
+        if (user.phoneNumber.isBlank()){showAlert("휴대전화란이 공백 입니다.", "휴대전화 입력란을 채워주세요.")
+            return false
+        }
+        // 생년월일 공백이 있는지 검사
+        if (etBirthDate.text.toString().isBlank()){showAlert("생년월일란이 공백 입니다.", "생년월일 입력란을 채워주세요.")
+            return false
+        }
+
+        // 성별 선택이 되었는지 확인
+        val genderRadioGroup = findViewById<RadioGroup>(R.id.rgGender)
+        if (genderRadioGroup.checkedRadioButtonId == -1) {
+            showAlert("성별이 공백입니다.", "성별을 선택해주세요.")
+            return false
+        }
+
         // 이름에 숫자가 있는지 검사
         if (!Pattern.matches("^[가-힣a-zA-Z]+$", user.name)) {
             showAlert("이름에는 숫자가 들어갈 수 없습니다.", "영문 및 한글만 입력 가능합니다.")
