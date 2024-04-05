@@ -32,6 +32,10 @@ interface ReservationService {
     @FormUrlEncoded
     fun getUserReservations(@Field("userId") userId: Long?): Call<Result<Reservation>>
 
+    //예약 헬스장 사용
+    @POST("/m_reservation/used")
+    @FormUrlEncoded
+    fun reservationUsed(@Field("reservationId") reservationId : Long?) : Call<ResponseBody>
 
 
 
