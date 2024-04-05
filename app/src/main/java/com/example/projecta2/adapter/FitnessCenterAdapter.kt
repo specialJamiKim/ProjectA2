@@ -50,7 +50,7 @@ class FitnessCenterAdapter(public var fitnessCenterList: List<FitnessCenter>, pr
 
             // 클릭 리스너 설정
             itemView.setOnClickListener {
-                // 클릭 시 유저 정보를 가져옴
+                // 클릭 시 센터 정보를 가져옴
                 CoroutineScope(Dispatchers.Main).launch {
                     val userInfo: UserInfo? = getUserObject(it.context).getUserInfo()
                     val intent = Intent(it.context, CenterDetailActivity::class.java).apply {

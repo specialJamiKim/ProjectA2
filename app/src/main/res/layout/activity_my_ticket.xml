@@ -197,13 +197,13 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/ticketUseDate"
+                        android:id="@+id/ticketBtnTicketUsed"
                         android:layout_width="55dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:fontFamily="@font/puradak_gentle_gothic"
-                        android:text="방문날짜"
                         android:paddingLeft="10dp"
+                        android:text="사용"
                         android:textSize="18dp"
                         android:textStyle="bold" />
 
