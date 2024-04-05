@@ -70,19 +70,10 @@
                             android:layout_marginRight="16dp"
                             android:layout_marginBottom="4dp"
                             android:fontFamily="@font/puradak_gentle_gothic"
-                            android:text="박산해"
+                            android:text="회원이름일곱자"
                             android:textColor="#000000"
-                            android:textSize="35sp" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="30dp"
-                                android:layout_marginRight="16dp"
-                                android:layout_marginBottom="4dp"
-                                android:fontFamily="@font/puradak_gentle_gothic"
-                                android:text="회원님"
-                                android:textColor="#000000"
-                                android:textSize="35sp"/>
+                            android:textSize="32sp" />
+
                         </LinearLayout>
                         <TextView
                             android:id="@+id/MyPageUserGrade"
@@ -91,7 +82,7 @@
                             android:layout_marginTop="3dp"
                             android:textAlignment="center"
                             android:fontFamily="@font/puradak_gentle_gothic"
-                            android:text="일반회원"
+                            android:text="회원님"
                             android:textSize="20sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -199,35 +190,17 @@
                         app:cardCornerRadius="8dp"
                         app:cardElevation="4dp"
                         app:cardUseCompatPadding="true"
-                        app:contentPadding="16dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                        app:contentPaddingLeft="8dp"
+                        app:contentPaddingTop="40dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/puradak_gentle_gothic"
-                                android:textSize="23sp"
+                                android:textSize="28sp"
                                 android:textStyle="bold"
                                 android:textColor="#ffffff"
                                 android:text="내 정보수정" />
-
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:fontFamily="@font/puradak_gentle_gothic"
-                                android:text="바로가기"
-                                android:textColor="#ffffff"
-                                android:textSize="16sp" />
-
-                        </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
 
@@ -235,28 +208,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="24dp"
-                    android:orientation="horizontal"
-                    android:weightSum="100">
+                    android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:id="@+id/calendarView"
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:context=".CalendarFragment">
+                        android:layout_height="16dp"/>
 
-                        <!-- 달력을 표시할 뷰 -->
-
-                        <CalendarView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/puradak_gentle_gothic"/>
-
-
-                    </RelativeLayout>
-
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/myPageRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
             </LinearLayout>

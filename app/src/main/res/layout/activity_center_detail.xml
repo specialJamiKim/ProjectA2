@@ -164,6 +164,16 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
+
+                    <!-- 별점을 매길 수 있는 RatingBar -->
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize="1.0"
+                        android:rating="0"/>
+
                     <!-- 리뷰 텍스트 입력란 -->
                     <EditText
                         android:id="@+id/reviewEditText"
@@ -175,27 +185,30 @@
                         android:minLines="2"
                         android:gravity="start|top" />
 
-                    <!-- 리뷰 전송 버튼 -->
-                    <Button
-                        android:id="@+id/submitReviewBtn"
-                        android:fontFamily="@font/puradak_gentle_gothic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#FFFFFF"
-                        android:background="@drawable/buttonshape4"
-                        android:text="리뷰 작성" />
+                        <!-- 리뷰 전송 버튼 -->
+                        <Button
+                            android:id="@+id/submitReviewBtn"
+                            android:fontFamily="@font/puradak_gentle_gothic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:background="@drawable/buttonshape4"
+                            android:text="리뷰 작성" />
+                    </LinearLayout>
 
-                    <!-- 작성된 리뷰 보기 -->
-                    <TextView
-                        android:id="@+id/reviewTextView"
+                <!-- 작성된 리뷰 보기 -->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/reviewView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true" />
+
+                <!-- 간격 추가 -->
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="작성된 리뷰"
-                        android:textColor="#000000"
-                        android:textSize="20sp"
-                        android:layout_marginTop="16dp"/>
+                        android:layout_height="50dp"/>
 
-                </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
