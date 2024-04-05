@@ -11,13 +11,13 @@ data class FitnessCenter(
 
     val name: String,
     val dailyPassPrice: Long,
-    val distance: Long?,
+    var distance: Float? = 0f,
     val address: String,
     val imagePath: String?, // 이미지 경로 변수 추가
     val latitude: Double,
     val longitude: Double
 ) {
-    constructor(id: Long) : this(id, "", 0, null, "", null, 0.0, 0.0)
+    constructor(id: Long) : this(id, "", 0, 0.0f, "", null, 0.0, 0.0)
 
 }
 

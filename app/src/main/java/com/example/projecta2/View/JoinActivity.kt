@@ -3,6 +3,7 @@ package com.example.projecta2.View
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -12,6 +13,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projecta2.R
@@ -22,6 +24,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 class JoinActivity : AppCompatActivity() {
@@ -36,10 +40,14 @@ class JoinActivity : AppCompatActivity() {
     private lateinit var selectedGender: String
     private lateinit var selectedGenderEng: String
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join)
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val currentDate = LocalDateTime.now().format(formatter)
 
         // UI 요소 초기화
         etName = findViewById(R.id.etName)
@@ -47,7 +55,7 @@ class JoinActivity : AppCompatActivity() {
         etPassword = findViewById(R.id.etPassword)
         etPhoneNumber = findViewById(R.id.etPhoneNumber)
         etBirthDate = findViewById(R.id.etBirthDate)
-        joinDate = "1995-04-28" // 가입 날짜 초기값 설정
+        joinDate = currentDate // 가입 날짜 초기값 설정
 
         // 성별 선택 라디오 그룹 설정
         val radioGroup = findViewById<RadioGroup>(R.id.rgGender)
@@ -80,7 +88,7 @@ class JoinActivity : AppCompatActivity() {
             gender = selectedGenderEng,
             address = "부산광역시",
             joinDate = joinDate,
-            birthDate = "1995-04-28",
+            birthDate = etBirthDate.text.toString(),
             role = listOf("ROLE_USER")
         )
     }

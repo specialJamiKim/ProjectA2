@@ -124,7 +124,7 @@ class HomeActivity : AppCompatActivity() {
                     putExtra("centerName", fitnessCenter.name)
                     putExtra("centerPrice", fitnessCenter.dailyPassPrice)
                     putExtra("centerLocation", fitnessCenter.address)
-                    putExtra("centerImageUrl", fitnessCenter.imagePath?.let { "http://10.0.2.2:8111/img/$it" })
+                    putExtra("centerImageUrl", fitnessCenter.imagePath?.let { "http://10.100.103.49:8111/img/$it" })
                     putExtra("userInfo", userInfo)
                 }
                 startActivity(intent)

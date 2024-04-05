@@ -134,65 +134,6 @@ class CenterDetailActivity : AppCompatActivity() {
         }
     }
 
-   /* private fun addReview() {
-        val reviewText = reviewEditText.text.toString()
-        if (reviewText.isNotEmpty()) {
-            lifecycleScope.launch {
-                try {
-                    // 현재 사용자와 센터 ID를 Intent에서 가져옴
-                    val centerId = intent.getLongExtra("centerId", 0L)
-
-                    // 사용자 정보 생성
-                    val userInfo = intent.getParcelableExtra<UserInfo>("userInfo")
-                    val userId = userInfo?.Id
-
-                    // Review 객체 생성
-                    val review = Review(
-                        userId = userId,
-                        centerId = centerId, // 센터 ID만 사용하여 객체 생성
-                        rating = null, // 선택된 평점
-                        reviewText = reviewText
-                    )
-
-                    // Retrofit을 사용하여 리뷰 추가 요청 수행
-                    val response = withContext(Dispatchers.IO) {
-                        RetrofitInstance.reviewService.addReview(review).execute()
-                    }
-
-                    // 요청이 성공적으로 수행되었는지 여부 확인
-                    if (response.isSuccessful) {
-                        // 성공적으로 추가되면 리뷰 목록을 다시 불러옴
-
-                        Toast.makeText(
-                            this@CenterDetailActivity,
-                            "리뷰가 성공적으로 등록되었습니다.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        // 실패 시 메시지 출력 또는 다른 처리
-                        Toast.makeText(
-                            this@CenterDetailActivity,
-                            "리뷰 등록에 실패했습니다.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } catch (e: HttpException) {
-                    // HTTP 요청 실패 시 처리
-                    Toast.makeText(this@CenterDetailActivity, "리뷰 등록에 실패했습니다.", Toast.LENGTH_SHORT)
-                        .show()
-                    Log.e("Add Review", "Failed to add review: ${e.message()}")
-                } catch (e: Throwable) {
-                    // 그 외 에러 처리
-                    Toast.makeText(this@CenterDetailActivity, "리뷰 등록에 실패했습니다.", Toast.LENGTH_SHORT)
-                        .show()
-                    Log.e("Add Review", "Failed to add review: ${e.message}")
-                }
-            }
-        } else {
-            Toast.makeText(this, "리뷰를 작성해주세요.", Toast.LENGTH_SHORT).show()
-        }
-    }*/
-
     private fun addReview() {
         val reviewText = reviewEditText.text.toString()
         if (reviewText.isNotEmpty()) {

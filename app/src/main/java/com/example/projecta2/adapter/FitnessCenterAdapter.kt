@@ -15,8 +15,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>, private val userInfo: UserInfo?) :
+class FitnessCenterAdapter(public var fitnessCenterList: List<FitnessCenter>, private val userInfo: UserInfo?) :
     RecyclerView.Adapter<FitnessCenterAdapter.ViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = FitnessCenterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -44,7 +45,7 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>, p
             // 나머지 데이터 표시
             binding.tvFitnessCenterName.text = fitnessCenter.name
             binding.tvFitnessCenterDailyPassPrice.text = "${fitnessCenter.dailyPassPrice}원"
-            binding.tvFitnessCenterdistance.text = "${fitnessCenter.distance} m"
+            binding.tvFitnessCenterdistance.text = "${fitnessCenter.distance?.toInt()} m"
             binding.tvFitnessCenterAddress.text = fitnessCenter.address
 
             // 클릭 리스너 설정
@@ -66,6 +67,11 @@ class FitnessCenterAdapter(private val fitnessCenterList: List<FitnessCenter>, p
                 }
             }
         }
+    }
+
+    fun updateList(newList: List<FitnessCenter>) {
+        fitnessCenterList = newList
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = fitnessCenterList.size

@@ -26,9 +26,10 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.example.projecta2.databinding.ActivityMapBinding
 import kotlinx.coroutines.*
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var map: GoogleMap
@@ -43,20 +44,21 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val REQUEST_PERMISSION_LOCATION = 1000
 
+    private lateinit var binding: ActivityMapBinding
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
+        binding = ActivityMapBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        zoomInButton = findViewById(R.id.zoomInButton)
-        zoomOutButton = findViewById(R.id.zoomOutButton)
-        homeButton = findViewById(R.id.mapToHome)
-        myPageButton = findViewById(R.id.mapToMyPage)
 
-        zoomInButton.setOnClickListener { zoomIn() }
-        zoomOutButton.setOnClickListener { zoomOut() }
+        homeButton = binding.mapToHome
+        myPageButton = binding.mapToMyPage
+
+
 
         homeButton.setOnClickListener {
             startActivity(
@@ -80,17 +82,31 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment?.getMapAsync(this)
     }
 
-    private fun zoomIn() {
-        map.animateCamera(CameraUpdateFactory.zoomIn())
-    }
 
-    private fun zoomOut() {
-        map.animateCamera(CameraUpdateFactory.zoomOut())
-    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         getUserLocation()
+
+        map.setOnMapClickListener(this)
+    }
+
+    override fun onMapClick(latLng: LatLng) {
+        addMarkerAt(latLng)
+    }
+
+    private fun addMarkerAt(latLng: LatLng) {
+        // 기존 마커 지우기
+        map.clear()
+        // 클릭한 위치에 마커 추가
+        map.addMarker(MarkerOptions().position(latLng).title("Clicked Location"))
+
+        // 클릭한 위치에서 피트니스 센터 다시 가져오기
+        CoroutineScope(Dispatchers.Main).launch {
+
+            fetchFitnessCenters(latLng)
+
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -145,6 +161,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                     val fitnessCentersWithLatLng = convertAddressToLatLng(list, geocoder)
                     val fitnessCentersNearby =
                         getFitnessCentersNearby(userLocation, fitnessCentersWithLatLng)
+                    calculateAndSetDistance(userLocation, fitnessCentersNearby)
                     showFitnessCentersOnMapAndList(userLocation, fitnessCentersNearby)
                 } ?: run {
                     Log.e("Response Error", "Received null center list")
@@ -161,33 +178,39 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         userLocation: LatLng,
         fitnessCentersNearby: List<FitnessCenter>
     ) {
+        // 지도에 피트니스 센터 마커 표시
         for (center in fitnessCentersNearby) {
             val location = LatLng(center.latitude, center.longitude)
             map.addMarker(MarkerOptions().position(location).title(center.name))
         }
-        setupRecyclerView(fitnessCentersNearby)
+        // 리사이클러 뷰 갱신
+        updateRecyclerView(fitnessCentersNearby)
     }
 
-    /*    private fun setupRecyclerView(fitnessCentersNearby: List<FitnessCenter>) {
-            recyclerView = findViewById(R.id.recycler)
-            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby)
-            recyclerView.adapter = fitnessCenterAdapter
-        }*/
-    private fun setupRecyclerView(fitnessCentersNearby: List<FitnessCenter>) {
+    private fun updateRecyclerView(fitnessCentersNearby: List<FitnessCenter>) {
         if (fitnessCentersNearby.isNotEmpty()) {
-            recyclerView = findViewById(R.id.recycler)
-            recyclerView.layoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-            // 사용자 정보를 생성자에 전달합니다.
-            fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby, userInfo)
-            recyclerView.adapter = fitnessCenterAdapter
+            setupRecyclerView(fitnessCentersNearby)
         } else {
-            Log.e("RecyclerView Error", "Fitness centers list is empty or null")
+            // 센터가 없는 경우 빈 목록을 전달하여 리사이클러 뷰를 갱신
+            setupRecyclerView(emptyList())
         }
     }
 
+
+    private fun setupRecyclerView(fitnessCentersNearby: List<FitnessCenter>) {
+        recyclerView = findViewById(R.id.recycler)
+        recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        if (fitnessCentersNearby.isNotEmpty()) {
+            fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby, userInfo)
+            recyclerView.adapter = fitnessCenterAdapter
+        } else {
+            // 센터가 없는 경우, 빈 목록을 생성하여 리사이클러 뷰를 초기화
+            fitnessCenterAdapter = FitnessCenterAdapter(emptyList(), userInfo)
+            recyclerView.adapter = fitnessCenterAdapter
+        }
+    }
 
     private fun convertAddressToLatLng(
         centerList: List<FitnessCenter>,
@@ -232,5 +255,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val result = FloatArray(1)
         Location.distanceBetween(lat1, lon1, lat2, lon2, result)
         return result[0]
+    }
+
+    private fun calculateAndSetDistance(userLocation: LatLng, fitnessCenters: List<FitnessCenter>) {
+        for (center in fitnessCenters) {
+            val location = LatLng(center.latitude, center.longitude)
+            val distance = distanceBetween(userLocation.latitude, userLocation.longitude, location.latitude, location.longitude)
+            center.distance = distance // 거리 설정
+        }
     }
 }
