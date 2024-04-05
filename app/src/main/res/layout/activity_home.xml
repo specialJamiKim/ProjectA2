@@ -10,11 +10,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#292929"
-        android:paddingTop="24dp"
+        android:paddingBottom="30dp"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
 
-        <androidx.appcompat.widget.Toolbar
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#292929"
+            android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/userEditTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/puradak_gentle_gothic"
+            android:text="Fit-pass plater"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="180dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="#FFFFFF" />
+        </LinearLayout>
+
+        <!--<androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +72,16 @@
                     android:layout_marginBottom="16dp"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <View
+                        android:layout_width="180dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:background="#FFFFFF" />
+
+
+
+                    &lt;!&ndash;<EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/white_rounded_shape"
@@ -56,14 +92,14 @@
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textColorHint="#aeaeae"
-                        android:textSize="14sp" />
+                        android:textSize="14sp" />&ndash;&gt;
 
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </androidx.appcompat.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>-->
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -96,7 +132,7 @@
                     android:textSize="15sp" />
 
                 <HorizontalScrollView
-                    android:layout_width="match_parent"
+                    android:layout_width="400dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:scrollbars="none">
@@ -112,11 +148,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="110dp"
                             android:layout_marginStart="4dp"
+                            android:clickable="true"
+                            android:focusable="true"
                             app:cardCornerRadius="8dp"
                             app:cardElevation="4dp"
                             app:cardUseCompatPadding="true"
-                            android:clickable="true"
-                            android:focusable="true"
                             app:contentPadding="12dp">
 
                             <LinearLayout
@@ -151,13 +187,14 @@
                                 </RelativeLayout>
 
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content" />
                         </androidx.cardview.widget.CardView>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="240dp"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"> <!-- 이 부분을 horizontal로 설정 -->
 
@@ -289,6 +326,10 @@
                     android:fontFamily="@font/puradak_gentle_gothic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+                <!-- 간격 추가 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"/>
 
 
             </LinearLayout>
