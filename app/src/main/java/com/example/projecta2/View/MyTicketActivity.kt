@@ -36,27 +36,17 @@ class MyTicketActivity : AppCompatActivity() {
     private lateinit var ticketUseRecycler : RecyclerView
     private lateinit var todayReservationList : List<Reservation>
     private lateinit var btnTicketUsed : Button
-    private var reservationId by Delegates.notNull<Long>()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_ticket)
 
-        //예약사용 버튼
-        btnTicketUsed = findViewById<Button>(R.id.btnTicketUsed)
         //예약개수
         tvMyTicketCount = findViewById(R.id.tvMyTicketCount)
         ticketUseRecycler = findViewById(R.id.ticketUseRecycler)
         // 사용자 정보를 인텐트로부터 가져옵니다.
         userInfo = intent.getParcelableExtra<UserInfo>("userInfo")!!
-        Log.d(">>>>", " 시발 좀 되라")
-        //예약아이디 추가
-        reservationId = intent.getLongExtra("reservationId", 0L)
-
-        btnTicketUsed.setOnClickListener {
-            Log.d("예약id >>" , "${reservationId}")
-        }
 
 
         // 사용자 이름을 화면에 표시합니다.
@@ -67,7 +57,6 @@ class MyTicketActivity : AppCompatActivity() {
 
         //예약 사용처리 ==> 구현해야함
        // reservationService.reservationUsed()
-
 
         //예약정보 가져오기
         reservationService.getUserReservations(userInfo.Id).enqueue(object :
