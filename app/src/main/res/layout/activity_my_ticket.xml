@@ -177,13 +177,14 @@
                         android:textAlignment="center">
 
                         <TextView
+                            android:id="@+id/tvReservationDateText"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:fontFamily="@font/puradak_gentle_gothic"
+                            android:paddingRight="5dp"
                             android:text="이용 예정 일"
                             android:textAlignment="center"
-                            android:paddingRight="5dp"
                             android:textColor="#000000"
                             android:textSize="14sp" />
 

@@ -12,21 +12,18 @@ import com.example.projecta2.model.Reservation
 import com.example.projecta2.util.DialogHelper.showConfirmationDialog
 import com.example.projecta2.util.RetrofitInstance
 import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Call
 
-class MyTicketAdapter(private val reservationList: MutableList<Reservation>, private val onDeleteListener: OnDeleteListener) :
+class MyTicketAdapter(private var reservationList: MutableList<Reservation>, private val onDeleteListener: OnDeleteListener) :
     RecyclerView.Adapter<MyTicketAdapter.MyViewHolder>() {
 
-    // ViewHolder 클래스
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val btnTicketUsed: Button = itemView.findViewById(R.id.btnTicketUsed)
         val btnReservationCancel : Button = itemView.findViewById(R.id.btnReservationCancel)
         val tvCenterName: TextView = itemView.findViewById(R.id.tvCenterName)
         val tvAddress: TextView = itemView.findViewById(R.id.tvAddress)
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -42,63 +39,42 @@ class MyTicketAdapter(private val reservationList: MutableList<Reservation>, pri
 
         val reservationService = RetrofitInstance.reservationService
 
-        // 버튼 클릭 이벤트 처리
         holder.btnTicketUsed.setOnClickListener {
-            val reservationId = reservation.id
-            Log.d("예약번호 ", "$reservationId")
-
-            // 예약 사용처리
-            reservationService.reservationUsed(reservationId).enqueue(object : Callback<ResponseBody> {
+            reservationService.reservationUsed(reservation.id).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
-                        // 성공적으로 예약이 사용되었을 때의 처리
-                        Log.d("성공이다", "아싸!!")
-                        // 여기서 다른 필요한 작업을 수행할 수 있습니다.
-                        // 사용된 예약을 리스트에서 제거
                         reservationList.remove(reservation)
-                        notifyDataSetChanged() // 리사이클러뷰 갱신
-                        onDeleteListener.onDelete() // 액티비티에 삭제된 예약을 알림
+                        notifyDataSetChanged()
+                        onDeleteListener.onDelete()
                     } else {
-                        // 서버로부터 응답이 실패한 경우 처리
-                        println("Failed to mark reservation as used. Code: ${response.code()}")
+                        Log.e("Reservation Error", "Failed to mark reservation as used. Code: ${response.code()}")
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    // 요청이 실패한 경우 처리
-                    println("이거임 Error: ${t.message}")
+                    Log.e("Reservation Error", "Error: ${t.message}")
                 }
             })
         }
 
         holder.btnReservationCancel.setOnClickListener{
-            // 예약 ID 가져오기
-            val reservationId = reservation.id
-            Log.d("예약번호 ", "$reservationId")
-
-            // 다이얼로그 표시
             showConfirmationDialog(context = holder.itemView.context,
                 title = "예약 취소",
                 message = "정말로 예약을 취소하시겠습니까?",
                 onPositiveClick = {
-                    // 예약 취소 요청
-                    reservationService.reservationCancel(reservationId).enqueue(object : Callback<ResponseBody> {
+                    reservationService.reservationCancel(reservation.id).enqueue(object : Callback<ResponseBody> {
                         override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                             if (response.isSuccessful) {
-                                // 성공적으로 예약취소가 되었을 때
-                                Log.d("성공이다", "아싸!!")
                                 reservationList.remove(reservation)
-                                notifyDataSetChanged() // 리사이클러뷰 갱신
-                                onDeleteListener.onDelete() // 액티비티에 삭제된 예약을 알림
+                                notifyDataSetChanged()
+                                onDeleteListener.onDelete()
                             } else {
-                                // 서버로부터 응답이 실패한 경우 처리
-                                println("Failed to cancel reservation. Code: ${response.code()}")
+                                Log.e("Reservation Error", "Failed to cancel reservation. Code: ${response.code()}")
                             }
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            // 요청이 실패한 경우 처리
-                            println("예약 취소 중 오류 발생: ${t.message}")
+                            Log.e("Reservation Error", "Error: ${t.message}")
                         }
                     })
                 }
@@ -109,7 +85,15 @@ class MyTicketAdapter(private val reservationList: MutableList<Reservation>, pri
 
     override fun getItemCount() = reservationList.size
 
-    // 삭제된 예약을 알리기 위한 인터페이스
+// 새로운 예약 리스트로 어댑터를 업데이트하는 메서드
+fun updateList(newReservationList: MutableList<Reservation>) {
+    reservationList.clear()
+    reservationList.addAll(newReservationList)
+    notifyDataSetChanged()
+}
+
+
+
     interface OnDeleteListener {
         fun onDelete()
     }

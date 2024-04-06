@@ -8,8 +8,6 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projecta2.Entity.UserInfo
@@ -30,98 +28,87 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
     private lateinit var ticketPageUserName: TextView
     private lateinit var tvMyTicketCount: TextView
     private lateinit var tvTodayString: TextView
+    private lateinit var tvReservationDateText: TextView
     private lateinit var ticketUseRecycler: RecyclerView
     private lateinit var todayReservationList: MutableList<Reservation>
     private var selectedDate: String? = null
+
+    private lateinit var adapter: MyTicketAdapter
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_ticket)
 
-        //예약개수
         tvMyTicketCount = findViewById(R.id.tvMyTicketCount)
-        ticketUseRecycler = findViewById(R.id.ticketUseRecycler)
-        //당일 날짜 선택
         tvTodayString = findViewById(R.id.tvTodayString)
+        ticketUseRecycler = findViewById(R.id.ticketUseRecycler)
+        tvReservationDateText = findViewById(R.id.tvReservationDateText)
 
-
-        // 사용자 정보를 인텐트로부터 가져옵니다.
         userInfo = intent.getParcelableExtra<UserInfo>("userInfo")!!
 
-        // 사용자 이름을 화면에 표시합니다.
-        val ticketPageUserName: TextView = findViewById(R.id.ticketPageUserName)
+        ticketPageUserName = findViewById(R.id.ticketPageUserName)
         ticketPageUserName.text = userInfo.name
 
         val reservationService = RetrofitInstance.reservationService
 
-        //예약정보 가져오기
         reservationService.getUserReservations(userInfo.Id).enqueue(object :
             Callback<Result<Reservation>> {
             override fun onResponse(
                 call: Call<Result<Reservation>>,
                 response: Response<Result<Reservation>>
             ) {
-                Log.d("수행시작", "요청부분 수행중입니다.")
                 if (response.isSuccessful) {
                     val result: Result<Reservation>? = response.body()
                     if (result != null) {
-                        //당일 날짜에 예약된 것만 표시 => 헬스장 정보, 카운트 따로 보관
                         todayReservationList = result.data.toMutableList()
-                        // 어댑터 인스턴스 생성
-                        val adapter = MyTicketAdapter(todayReservationList, this@MyTicketActivity)
-                        //당일예약 숫자 카운팅 세팅
+                        adapter = MyTicketAdapter(todayReservationList, this@MyTicketActivity)
                         tvMyTicketCount.text = todayReservationList.size.toString()
-                        // 리사이클러뷰에 어댑터 설정
                         ticketUseRecycler.adapter = adapter
-                        // 리사이클러뷰에 변경 사항을 알림
                         adapter.notifyDataSetChanged()
                     } else {
-                        // 응답 바디가 null인 경우 처리
                         Log.e("Reservation Error", "Failed to get reservation list. Response body is null.")
                     }
                 } else {
-                    // 서버로부터 응답이 실패한 경우 처리
                     Log.e("Reservation Error", "Failed to get reservation list. Code: ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<Result<Reservation>>, t: Throwable) {
-                // 요청이 실패한 경우 처리
                 Log.e(
-                    "Reservation Error 통신 아예실패",
+                    "Reservation Error",
                     "Failed to get reservation list. Error: ${t.message}",
                     t
                 )
             }
         })
 
-        // 홈 버튼 클릭 리스너 설정
         val homeImageView: ImageView = findViewById(R.id.homeImageViewUserEdit4)
         homeImageView.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
-        // 지도 버튼 클릭 리스너 설정
         val mapFloatingActionButton: FloatingActionButton = findViewById(R.id.mapFabUserEdit4)
         mapFloatingActionButton.setOnClickListener {
             val intent = Intent(this, MapActivity::class.java)
             startActivity(intent)
         }
 
-        // 마이페이지 버튼 클릭 리스너 설정
         val myPageImageView: ImageView = findViewById(R.id.myPageImageView4)
         myPageImageView.setOnClickListener {
             val intent = Intent(this, MyPageActivity::class.java)
             startActivity(intent)
         }
 
-        // 리사이클러뷰 설정
         setupRecyclerView()
+
+        // 날짜를 선택하도록 클릭 이벤트 설정
+        tvReservationDateText.setOnClickListener {
+            showDatePicker()
+        }
     }
 
-    //달력선택
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -131,9 +118,12 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
         val datePickerDialog = DatePickerDialog(
             this,
             { _, selectedYear, selectedMonth, dayOfMonth ->
-                selectedDate = "$selectedYear/${selectedMonth + 1}/$dayOfMonth"
-                //여기 해당 날짜가 변경되었으면 어뎁터에서 리사이클러뷰 해당 날짜만 표시하게하기
-
+                val formattedMonth = if (selectedMonth + 1 < 10) "0${selectedMonth + 1}" else "${selectedMonth + 1}"
+                val formattedDay = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                selectedDate = "$selectedYear-$formattedMonth-$formattedDay"
+                // 선택된 날짜를 표시
+                // 선택된 날짜로 예약 필터링
+                filterReservationsByDate(selectedDate)
             },
             year,
             month,
@@ -142,12 +132,22 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
         datePickerDialog.show()
     }
 
-    private fun setupRecyclerView() {
-        val recyclerView: RecyclerView = findViewById(R.id.ticketUseRecycler)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+    private fun filterReservationsByDate(date: String?) {
+        if (date != null) {
+            Log.d("date" , "$date")
+            val filteredReservations = todayReservationList.filter { it.reservationTime.startsWith(date) }.toMutableList()
+            adapter.updateList(filteredReservations)
+            tvMyTicketCount.text = filteredReservations.size.toString()
+            tvTodayString.text = "(" + date + ")"
+        }
     }
 
-    // 삭제된 예약을 알림받아 tvMyTicketCount를 업데이트하는 함수
+
+
+    private fun setupRecyclerView() {
+        ticketUseRecycler.layoutManager = LinearLayoutManager(this)
+    }
+
     override fun onDelete() {
         tvMyTicketCount.text = todayReservationList.size.toString()
     }
