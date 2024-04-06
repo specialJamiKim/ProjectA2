@@ -69,7 +69,7 @@ class ReservationActivity : AppCompatActivity() {
             DialogHelper.showMessageDialog(this, "예약 확인", "예약이 완료되었습니다.\n\n예약 날짜: $reservationDate")
 
             //예약완료시 마이페이지로 이동
-            val intent = Intent(this, MyPageActivity::class.java)
+            val intent = Intent(this, MyTicketActivity::class.java)
             startActivity(intent)
             dialog.dismiss()
         }

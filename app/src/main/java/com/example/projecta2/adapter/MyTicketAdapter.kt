@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projecta2.R
 import com.example.projecta2.model.Reservation
+import com.example.projecta2.util.DialogHelper.showConfirmationDialog
 import com.example.projecta2.util.RetrofitInstance
 import okhttp3.ResponseBody
 import retrofit2.Callback
@@ -21,8 +22,11 @@ class MyTicketAdapter(private val reservationList: MutableList<Reservation>, pri
     // ViewHolder 클래스
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val btnTicketUsed: Button = itemView.findViewById(R.id.btnTicketUsed)
+        val btnReservationCancel : Button = itemView.findViewById(R.id.btnReservationCancel)
         val tvCenterName: TextView = itemView.findViewById(R.id.tvCenterName)
         val tvAddress: TextView = itemView.findViewById(R.id.tvAddress)
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -66,6 +70,41 @@ class MyTicketAdapter(private val reservationList: MutableList<Reservation>, pri
                 }
             })
         }
+
+        holder.btnReservationCancel.setOnClickListener{
+            // 예약 ID 가져오기
+            val reservationId = reservation.id
+            Log.d("예약번호 ", "$reservationId")
+
+            // 다이얼로그 표시
+            showConfirmationDialog(context = holder.itemView.context,
+                title = "예약 취소",
+                message = "정말로 예약을 취소하시겠습니까?",
+                onPositiveClick = {
+                    // 예약 취소 요청
+                    reservationService.reservationCancel(reservationId).enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            if (response.isSuccessful) {
+                                // 성공적으로 예약취소가 되었을 때
+                                Log.d("성공이다", "아싸!!")
+                                reservationList.remove(reservation)
+                                notifyDataSetChanged() // 리사이클러뷰 갱신
+                                onDeleteListener.onDelete() // 액티비티에 삭제된 예약을 알림
+                            } else {
+                                // 서버로부터 응답이 실패한 경우 처리
+                                println("Failed to cancel reservation. Code: ${response.code()}")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            // 요청이 실패한 경우 처리
+                            println("예약 취소 중 오류 발생: ${t.message}")
+                        }
+                    })
+                }
+            )
+        }
+
     }
 
     override fun getItemCount() = reservationList.size

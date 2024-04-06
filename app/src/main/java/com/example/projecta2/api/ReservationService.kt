@@ -37,6 +37,11 @@ interface ReservationService {
     @FormUrlEncoded
     fun reservationUsed(@Field("reservationId") reservationId : Long?) : Call<ResponseBody>
 
+    //예약취소
+    @POST("/m_reservation/delete")
+    @FormUrlEncoded
+    fun reservationCancel(@Field("reservationId") reservationId : Long?) : Call<ResponseBody>
+
 
 
 }

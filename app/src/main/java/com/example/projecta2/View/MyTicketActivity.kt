@@ -1,6 +1,7 @@
 package com.example.projecta2.View
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
 
 class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
 
@@ -27,8 +29,10 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
 
     private lateinit var ticketPageUserName: TextView
     private lateinit var tvMyTicketCount: TextView
+    private lateinit var tvTodayString: TextView
     private lateinit var ticketUseRecycler: RecyclerView
     private lateinit var todayReservationList: MutableList<Reservation>
+    private var selectedDate: String? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +42,10 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
         //예약개수
         tvMyTicketCount = findViewById(R.id.tvMyTicketCount)
         ticketUseRecycler = findViewById(R.id.ticketUseRecycler)
+        //당일 날짜 선택
+        tvTodayString = findViewById(R.id.tvTodayString)
+
+
         // 사용자 정보를 인텐트로부터 가져옵니다.
         userInfo = intent.getParcelableExtra<UserInfo>("userInfo")!!
 
@@ -111,6 +119,27 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
 
         // 리사이클러뷰 설정
         setupRecyclerView()
+    }
+
+    //달력선택
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, dayOfMonth ->
+                selectedDate = "$selectedYear/${selectedMonth + 1}/$dayOfMonth"
+                //여기 해당 날짜가 변경되었으면 어뎁터에서 리사이클러뷰 해당 날짜만 표시하게하기
+
+            },
+            year,
+            month,
+            dayOfMonth
+        )
+        datePickerDialog.show()
     }
 
     private fun setupRecyclerView() {
