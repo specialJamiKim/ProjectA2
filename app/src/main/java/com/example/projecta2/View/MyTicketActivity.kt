@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -17,25 +16,19 @@ import com.example.projecta2.R
 import com.example.projecta2.model.Reservation
 import com.example.projecta2.model.Result
 import com.example.projecta2.util.RetrofitInstance
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.common.reflect.TypeToken
-import com.google.gson.Gson
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.properties.Delegates
 
-class MyTicketActivity : AppCompatActivity() {
+class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
 
     private lateinit var userInfo: UserInfo
 
     private lateinit var ticketPageUserName: TextView
-    private lateinit var tvMyTicketCount : TextView
-    private lateinit var ticketUseRecycler : RecyclerView
-    private lateinit var todayReservationList : List<Reservation>
-    private lateinit var btnTicketUsed : Button
+    private lateinit var tvMyTicketCount: TextView
+    private lateinit var ticketUseRecycler: RecyclerView
+    private lateinit var todayReservationList: MutableList<Reservation>
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +41,11 @@ class MyTicketActivity : AppCompatActivity() {
         // 사용자 정보를 인텐트로부터 가져옵니다.
         userInfo = intent.getParcelableExtra<UserInfo>("userInfo")!!
 
-
         // 사용자 이름을 화면에 표시합니다.
         val ticketPageUserName: TextView = findViewById(R.id.ticketPageUserName)
         ticketPageUserName.text = userInfo.name
 
         val reservationService = RetrofitInstance.reservationService
-
-        //예약 사용처리 ==> 구현해야함
-       // reservationService.reservationUsed()
 
         //예약정보 가져오기
         reservationService.getUserReservations(userInfo.Id).enqueue(object :
@@ -70,9 +59,9 @@ class MyTicketActivity : AppCompatActivity() {
                     val result: Result<Reservation>? = response.body()
                     if (result != null) {
                         //당일 날짜에 예약된 것만 표시 => 헬스장 정보, 카운트 따로 보관
-                        todayReservationList = result.data
+                        todayReservationList = result.data.toMutableList()
                         // 어댑터 인스턴스 생성
-                        val adapter = MyTicketAdapter(todayReservationList)
+                        val adapter = MyTicketAdapter(todayReservationList, this@MyTicketActivity)
                         //당일예약 숫자 카운팅 세팅
                         tvMyTicketCount.text = todayReservationList.size.toString()
                         // 리사이클러뷰에 어댑터 설정
@@ -98,13 +87,6 @@ class MyTicketActivity : AppCompatActivity() {
                 )
             }
         })
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.home_linear_layout)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            WindowInsetsCompat.CONSUMED
-        }
 
         // 홈 버튼 클릭 리스너 설정
         val homeImageView: ImageView = findViewById(R.id.homeImageViewUserEdit4)
@@ -134,11 +116,10 @@ class MyTicketActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         val recyclerView: RecyclerView = findViewById(R.id.ticketUseRecycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
+    }
 
-        // 예시 데이터 리스트 (실제 앱에서는 서버 또는 데이터베이스에서 데이터를 로드해야 합니다)
-        val reservationList = listOf<Reservation>() // 여기에 데이터를 채워넣으세요.
-
-        recyclerView.adapter = MyTicketAdapter(reservationList)
+    // 삭제된 예약을 알림받아 tvMyTicketCount를 업데이트하는 함수
+    override fun onDelete() {
+        tvMyTicketCount.text = todayReservationList.size.toString()
     }
 }
-
