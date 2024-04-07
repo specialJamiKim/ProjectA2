@@ -4,6 +4,7 @@ import com.example.projecta2.api.GymService
 import com.example.projecta2.api.ReservationService
 import com.example.projecta2.api.ReviewService
 import com.example.projecta2.api.UserService
+import com.example.projecta2.api.VisitCountingService
 import com.example.projecta2.model.User
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -50,6 +51,11 @@ object RetrofitInstance {
     //리뷰 관련
     val reviewService : ReviewService by lazy{
         retrofit.create(ReviewService::class.java)
+    }
+
+    //예약 카운팅 관련
+    val visitCountingService : VisitCountingService by lazy{
+        retrofit.create(VisitCountingService::class.java)
     }
 
 

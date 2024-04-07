@@ -69,7 +69,7 @@ class CenterDetailActivity : AppCompatActivity() {
         val homeImageView = findViewById<ImageView>(R.id.centerToHome)
         val mapFloatingActionButton = findViewById<FloatingActionButton>(R.id.centerToMap)
         val myPageImageView = findViewById<ImageView>(R.id.centerToMypage)
-        val textViewItemName = findViewById<TextView>(R.id.centerName)
+        val textViewItemName = findViewById<TextView>(R.id.tvMyCenterName)
         val textViewItemPrice = findViewById<TextView>(R.id.centerPrice)
         val textViewItemAddress = findViewById<TextView>(R.id.centeraddress)
         val textViewCenterText = findViewById<TextView>(R.id.centerText)

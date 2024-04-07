@@ -19,7 +19,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Calendar
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
 
@@ -31,8 +32,6 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
     private lateinit var tvReservationDateText: TextView
     private lateinit var ticketUseRecycler: RecyclerView
     private lateinit var todayReservationList: MutableList<Reservation>
-    private var selectedDate: String? = null
-
     private lateinit var adapter: MyTicketAdapter
 
     @SuppressLint("MissingInflatedId")
@@ -50,6 +49,31 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
         ticketPageUserName = findViewById(R.id.ticketPageUserName)
         ticketPageUserName.text = userInfo.name
 
+        setupRecyclerView()
+
+        fetchUserReservations()
+
+        val homeImageView: ImageView = findViewById(R.id.homeImageViewUserEdit4)
+        homeImageView.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+
+        val mapFloatingActionButton: FloatingActionButton = findViewById(R.id.mapFabUserEdit4)
+        mapFloatingActionButton.setOnClickListener {
+            startActivity(Intent(this, MapActivity::class.java))
+        }
+
+        val myPageImageView: ImageView = findViewById(R.id.myPageImageView4)
+        myPageImageView.setOnClickListener {
+            startActivity(Intent(this, MyPageActivity::class.java))
+        }
+
+        tvReservationDateText.setOnClickListener {
+            showDatePicker()
+        }
+    }
+
+    private fun fetchUserReservations() {
         val reservationService = RetrofitInstance.reservationService
 
         reservationService.getUserReservations(userInfo.Id).enqueue(object :
@@ -61,16 +85,25 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
                 if (response.isSuccessful) {
                     val result: Result<Reservation>? = response.body()
                     if (result != null) {
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val todayDate = dateFormat.format(Date())
+                        tvTodayString.text = "(" + todayDate + ")"
                         todayReservationList = result.data.toMutableList()
                         adapter = MyTicketAdapter(todayReservationList, this@MyTicketActivity)
                         tvMyTicketCount.text = todayReservationList.size.toString()
                         ticketUseRecycler.adapter = adapter
-                        adapter.notifyDataSetChanged()
+
                     } else {
-                        Log.e("Reservation Error", "Failed to get reservation list. Response body is null.")
+                        Log.e(
+                            "Reservation Error",
+                            "Failed to get reservation list. Response body is null."
+                        )
                     }
                 } else {
-                    Log.e("Reservation Error", "Failed to get reservation list. Code: ${response.code()}")
+                    Log.e(
+                        "Reservation Error",
+                        "Failed to get reservation list. Code: ${response.code()}"
+                    )
                 }
             }
 
@@ -82,31 +115,6 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
                 )
             }
         })
-
-        val homeImageView: ImageView = findViewById(R.id.homeImageViewUserEdit4)
-        homeImageView.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-
-        val mapFloatingActionButton: FloatingActionButton = findViewById(R.id.mapFabUserEdit4)
-        mapFloatingActionButton.setOnClickListener {
-            val intent = Intent(this, MapActivity::class.java)
-            startActivity(intent)
-        }
-
-        val myPageImageView: ImageView = findViewById(R.id.myPageImageView4)
-        myPageImageView.setOnClickListener {
-            val intent = Intent(this, MyPageActivity::class.java)
-            startActivity(intent)
-        }
-
-        setupRecyclerView()
-
-        // 날짜를 선택하도록 클릭 이벤트 설정
-        tvReservationDateText.setOnClickListener {
-            showDatePicker()
-        }
     }
 
     private fun showDatePicker() {
@@ -117,13 +125,12 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
 
         val datePickerDialog = DatePickerDialog(
             this,
-            { _, selectedYear, selectedMonth, dayOfMonth ->
-                val formattedMonth = if (selectedMonth + 1 < 10) "0${selectedMonth + 1}" else "${selectedMonth + 1}"
-                val formattedDay = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
-                selectedDate = "$selectedYear-$formattedMonth-$formattedDay"
-                // 선택된 날짜를 표시
-                // 선택된 날짜로 예약 필터링
-                filterReservationsByDate(selectedDate)
+            { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                val monthFormatted = String.format("%02d", selectedMonth + 1)
+                val dayFormatted = String.format("%02d", selectedDayOfMonth)
+                val selectedDate = "$selectedYear-$monthFormatted-$dayFormatted"
+                tvTodayString.text = "(" + "${selectedDate}" + ")"
+                adapter.setSelectedDate(selectedDate)
             },
             year,
             month,
@@ -131,18 +138,6 @@ class MyTicketActivity : AppCompatActivity(), MyTicketAdapter.OnDeleteListener {
         )
         datePickerDialog.show()
     }
-
-    private fun filterReservationsByDate(date: String?) {
-        if (date != null) {
-            Log.d("date" , "$date")
-            val filteredReservations = todayReservationList.filter { it.reservationTime.startsWith(date) }.toMutableList()
-            adapter.updateList(filteredReservations)
-            tvMyTicketCount.text = filteredReservations.size.toString()
-            tvTodayString.text = "(" + date + ")"
-        }
-    }
-
-
 
     private fun setupRecyclerView() {
         ticketUseRecycler.layoutManager = LinearLayoutManager(this)

@@ -2,39 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="16dp">
 
     <!-- ImageView for displaying image -->
-    <TextView
-        android:id="@+id/tvCenterName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_marginEnd="8dp"
-        android:text="센터명" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/tvReservationDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="예약일" />
+
+        <TextView
+            android:id="@+id/tvCenterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="센터명" />
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="주소" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="주소" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnTicketUsed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2"
-        android:onClick="onTicketUsedButtonClick"
-        android:text="사용" />
+        <Button
+            android:id="@+id/btnTicketUsed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:onClick="onTicketUsedButtonClick"
+            android:text="사용" />
 
-    <Button
-        android:id="@+id/btnReservationCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2"
-        android:onClick="onReservationCancelButtonClick"
-        android:text="취소" />
+        <Button
+            android:id="@+id/btnReservationCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:onClick="onReservationCancelButtonClick"
+            android:text="취소" />
+    </LinearLayout>
 
 </LinearLayout>

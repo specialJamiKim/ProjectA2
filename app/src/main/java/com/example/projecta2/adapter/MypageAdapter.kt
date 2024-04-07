@@ -19,7 +19,6 @@ class MypageAdapter(private val reservationList: List<Reservation>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val (_, center, user, reservationTime) = reservationList[position]
         holder.centerName.text = center.name // 가정: FitnessCenter에 getName() 메소드가 있음
-        holder.userName.text = user.name // 가정: User에 getName() 메소드가 있음
         holder.reservationTime.text = reservationTime
     }
 
@@ -29,13 +28,11 @@ class MypageAdapter(private val reservationList: List<Reservation>) :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var centerName: TextView
-        var userName: TextView
         var reservationTime: TextView
 
         init {
-            centerName = itemView.findViewById(R.id.centerName)
-            userName = itemView.findViewById<TextView>(R.id.userName)
-            reservationTime = itemView.findViewById<TextView>(R.id.reservationTime)
+            centerName = itemView.findViewById(R.id.tvMyCenterName)
+            reservationTime = itemView.findViewById<TextView>(R.id.tvMyReservationTime)
         }
     }
 }

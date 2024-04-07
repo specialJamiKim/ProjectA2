@@ -17,16 +17,28 @@ import com.example.projecta2.model.User
 import com.example.projecta2.adapter.MypageAdapter // 어댑터 임포트 추가
 import com.example.projecta2.model.FitnessCenter
 import com.example.projecta2.model.Reservation
+import com.example.projecta2.model.Result
+import com.example.projecta2.util.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import kotlin.properties.Delegates
 
 class MyPageActivity : AppCompatActivity() {
 
     // Room Database 인스턴스
     private lateinit var db: UserDB
     private var userName: String? = null
+    private var userId by Delegates.notNull<Long>()
     private lateinit var tvUserName: TextView
+    private lateinit var tvTotalCounting: TextView
     private lateinit var recyclerView: RecyclerView // 리사이클러뷰 선언
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +48,7 @@ class MyPageActivity : AppCompatActivity() {
         // 데이터베이스 사용 준비
         db = DatabaseInitializer.initDatabase(this)
         tvUserName = findViewById<TextView>(R.id.MyPageUserName)
+        tvTotalCounting = findViewById<TextView>(R.id.tvTotalCounting)
 
         // 사용자 이메일 가져오기
         val email = SessionManager.getUserEmail(this)
@@ -47,8 +60,12 @@ class MyPageActivity : AppCompatActivity() {
                     db.getDao().getUserInfoObj(email)
                 }
                 userName = stUser?.name
+                userId = stUser?.Id!!
                 tvUserName.text = userName
-                Log.d("로그인 상태", "현재 로그인된 ${userName}님 고유 id 는 ${stUser?.Id} 입니다")
+                Log.d("로그인 상태", "현재 로그인된 ${userName}님 고유 id 는 ${userId} 입니다")
+
+                //카운팅 세팅
+                setVisitCounting()
             }
         } else {
             Log.d("Email Log", "Email is null")
@@ -85,5 +102,43 @@ class MyPageActivity : AppCompatActivity() {
 
         // 리사이클러뷰 어댑터 설정
         //recyclerView.adapter = MypageAdapter(exampleList) // 어댑터 설정
+    }
+
+    // 총 이용횟수 카운팅 메소드
+    private fun setVisitCounting() {
+        //총 이용횟수 카운팅
+        val visitCountingService = RetrofitInstance.visitCountingService
+        Log.d(">>>>", "${userId}")
+        // 비동기적으로 요청을 수행하고 응답을 처리
+        visitCountingService.getMyCounting(userId).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    // 응답이 성공적으로 받아졌을 때의 처리
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        try {
+                            // 서버 응답을 문자열로 변환하고 이를 Long 형식으로 파싱하여 텍스트뷰에 설정
+                            val counting = responseBody.string()
+                            tvTotalCounting.text = counting
+                        } catch (e: Exception) {
+                            Log.e("VisitCountingError", "Failed to parse visit count.", e)
+                        }
+                    }
+                } else {
+                    // 응답이 실패했을 때의 처리
+                    // response.code()를 사용하여 실패 코드를 확인할 수 있음
+                    Log.e(
+                        "VisitCountingError",
+                        "Failed to get visit count. Code: ${response.code()}"
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // 네트워크 오류 또는 서버 응답 파싱 오류 등의 실패 시 처리
+                // t.message를 사용하여 실패 원인을 확인할 수 있음
+                Log.e("VisitCountingError", "Failed to get visit count.", t)
+            }
+        })
     }
 }
