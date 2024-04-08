@@ -29,6 +29,7 @@ import com.example.projecta2.model.Reservation
 import com.example.projecta2.model.Review
 import com.example.projecta2.util.DialogHelper
 import com.example.projecta2.util.RetrofitInstance
+import com.example.projecta2.util.getUserObject
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -135,7 +136,9 @@ class CenterDetailActivity : AppCompatActivity() {
                     val centerId = intent.getLongExtra("centerId", 0L)
                     val userInfo = intent.getParcelableExtra<UserInfo>("userInfo")
                     val userId = userInfo?.Id
+                    val userName = userInfo?.name
                     val review = Review(
+                        userName = userName,
                         userId = userId,
                         centerId = centerId,
                         rating = rating,
@@ -258,8 +261,17 @@ class CenterDetailActivity : AppCompatActivity() {
         builder.setPositiveButton("예약") { dialog, _ ->
             DialogHelper.showMessageDialog(this, "예약 확인", "예약이 완료되었습니다.\n\n예약 날짜: $reservationDate") {
                 serverDbSaveReservation(userInfo, fitnessCenter, reservationDate)
-                val intent = Intent(this, MyTicketActivity::class.java)
-                startActivity(intent)
+                // 사용자 정보 로딩 및 이벤트 리스너 설정
+                lifecycleScope.launch {
+                    val userInfo: UserInfo? = getUserObject(this@CenterDetailActivity).getUserInfo()
+
+                        // 내 보유 일일권 클릭 이벤트 처리
+                        val intent = Intent(this@CenterDetailActivity, MyTicketActivity::class.java).apply {
+                            putExtra("userInfo", userInfo)
+                        }
+                        startActivity(intent)
+
+                }
             }
             dialog.dismiss()
         }

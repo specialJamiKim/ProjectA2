@@ -17,7 +17,7 @@ class ReviewAdapter(private var reviews: List<Review>) : RecyclerView.Adapter<Re
 
         fun bind(review: Review) {
             // 작성자 ID 설정
-            authorTextView.text = review.userId.toString()
+            authorTextView.text = review.userName.toString()
 
             // 평점 설정 (사용되지 않았을 때는 생략 가능)
             ratingTextView.text = review.rating.toString()
