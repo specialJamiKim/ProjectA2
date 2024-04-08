@@ -48,8 +48,6 @@ object DialogHelper {
         showConfirmationDialog(context, title, message,
             onPositiveClick = {
                 onDeleteConfirmed.invoke() // 삭제 확인 버튼 클릭 시 삭제를 수행합니다.
-                // 삭제가 완료되었다는 알림창을 표시합니다.
-                showMessageDialog(context, "알림", "삭제가 완료되었습니다.")
             },
             onNegativeClick = onCancel
         )

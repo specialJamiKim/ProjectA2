@@ -55,7 +55,6 @@ class MyTicketAdapter(
                             // Handle unsuccessful response
                         }
                     }
-
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         // Handle failure
                     }
