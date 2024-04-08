@@ -3,7 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="5dp">
+
+
 
     <!-- ImageView for displaying image -->
     <LinearLayout
@@ -21,10 +25,6 @@
             android:fontFamily="@font/puradak_gentle_gothic"
             android:text="예약일" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#000000" />
 
         <TextView
             android:id="@+id/tvCenterNameTitle"
@@ -35,10 +35,7 @@
             android:fontFamily="@font/puradak_gentle_gothic"
             android:text="센터명" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#000000" />
+
 
         <TextView
             android:id="@+id/tvAddressTitle"
@@ -48,6 +45,39 @@
             android:layout_weight="1"
             android:fontFamily="@font/puradak_gentle_gothic"
             android:text="주소" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:fontFamily="@font/puradak_gentle_gothic"
+            android:text="ㅡ" />
+
+        <TextView
+            android:layout_width="45dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:fontFamily="@font/puradak_gentle_gothic"
+            android:text="ㅡ" />
+
+
+        <TextView
+            android:layout_width="45dp"
+            android:layout_height="15dp"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/puradak_gentle_gothic"
+            android:text="ㅡ" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -119,5 +149,19 @@
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
     </LinearLayout>
+
+    <!-- 간격 추가 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <!-- 실선 추가 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="#717070" />
+
+
 
 </LinearLayout>
