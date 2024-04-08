@@ -145,7 +145,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/myTicketCardView"
-                            android:layout_width="wrap_content"
+                            android:layout_width="117dp"
                             android:layout_height="110dp"
                             android:layout_marginStart="4dp"
                             android:clickable="true"
@@ -297,7 +297,7 @@
 
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/imgBannerRecyclerView"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="261dp"
                                     android:layout_height="match_parent" />
 
                             </androidx.cardview.widget.CardView>
