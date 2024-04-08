@@ -229,9 +229,36 @@ class CenterDetailActivity : AppCompatActivity() {
 
 
     private fun updateReviewRecyclerView(reviews: List<Review>) {
-        reviewAdapter = ReviewAdapter(reviews)
+        reviewAdapter = ReviewAdapter(reviews) { reviewId ->
+            showDeleteConfirmationDialog(reviewId)
+        }
         reviewView.layoutManager = LinearLayoutManager(this)
         reviewView.adapter = reviewAdapter
+    }
+
+    private fun deleteReview(id: Long) {
+        // Retrofit을 사용하여 서버에 리뷰를 삭제하는 요청을 보냅니다.
+        // 요청이 성공하면 다시 리뷰를 불러와서 평균 평점을 계산하여 화면에 반영합니다.
+        reviewAdapter.deleteReview(id) { isSuccess ->
+            if (isSuccess) {
+                // 삭제 후 리뷰를 다시 불러와서 화면에 반영합니다.
+                callReview(centerId)
+            }
+        }
+    }
+
+    private fun showDeleteConfirmationDialog(reviewId: Long) {
+        AlertDialog.Builder(this)
+            .setTitle("리뷰 삭제")
+            .setMessage("해당 리뷰를 삭제하시겠습니까?")
+            .setPositiveButton("삭제") { _, _ ->
+                // 삭제 버튼을 누르면 deleteReview 함수 호출
+                deleteReview(reviewId)
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun showDatePicker() {
@@ -265,11 +292,11 @@ class CenterDetailActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     val userInfo: UserInfo? = getUserObject(this@CenterDetailActivity).getUserInfo()
 
-                        // 내 보유 일일권 클릭 이벤트 처리
-                        val intent = Intent(this@CenterDetailActivity, MyTicketActivity::class.java).apply {
-                            putExtra("userInfo", userInfo)
-                        }
-                        startActivity(intent)
+                    // 내 보유 일일권 클릭 이벤트 처리
+                    val intent = Intent(this@CenterDetailActivity, MyTicketActivity::class.java).apply {
+                        putExtra("userInfo", userInfo)
+                    }
+                    startActivity(intent)
 
                 }
             }
