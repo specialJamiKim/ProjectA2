@@ -54,7 +54,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapClic
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-
         homeButton = binding.mapToHome
         myPageButton = binding.mapToMyPage
 
@@ -99,7 +98,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapClic
         // 기존 마커 지우기
         map.clear()
         // 클릭한 위치에 마커 추가
-        map.addMarker(MarkerOptions().position(latLng).title("Clicked Location"))
+        map.addMarker(MarkerOptions().position(latLng).title("Clicked Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
 
         // 클릭한 위치에서 피트니스 센터 다시 가져오기
         CoroutineScope(Dispatchers.Main).launch {

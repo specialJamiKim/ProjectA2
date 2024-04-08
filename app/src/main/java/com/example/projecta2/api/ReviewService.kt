@@ -7,6 +7,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ReviewService {
 
@@ -14,6 +15,6 @@ interface ReviewService {
     fun addReview(@Body review: Review): Call<ResponseBody>
 
     // 모든 리뷰 조회
-    @GET("/m_review/all")
-    fun getAllReviews(): Call<List<Review>>
+    @GET("/m_review/all/{centerId}")
+    fun getAllReviews(@Path("centerId") centerId: Long): Call<List<Review>>
 }

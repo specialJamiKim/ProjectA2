@@ -247,7 +247,7 @@ class UserEditActivity : AppCompatActivity() {
                     Log.d("통신실패", "통신실패실패")
                     Toast.makeText(
                         this@UserEditActivity,
-                        "네트워크 오류",
+                        "같은 비밀번호로 변경 불가합니다.\n새로운 비밀번호를 입력하세요.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

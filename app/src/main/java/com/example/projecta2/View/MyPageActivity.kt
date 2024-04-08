@@ -93,8 +93,8 @@ class MyPageActivity : AppCompatActivity() {
         }
 
         // 리사이클러뷰 설정
-        recyclerView = findViewById<RecyclerView>(R.id.myPageRecycler) // 리사이클러뷰 ID 할당
-        recyclerView.layoutManager = LinearLayoutManager(this) // 리사이클러뷰 레이아웃 매니저 설정
+        //recyclerView = findViewById<RecyclerView>(R.id.myPageRecycler) // 리사이클러뷰 ID 할당
+        //recyclerView.layoutManager = LinearLayoutManager(this) // 리사이클러뷰 레이아웃 매니저 설정
         // 여기에 어댑터 설정 코드 추가. 예시를 위한 가상의 데이터 리스트와 어댑터 설정을 진행합니다.
 
         // 실제 데이터 리스트를 DB나 서버에서 가져와야 합니다.

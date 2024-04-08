@@ -28,7 +28,7 @@
                         android:id="@+id/centerImg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitCenter"
                         android:src="@drawable/favorite_img_4" />
 
                     <Button
@@ -64,7 +64,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tvMyCenterName"
+                                android:id="@+id/centerName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
@@ -106,10 +106,11 @@
                                 android:text="평점"
                                 android:textSize="14sp" />
 
-                            <ImageView
-                                android:layout_width="72dp"
+                            <TextView
+                                android:id="@+id/centerRating"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/four_star" />
+                                android:text="TextView" />
 
                             <TextView
                                 android:id="@+id/centeraddress"
@@ -185,16 +186,16 @@
                         android:minLines="2"
                         android:gravity="start|top" />
 
-                        <!-- 리뷰 전송 버튼 -->
-                        <Button
-                            android:id="@+id/submitReviewBtn"
-                            android:fontFamily="@font/puradak_gentle_gothic"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
-                            android:background="@drawable/buttonshape4"
-                            android:text="리뷰 작성" />
-                    </LinearLayout>
+                    <!-- 리뷰 전송 버튼 -->
+                    <Button
+                        android:id="@+id/submitReviewBtn"
+                        android:fontFamily="@font/puradak_gentle_gothic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/buttonshape4"
+                        android:text="리뷰 작성" />
+                </LinearLayout>
 
                 <!-- 작성된 리뷰 보기 -->
 
@@ -205,9 +206,9 @@
                     android:nestedScrollingEnabled="true" />
 
                 <!-- 간격 추가 -->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
