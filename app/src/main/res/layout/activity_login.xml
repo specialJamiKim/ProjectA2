@@ -11,7 +11,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#8793eb"
+        android:background="#292929"
         android:paddingTop="24dp"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
@@ -59,7 +59,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:background="#8793eb"
+                    android:background="#292929"
                     android:orientation="vertical">
 
                     <TextView
@@ -67,8 +67,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/calibri"
-                        android:text="Your Future"
+                        android:fontFamily="@font/puradak_gentle_gothic"
+                        android:text="Fit-pass plater"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
                         android:textSize="22sp" />
@@ -77,8 +77,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/calibri"
-                        android:text="Furniture"
+                        android:fontFamily="@font/puradak_gentle_gothic"
+                        android:text="회원 로그인"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
                         android:textSize="36sp"
@@ -89,7 +89,8 @@
                         android:layout_height="4dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
-                        android:background="#ffc6c6" />
+                        android:background="#FFFFFF" />
+
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -115,11 +116,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="36dp"
                             android:layout_marginBottom="24dp"
-                            android:fontFamily="@font/calibri"
-                            android:text="Login First"
+                            android:fontFamily="@font/puradak_gentle_gothic"
+                            android:text="이용을 위해 로그인을 해주세요"
                             android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:textSize="24sp" />
+                            android:textColor="#5C5B5B"
+                            android:textSize="14sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -128,12 +129,13 @@
                             android:textColorHint="#FFB3B3B3">
 
                             <EditText
+                                android:id="@+id/userEmailTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:drawableStart="@drawable/ic_person_gray_24dp"
                                 android:drawablePadding="16dp"
-                                android:fontFamily="@font/calibri"
-                                android:hint="Username"
+                                android:fontFamily="@font/puradak_gentle_gothic"
+                                android:hint="ID"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:textColor="@android:color/black"
@@ -148,12 +150,13 @@
                             app:passwordToggleEnabled="true">
 
                             <EditText
+                                android:id="@+id/userPwTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:drawableStart="@drawable/ic_lock_gray_24dp"
                                 android:drawablePadding="16dp"
-                                android:fontFamily="@font/calibri"
-                                android:hint="Password"
+                                android:fontFamily="@font/puradak_gentle_gothic"
+                                android:hint="비밀번호"
                                 android:inputType="textPassword"
                                 android:maxLines="1"
                                 android:textColor="@android:color/black"
@@ -164,35 +167,64 @@
 
                 </androidx.cardview.widget.CardView>
 
-
-                <Button
-                    android:id="@+id/login"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="16dp"
-                    android:background="@drawable/buttonshape"
-                    android:fontFamily="@font/calibri"
-                    android:text="Login"
-                    android:textAllCaps="false"
-                    android:textColor="#ffffff"
-                    android:textSize="24sp" />
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/buttonshape4"
+                        android:fontFamily="@font/puradak_gentle_gothic"
+                        android:text="로그인"
+                        android:textAllCaps="false"
+                        android:textColor="#ffffff"
+                        android:textSize="20sp" />
+
+
+
+                    <Button
+                        android:id="@+id/btnJoinPage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="150dp"
+                        android:layout_marginRight="150dp"
+                        android:fontFamily="@font/puradak_gentle_gothic"
+                        android:text="회원가입"
+                        android:textAllCaps="false"
+                        android:textColor="#5B5B5C"
+                        android:textSize="15sp"
+                        android:background="@android:color/transparent" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/login_line" />
+
+                    <Button
+                        android:id="@+id/btnGoogleLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:drawableLeft="@drawable/google_s3" />
+
+
+                </LinearLayout>
             </LinearLayout>
 
 
         </ScrollView>
-
-        <Button
-            android:id="@+id/btnTest"
-            android:layout_width="141dp"
-            android:layout_height="41dp"
-            android:layout_below="@+id/scrollView2"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="199dp"
-            android:layout_marginBottom="17dp"
-            android:text="Button" />
 
     </RelativeLayout>
 

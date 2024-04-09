@@ -1,165 +1,266 @@
 package com.example.projecta2.View
 
-/*
-import android.os.Bundle
-import android.view.View
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.example.projecta2.R
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.*
-
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
-
-    private lateinit var googleMap: GoogleMap
-    private var currentMarker: Marker? = null
-    private lateinit var mapView: MapView // lateinit 키워드로 초기화를 나중에 할 것을 알립니다.
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
-
-        mapView = findViewById(R.id.mapView) // mapView 초기화
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        this.googleMap = googleMap
-        // ...
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (::mapView.isInitialized) { // mapView가 초기화되었는지 확인합니다.
-            mapView.onStart()
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (::mapView.isInitialized) {
-            mapView.onStop()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (::mapView.isInitialized) {
-            mapView.onResume()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (::mapView.isInitialized) {
-            mapView.onPause()
-        }
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        if (::mapView.isInitialized) {
-            mapView.onLowMemory()
-        }
-    }
-
-    override fun onDestroy() {
-        if (::mapView.isInitialized) {
-            mapView.onDestroy()
-        }
-        super.onDestroy()
-    }
-}
-*/
-
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
+import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.util.Log
+import android.widget.ImageButton
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.projecta2.Entity.UserInfo
 import com.example.projecta2.R
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CircleOptions
+import com.example.projecta2.adapter.FitnessCenterAdapter
+import com.example.projecta2.model.FitnessCenter
+import com.example.projecta2.util.RetrofitInstance
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.example.projecta2.databinding.ActivityMapBinding
+import kotlinx.coroutines.*
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var map: GoogleMap
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var fitnessCenterAdapter: FitnessCenterAdapter
+    private var userInfo: UserInfo? = null
 
+    private lateinit var zoomInButton: ImageButton
+    private lateinit var zoomOutButton: ImageButton
+    private lateinit var homeButton: LinearLayout
+    private lateinit var myPageButton: LinearLayout
+
+    private val REQUEST_PERMISSION_LOCATION = 1000
+
+    private lateinit var binding: ActivityMapBinding
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
-
+        binding = ActivityMapBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // 홈 버튼에 대한 참조를 가져옵니다.
-        val homeButton: LinearLayout = findViewById(R.id.home_linear_layout2)
-        // 마이 페이지(사람) 버튼에 대한 참조를 가져옵니다.
-        val myPageButton: LinearLayout = findViewById(R.id.person_linear_layout2)
+        homeButton = binding.mapToHome
+        myPageButton = binding.mapToMyPage
 
-        // 홈 버튼 클릭 이벤트 리스너 설정
+
+
         homeButton.setOnClickListener {
-            // HomeActivity로 이동
-            val intent = Intent(this@MapActivity, HomeActivity::class.java)
-            startActivity(intent)
+            startActivity(
+                Intent(
+                    this@MapActivity,
+                    HomeActivity::class.java
+                )
+            )
         }
-
-        // 마이 페이지 버튼 클릭 이벤트 리스너 설정
         myPageButton.setOnClickListener {
-            // MyPageActivity로 이동
-            val intent = Intent(this@MapActivity, MyPageActivity::class.java)
-            startActivity(intent)
+            startActivity(
+                Intent(
+                    this@MapActivity,
+                    MyPageActivity::class.java
+                )
+            )
         }
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as? SupportMapFragment
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.mapView) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
     }
+
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         getUserLocation()
+
+        map.setOnMapClickListener(this)
     }
 
+    override fun onMapClick(latLng: LatLng) {
+        addMarkerAt(latLng)
+    }
+
+    private fun addMarkerAt(latLng: LatLng) {
+        // 기존 마커 지우기
+        map.clear()
+        // 클릭한 위치에 마커 추가
+        map.addMarker(MarkerOptions().position(latLng).title("Clicked Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+
+        // 클릭한 위치에서 피트니스 센터 다시 가져오기
+        CoroutineScope(Dispatchers.Main).launch {
+
+            fetchFitnessCenters(latLng)
+
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     private fun getUserLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // 위치 권한 요청
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 1000)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                REQUEST_PERMISSION_LOCATION
+            )
             return
         }
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                val userLocation = LatLng(location.latitude, location.longitude)
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14f))
 
-                val circleOptions = CircleOptions()
-                    .center(userLocation)
-                    .radius(1000.0)
-                    .strokeWidth(0f)
-                    .fillColor(0x5500ff00.toInt()) // 반투명한 녹색
-                map.addCircle(circleOptions)
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            location?.let {
+                val userLocation = LatLng(it.latitude, it.longitude)
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14f))
+                val userMarkerOptions = MarkerOptions()
+                    .position(userLocation)
+                    .title("Your Location")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    .alpha(0.7f)
+                map.addMarker(userMarkerOptions)
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    fetchFitnessCenters(userLocation)
+                }
             }
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1000) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 부여된 후에 위치 가져오기를 다시 시도
-                getUserLocation()
+    private suspend fun fetchFitnessCenters(userLocation: LatLng) {
+        val gymService = RetrofitInstance.gymService
+        try {
+            val response = withContext(Dispatchers.IO) {
+                gymService.getGymList().execute()
             }
+            if (response.isSuccessful) {
+                response.body()?.let { list ->
+                    val geocoder = Geocoder(applicationContext)
+                    val fitnessCentersWithLatLng = convertAddressToLatLng(list, geocoder)
+                    val fitnessCentersNearby =
+                        getFitnessCentersNearby(userLocation, fitnessCentersWithLatLng)
+                    calculateAndSetDistance(userLocation, fitnessCentersNearby)
+                    showFitnessCentersOnMapAndList(userLocation, fitnessCentersNearby)
+                } ?: run {
+                    Log.e("Response Error", "Received null center list")
+                }
+            } else {
+                Log.e("Response Error", "Code: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            Log.e("Request Failed", "Error: ${e.message}", e)
+        }
+    }
+
+    private fun showFitnessCentersOnMapAndList(
+        userLocation: LatLng,
+        fitnessCentersNearby: List<FitnessCenter>
+    ) {
+        // 지도에 피트니스 센터 마커 표시
+        for (center in fitnessCentersNearby) {
+            val location = LatLng(center.latitude, center.longitude)
+            map.addMarker(MarkerOptions().position(location).title(center.name))
+        }
+        // 리사이클러 뷰 갱신
+        updateRecyclerView(fitnessCentersNearby)
+    }
+
+    private fun updateRecyclerView(fitnessCentersNearby: List<FitnessCenter>) {
+        if (fitnessCentersNearby.isNotEmpty()) {
+            setupRecyclerView(fitnessCentersNearby)
+        } else {
+            // 센터가 없는 경우 빈 목록을 전달하여 리사이클러 뷰를 갱신
+            setupRecyclerView(emptyList())
+        }
+    }
+
+
+    private fun setupRecyclerView(fitnessCentersNearby: List<FitnessCenter>) {
+        recyclerView = findViewById(R.id.recycler)
+        recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        if (fitnessCentersNearby.isNotEmpty()) {
+            fitnessCenterAdapter = FitnessCenterAdapter(fitnessCentersNearby, userInfo)
+            recyclerView.adapter = fitnessCenterAdapter
+        } else {
+            // 센터가 없는 경우, 빈 목록을 생성하여 리사이클러 뷰를 초기화
+            fitnessCenterAdapter = FitnessCenterAdapter(emptyList(), userInfo)
+            recyclerView.adapter = fitnessCenterAdapter
+        }
+    }
+
+    private fun convertAddressToLatLng(
+        centerList: List<FitnessCenter>,
+        geocoder: Geocoder
+    ): List<FitnessCenter> {
+        val fitnessCentersWithLatLng = mutableListOf<FitnessCenter>()
+        for (center in centerList) {
+            val addresses = geocoder.getFromLocationName(center.address, 1)
+            if (addresses != null) {
+                if (addresses.isNotEmpty()) {
+                    val lat = addresses[0].latitude
+                    val lng = addresses[0].longitude
+                    val centerWithLatLng = center.copy(latitude = lat, longitude = lng)
+                    fitnessCentersWithLatLng.add(centerWithLatLng)
+                }
+            }
+        }
+        return fitnessCentersWithLatLng
+    }
+
+    private fun getFitnessCentersNearby(
+        userLocation: LatLng,
+        fitnessCenters: List<FitnessCenter>
+    ): List<FitnessCenter> {
+        val fitnessCentersNearby = mutableListOf<FitnessCenter>()
+        for (center in fitnessCenters) {
+            val location = LatLng(center.latitude, center.longitude)
+            val distance = distanceBetween(
+                userLocation.latitude,
+                userLocation.longitude,
+                location.latitude,
+                location.longitude
+            )
+            if (distance <= 1000) {
+                fitnessCentersNearby.add(center)
+            }
+        }
+        return fitnessCentersNearby
+    }
+
+    private fun distanceBetween(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
+        val result = FloatArray(1)
+        Location.distanceBetween(lat1, lon1, lat2, lon2, result)
+        return result[0]
+    }
+
+    private fun calculateAndSetDistance(userLocation: LatLng, fitnessCenters: List<FitnessCenter>) {
+        for (center in fitnessCenters) {
+            val location = LatLng(center.latitude, center.longitude)
+            val distance = distanceBetween(userLocation.latitude, userLocation.longitude, location.latitude, location.longitude)
+            center.distance = distance // 거리 설정
         }
     }
 }

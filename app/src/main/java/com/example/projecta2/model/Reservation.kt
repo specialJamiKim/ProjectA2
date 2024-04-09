@@ -1,11 +1,10 @@
 package com.example.projecta2.model
 
-import java.util.Date
+import com.google.gson.annotations.SerializedName
 
 data class Reservation(
-    val id: Long = 0,
+    var id: Long = 0,
     var center: FitnessCenter,
     var user: User,
-    var reservationTime: Date,
-
+    var reservationTime: String
 )

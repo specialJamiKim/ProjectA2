@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyPageActivity">
+    tools:context=".View.MyPageActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="10dp"
         android:background="@null"
         android:paddingTop="24dp"
         android:theme="@style/AppTheme.AppBarOverlay"
@@ -39,34 +39,60 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/profile_image"
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:src="@drawable/profile_pic" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/calibri"
-                    android:text="박산해 회원님"
-                    android:textColor="#000000"
-                    android:textSize="30sp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
 
-                <TextView
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="1dp"
+                        android:src="@drawable/profile_pic" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/MyPageUserName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="30dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="@font/puradak_gentle_gothic"
+                                android:text="회원이름일곱자"
+                                android:textColor="#000000"
+                                android:textSize="32sp" />
+
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/MyPageUserGrade"
+                            android:layout_width="198dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/puradak_gentle_gothic"
+                            android:text="회원님"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:fontFamily="@font/calibri"
-                    android:text="일반회원"
-                    android:textSize="20sp" />
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="0dp"
+                    android:background="#3C5E6163" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,7 +115,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/calibri"
+                            android:fontFamily="@font/puradak_gentle_gothic"
                             android:text="내 이용내역"
                             android:textColor="#000000"
                             android:textSize="14sp"
@@ -100,7 +126,7 @@
                             android:layout_height="2dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="8dp"
-                            android:background="@color/colorPrimaryDark" />
+                            android:background="#292929" />
 
                     </LinearLayout>
 
@@ -116,8 +142,9 @@
                     android:weightSum="100">
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/useDetail"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="130dp"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="50"
                         app:cardBackgroundColor="#f9f9f9"
@@ -132,19 +159,21 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tvTotalCounting"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
+                                android:fontFamily="@font/puradak_gentle_gothic"
+                                android:text="14회"
                                 android:textSize="30sp"
-                                android:textStyle="bold"
-                                android:text="14회"/>
+                                android:textStyle="bold" />
 
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="16dp"
-                                android:fontFamily="@font/calibri"
-                                android:text="총 방문횟수"
+                                android:fontFamily="@font/puradak_gentle_gothic"
+                                android:text="총 이용횟수"
                                 android:textColor="#3C3C3C"
                                 android:textSize="16sp" />
 
@@ -153,41 +182,26 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/editInfo"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="130dp"
                         android:layout_marginStart="8dp"
                         android:layout_weight="50"
-                        app:cardBackgroundColor="#a4bdff"
+                        app:cardBackgroundColor="#292929"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="4dp"
                         app:cardUseCompatPadding="true"
-                        app:contentPadding="16dp">
+                        app:contentPaddingLeft="8dp"
+                        app:contentPaddingTop="40dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:textSize="26sp"
-                                android:textStyle="bold"
-                                android:text="내 정보수정" />
-
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="1dp"
-                                android:fontFamily="@font/calibri"
-                                android:text="바로가기"
-                                android:textColor="#3C3C3C"
-                                android:textSize="16sp" />
-
-                        </LinearLayout>
+                            android:fontFamily="@font/puradak_gentle_gothic"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:textColor="#ffffff"
+                            android:text="내 정보수정" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -213,10 +227,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
-
                     </RelativeLayout>
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
 
             </LinearLayout>
 
@@ -224,7 +241,7 @@
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/showMap"
+            android:id="@+id/favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
