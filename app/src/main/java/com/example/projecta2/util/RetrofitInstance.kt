@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
 
-    private const val BASE_URL = "http://10.100.103.49:8111/"
+    private const val BASE_URL = "http://10.100.103.27:8111/"
 
     private const val CONNECT_TIMEOUT_SECONDS = 30L // 연결 Timeout 시간 (초)
     private const val READ_TIMEOUT_SECONDS = 30L // 읽기 Timeout 시간 (초)

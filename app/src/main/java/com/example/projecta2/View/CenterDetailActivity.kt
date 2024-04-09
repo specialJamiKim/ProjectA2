@@ -236,6 +236,8 @@ class CenterDetailActivity : AppCompatActivity() {
         reviewView.adapter = reviewAdapter
     }
 
+    //리뷰 삭제 ==> 리뷰아이디 불러오고, 해당 작성자면 성공
+    // ===> 이 부분 수정 ==> 여기다가 세션에 있는 userId같이 붙여줘야함
     private fun deleteReview(id: Long) {
         // Retrofit을 사용하여 서버에 리뷰를 삭제하는 요청을 보냅니다.
         // 요청이 성공하면 다시 리뷰를 불러와서 평균 평점을 계산하여 화면에 반영합니다.
@@ -280,6 +282,7 @@ class CenterDetailActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    //센터예약확인
     private fun showReservationConfirmationDialog(reservationDate: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("예약 확인")
@@ -310,6 +313,7 @@ class CenterDetailActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
     }
+
 
     private fun serverDbSaveReservation(userInfo: UserInfo, fitnessCenter: FitnessCenter, reservationDate: String) {
         val reservationObj = Reservation(center = fitnessCenter, user = userInfo.toUser(), reservationTime = reservationDate )
