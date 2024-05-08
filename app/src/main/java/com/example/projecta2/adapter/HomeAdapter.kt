@@ -24,7 +24,7 @@ class HomeAdapter(
             binding.apply {
                 // 이미지 로드 및 표시
                 Glide.with(homePageCenterImg.context)
-                    .load(fitnessCenter.imagePath?.let { "http://10.100.103.49:8111/img/$it" })
+                    .load(fitnessCenter.imagePath?.let { "http://10.100.103.27:8111/img/$it" })
                     .placeholder(R.drawable.chair_white_bg) // 로딩 중에 표시할 이미지
                     .error(R.drawable.chair_light_orange_bg) // 에러 발생 시 표시할 이미지
                     .into(homePageCenterImg)

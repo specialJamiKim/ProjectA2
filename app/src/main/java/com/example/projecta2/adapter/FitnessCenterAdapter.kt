@@ -30,7 +30,7 @@ class FitnessCenterAdapter(public var fitnessCenterList: List<FitnessCenter>, pr
             // 이미지 로드 및 표시
             fitnessCenter.imagePath?.let {
                 if (it.isNotEmpty()) {
-                    val imageUrl = "http://10.100.103.49:8111/img/$it"
+                    val imageUrl = "http://10.100.103.27:8111/img/$it"
                     Glide.with(binding.ivFitnessCenterImage.context)
                         .load(imageUrl)
                         .placeholder(R.drawable.chair_white_bg) // 로딩 중에 표시할 이미지
@@ -59,7 +59,7 @@ class FitnessCenterAdapter(public var fitnessCenterList: List<FitnessCenter>, pr
                         putExtra("centerPrice", fitnessCenter.dailyPassPrice) // 센터 가격
                         putExtra("centerLocation", fitnessCenter.address) // 센터 위치
                         putExtra("centerImageUrl", fitnessCenter.imagePath?.let { imagePath ->
-                            "http://10.100.103.49:8111/img/$imagePath"
+                            "http://10.100.103.27:8111/img/$imagePath"
                         }) // 센터 이미지 URL
                         putExtra("userInfo", userInfo) // 유저 정보 전달
                     }
