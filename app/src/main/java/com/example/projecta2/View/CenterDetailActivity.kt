@@ -226,8 +226,6 @@ class CenterDetailActivity : AppCompatActivity() {
             }
         })
     }
-
-
     private fun updateReviewRecyclerView(reviews: List<Review>) {
         reviewAdapter = ReviewAdapter(reviews) { reviewId ->
             showDeleteConfirmationDialog(reviewId)
@@ -263,6 +261,46 @@ class CenterDetailActivity : AppCompatActivity() {
             .show()
     }
 
+
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+ /*   private fun updateReviewRecyclerView(reviews: List<Review>) {
+        reviewAdapter = ReviewAdapter(reviews) { reviewId ->
+            showDeleteConfirmationDialog(reviewId)
+        }
+        reviewView.layoutManager = LinearLayoutManager(this)
+        reviewView.adapter = reviewAdapter
+    }
+
+    //리뷰 삭제 ==> 리뷰아이디 불러오고, 해당 작성자면 성공
+    // ===> 이 부분 수정 ==> 여기다가 세션에 있는 userId같이 붙여줘야함
+    private fun deleteReview(id: Long) {
+        // Retrofit을 사용하여 서버에 리뷰를 삭제하는 요청을 보냅니다.
+        // 요청이 성공하면 다시 리뷰를 불러와서 평균 평점을 계산하여 화면에 반영합니다.
+        reviewAdapter.deleteReview(id) { isSuccess ->
+            if (isSuccess) {
+                // 삭제 후 리뷰를 다시 불러와서 화면에 반영합니다.
+                callReview(centerId)
+            }
+        }
+    }
+
+    private fun showDeleteConfirmationDialog(reviewId: Long) {
+        AlertDialog.Builder(this)
+            .setTitle("리뷰 삭제")
+            .setMessage("해당 리뷰를 삭제하시겠습니까?")
+            .setPositiveButton("삭제") { _, _ ->
+                // 삭제 버튼을 누르면 deleteReview 함수 호출
+                deleteReview(reviewId)
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+*/
+    ///////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
