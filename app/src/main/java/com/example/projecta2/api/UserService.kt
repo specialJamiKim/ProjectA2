@@ -12,9 +12,6 @@ import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface UserService {
-    //인증된 객체 가져오기
-    @POST("/m_user/getAuthUser")
-    fun getAuthUser(): Call<User>
 
     //로그인 처리
     @FormUrlEncoded

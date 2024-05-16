@@ -33,6 +33,9 @@ import com.example.projecta2.util.DialogHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 
 class UserEditActivity : AppCompatActivity() {
@@ -151,7 +154,7 @@ class UserEditActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(event)
     }
 
-    //사용자 조회
+    //날짜 0000-00-00 변환 코드
     private fun getUserInfo(email: String) {
         // 세션에서 이메일을 가져와서 사용자 정보 요청
         userService.getUserInfo(email).enqueue(object : Callback<User> {
@@ -164,7 +167,10 @@ class UserEditActivity : AppCompatActivity() {
                         nameEditText.setText(user.name)
                         addressEditText.setText(user.address)
                         telEditText.setText(user.phoneNumber)
+                        // 생년월일을 "0000-00-00" 형식으로 설정
+                        //val birthDateFormatted = SimpleDateFormat("yyyy-MM-dd").format(user.birthDate)
                         birthEditText.setText(user.birthDate)
+                        // ISO 8601 형식으로 변환하여 설정
                         sexEditText.setText(user.gender)
                         // 로그에 값을 출력
                         Log.d(
@@ -192,6 +198,48 @@ class UserEditActivity : AppCompatActivity() {
             }
         })
     }
+
+    //사용자 조회
+//    private fun getUserInfo(email: String) {
+//        // 세션에서 이메일을 가져와서 사용자 정보 요청
+//        userService.getUserInfo(email).enqueue(object : Callback<User> {
+//            override fun onResponse(call: Call<User>, response: Response<User>) {
+//                if (response.isSuccessful) {
+//                    val user = response.body()
+//                    if (user != null) {
+//                        // 사용자 정보가 있을 경우 EditText에 설정
+//                        idEditText.setText(user.id.toString())
+//                        nameEditText.setText(user.name)
+//                        addressEditText.setText(user.address)
+//                        telEditText.setText(user.phoneNumber)
+//                        birthEditText.setText(convertToIso8601(user.birthDate))
+//                        sexEditText.setText(user.gender)
+//                        // 로그에 값을 출력
+//                        Log.d(
+//                            "UserInfo",
+//                            "Name: ${user.name}, Address: ${user.address}, Phone: ${user.phoneNumber}, BirthDate: ${user.birthDate}"
+//                        )
+//                    } else {
+//                        // 사용자 정보가 없을 경우 예외 처리
+//                        Log.d("UserInfo", "User object is null")
+//                    }
+//                } else {
+//                    // 서버로부터 응답이 실패했을 경우 예외 처리
+//                    Log.d("UserInfo", "Failed to fetch user info: ${response.code()}")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<User>, t: Throwable) {
+//                // 네트워크 오류 등의 이유로 요청이 실패한 경우 예외 처리
+//                Log.e("UserInfo", "Failed to fetch user info", t)
+//                Toast.makeText(
+//                    this@UserEditActivity,
+//                    "Failed to fetch user info",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+//        })
+//    }
 
 
     // 데이터베이스에서 모든 사용자 삭제

@@ -121,7 +121,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.5"
                                 android:paddingTop="5dp"
-                                android:text="이름 : "
+                                android:text="이름"
                                 android:fontFamily="@font/puradak_gentle_gothic"
                                 android:textSize="20dp" />
                             <EditText
@@ -154,7 +154,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.5"
                                 android:paddingTop="5dp"
-                                android:text="ID : "
+                                android:text="ID"
                                 android:fontFamily="@font/puradak_gentle_gothic"
                                 android:textSize="20dp" />
                             <EditText
@@ -188,7 +188,7 @@
                                 android:textSize="20dp"
                                 android:layout_weight="0.5"
                                 android:fontFamily="@font/puradak_gentle_gothic"
-                                android:text="비밀번호 : "/>
+                                android:text="비밀번호"/>
                             <EditText
                                 android:id="@+id/userEditPassword"
                                 android:layout_width="wrap_content"
@@ -219,7 +219,7 @@
                                 android:textSize="20dp"
                                 android:layout_weight="0.5"
                                 android:fontFamily="@font/puradak_gentle_gothic"
-                                android:text="전화번호 : "/>
+                                android:text="전화번호"/>
                             <EditText
                                 android:id="@+id/userEditTel"
                                 android:layout_width="wrap_content"
@@ -249,7 +249,7 @@
                                 android:textSize="20dp"
                                 android:layout_weight="0.5"
                                 android:fontFamily="@font/puradak_gentle_gothic"
-                                android:text="주소 : "/>
+                                android:text="주소"/>
                             <EditText
                                 android:id="@+id/userEditAddress"
                                 android:layout_width="wrap_content"
@@ -280,7 +280,7 @@
                                 android:textSize="20dp"
                                 android:layout_weight="0.5"
                                 android:fontFamily="@font/puradak_gentle_gothic"
-                                android:text="생년월일 : "/>
+                                android:text="생년월일"/>
                             <EditText
                                 android:id="@+id/userEditBirth"
                                 android:layout_width="wrap_content"
@@ -289,7 +289,7 @@
                                 android:paddingLeft="15dp"
                                 android:fontFamily="@font/puradak_gentle_gothic"
                                 android:hint="생년월일 수정하세요"
-                                android:inputType="phone"
+                                android:inputType="text"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp" />
                         </LinearLayout>
@@ -300,7 +300,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
                             <TextView
                                 android:id="@+id/EditSex"
                                 android:layout_width="wrap_content"

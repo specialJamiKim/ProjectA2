@@ -15,18 +15,6 @@ interface ReservationService {
     @POST("/m_reservation/create")
     fun createReservation(@Body reservation: Reservation): Call<ResponseBody>
 
-    //예약 리스트 가져오기
-    /*    @POST("/m_reservation/list")
-        @FormUrlEncoded
-        fun getUserReservations(@Field("userId") userId: Long?): Call<List<Reservation>>*/
-//예약 리스트 가져오기
-    /*
-        @POST("/m_reservation/list")
-        @FormUrlEncoded
-        fun getUserReservations(@Field("userId") userId: Long?): Call<ResponseBody>
-    */
-
-
     // 예약 리스트 가져오기
     @POST("/m_reservation/list")
     @FormUrlEncoded
