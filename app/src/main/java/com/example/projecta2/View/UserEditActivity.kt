@@ -168,8 +168,8 @@ class UserEditActivity : AppCompatActivity() {
                         addressEditText.setText(user.address)
                         telEditText.setText(user.phoneNumber)
                         // 생년월일을 "0000-00-00" 형식으로 설정
-                        //val birthDateFormatted = SimpleDateFormat("yyyy-MM-dd").format(user.birthDate)
-                        birthEditText.setText(user.birthDate)
+                        birthEditText.setText(user.birthDate.substring(0, 10))
+
                         // ISO 8601 형식으로 변환하여 설정
                         sexEditText.setText(user.gender)
                         // 로그에 값을 출력
@@ -276,10 +276,10 @@ class UserEditActivity : AppCompatActivity() {
                         // 사용자 정보가 성공적으로 업데이트되면 로컬 데이터베이스의 모든 사용자 정보 삭제
                         deleteAllUsers()
                         // 업데이트된 정보를 데이터베이스에 저장
-                        saveUpdatedUserInfo(userInfo)
+                        //saveUpdatedUserInfo(userInfo)
                         // 성공 다이얼로그 표시 및 MyPageActivity로 이동
-                        DialogHelper.showMessageDialog(this@UserEditActivity, "알림", "수정을 완료했습니다.") {
-                            val intent = Intent(this@UserEditActivity, MyPageActivity::class.java)
+                        DialogHelper.showMessageDialog(this@UserEditActivity, "알림", "수정을 완료했습니다.\n다시 로그인 해주세요.") {
+                            val intent = Intent(this@UserEditActivity, LoginActivity::class.java)
                             startActivity(intent)
                             finish()
                         }

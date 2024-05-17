@@ -138,7 +138,6 @@ class JoinActivity : AppCompatActivity() {
         }
     }
 
-
     // 이메일 중복 검사 및 회원가입을 진행하는 함수
     private fun checkEmailAndSignUp(user: User) {
         val userService = RetrofitInstance.userService
