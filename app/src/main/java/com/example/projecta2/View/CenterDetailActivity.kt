@@ -27,7 +27,6 @@ import com.example.projecta2.adapter.ReviewAdapter
 import com.example.projecta2.model.FitnessCenter
 import com.example.projecta2.model.Reservation
 import com.example.projecta2.model.Review
-import com.example.projecta2.model.ReviewDTO
 import com.example.projecta2.util.DialogHelper
 import com.example.projecta2.util.RetrofitInstance
 import com.example.projecta2.util.getUserObject
@@ -228,8 +227,10 @@ class CenterDetailActivity : AppCompatActivity() {
         })
     }
     private fun updateReviewRecyclerView(reviews: List<Review>) {
-        reviewAdapter = ReviewAdapter(reviews) { reviewId ->
+        reviewAdapter = ReviewAdapter(reviews,userInfo) { reviewId ->
+            Log.d(">>>>>", userInfo.Id.toString())
             showDeleteConfirmationDialog(reviewId)
+
         }
         reviewView.layoutManager = LinearLayoutManager(this)
         reviewView.adapter = reviewAdapter
