@@ -240,9 +240,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-
-    ////여기까지 수정해야함
-
     // 일반 로그인
     private fun signIn(email: String, password: String) {
         val userService = RetrofitInstance.userService

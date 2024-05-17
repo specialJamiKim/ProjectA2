@@ -1,5 +1,6 @@
 package com.example.projecta2.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projecta2.R
 import com.example.projecta2.model.Review
+import com.example.projecta2.model.ReviewDTO
 import com.example.projecta2.util.RetrofitInstance
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -61,19 +63,21 @@ class ReviewAdapter(private var reviews: List<Review>,
     }
 
 
-    fun deleteReview(id: Long, onDeleteCompleted: (Boolean) -> Unit) {
+    fun deleteReview(id: Long, userId : Long , onDeleteCompleted: (Boolean) -> Unit) {
         // RetrofitInstance에서 ReviewService 인스턴스를 가져옵니다.
         val reviewService = RetrofitInstance.reviewService
 
         // 리뷰 삭제 요청을 보냅니다.
-        val call = reviewService.deleteReview(id)
+        val call = reviewService.deleteReview(id,userId)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     // 삭제 성공 시 true를 전달합니다.
+                    Log.d(">>>>>", "deleteReview성공을 리턴")
                     onDeleteCompleted(true)
                 } else {
                     // 삭제 실패 시 false를 전달합니다.
+                    Log.d(">>>>>", "deleteReview삭제 실패리턴함")
                     onDeleteCompleted(false)
                 }
             }

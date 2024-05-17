@@ -27,6 +27,7 @@ import com.example.projecta2.adapter.ReviewAdapter
 import com.example.projecta2.model.FitnessCenter
 import com.example.projecta2.model.Reservation
 import com.example.projecta2.model.Review
+import com.example.projecta2.model.ReviewDTO
 import com.example.projecta2.util.DialogHelper
 import com.example.projecta2.util.RetrofitInstance
 import com.example.projecta2.util.getUserObject
@@ -236,13 +237,20 @@ class CenterDetailActivity : AppCompatActivity() {
 
     //리뷰 삭제 ==> 리뷰아이디 불러오고, 해당 작성자면 성공
     // ===> 이 부분 수정 ==> 여기다가 세션에 있는 userId같이 붙여줘야함
+    // ReviewDTO 만들어서 넣은 다음에 이 객체를 직접 보내기
     private fun deleteReview(id: Long) {
         // Retrofit을 사용하여 서버에 리뷰를 삭제하는 요청을 보냅니다.
         // 요청이 성공하면 다시 리뷰를 불러와서 평균 평점을 계산하여 화면에 반영합니다.
-        reviewAdapter.deleteReview(id) { isSuccess ->
-            if (isSuccess) {
-                // 삭제 후 리뷰를 다시 불러와서 화면에 반영합니다.
-                callReview(centerId)
+       // var reviewDTO = userInfo.Id?.let { ReviewDTO(id, it) }
+        var userId = userInfo.Id
+        Log.d(">>>>>", userId.toString()+ "표시됨")
+        if (userId != null) {
+            reviewAdapter.deleteReview(id, userId) { isSuccess ->
+                if (isSuccess) {
+                    // 삭제 후 리뷰를 다시 불러와서 화면에 반영합니다.
+                    Log.d(">>>>>", "deleteReview삭제완료")
+                    callReview(centerId)
+                }
             }
         }
     }
